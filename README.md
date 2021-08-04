@@ -1,24 +1,9 @@
-# README
+# Montecinema Rubycamp_v2
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Ruby version: 3.0.0
+Port: 3000
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Endpoints: 
+namespace: ``/api/v1``
+- **POST**  ``/users`` Returns Authorization Jwt token
+- **POST** ``/users/sign_in``

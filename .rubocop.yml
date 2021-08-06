@@ -1,0 +1,11 @@
+require: rubocop-rails
+AllCops:
+  NewCops: enable
+  Include:
+    - 'app/controllers/api/v1/**/*'
+    - 'app/models/**/*'
+    - 'db/**/*'
+    - 'config/routes.rb'
+    - 'spec/**/*'
+Style/Documentation:
+  Enabled: false

@@ -18,9 +18,16 @@ class MoviesController < ApplicationController
 	end
 
 	def update
+		movie = Movie.find(params[:id]).update(movie_params)
+		if movie.save
+			render json: {success: 'updated successfully'}, status: :ok
+		else 
+			render json: movie.errors
+		end
 	end
 
 	def destroy
+		Movie.find(params[:id]).delete
 	end
 
 	private

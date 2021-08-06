@@ -7,6 +7,11 @@ class MoviesController < ApplicationController
 
 	def create
 		movie = Movie.new(movie_params)
+		if movie.save
+			render json: {success: 'Created successfully'}, status: :ok
+		else 
+			render json: movie.errors
+		end
 	end
 
 	def show
@@ -19,6 +24,10 @@ class MoviesController < ApplicationController
 	end
 
 	private
+
+	def movie_params
+		params.require(:title).permit(:length, :description, :director, :genre)
+	end
 
 	def ensure_admin
 		if current_user.admin?

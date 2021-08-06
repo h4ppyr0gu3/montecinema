@@ -10,9 +10,12 @@ class User < ApplicationRecord
 
   before_validation :append_jti_attribute
 
+  enum role: { client: 0, support: 1, admin: 2 }
+
   private
 
   def append_jti_attribute
     self.jti = SecureRandom.uuid
   end
 end
+# May need additional validation after adding jti incase of large DB

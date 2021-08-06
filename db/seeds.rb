@@ -8,11 +8,11 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 def seed_cinema rows, columns, cinema_number
-	for i in 1..columns do 
-		for j in 1..rows do
-			seat_letter = "a".ord + (i - 1)
+	columns.times do |i|
+		rows.times do |j|
+			seat_letter = "a".ord + i
 			seat_letter = seat_letter.chr
-			seat_number = seat_letter + "-" + j.to_s
+			seat_number = seat_letter + "-" + (j + 1).to_s
 			seat = Seat.new(cinema_number: cinema_number, seat_number: seat_number)
 			if seat.save
 				puts "cinema_number: " + cinema_number.to_s + ", seat_number: " + seat_number

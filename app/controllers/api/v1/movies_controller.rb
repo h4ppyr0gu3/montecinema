@@ -1,44 +1,47 @@
-class MoviesController < ApplicationController
+class Api::V1::MoviesController < ApplicationController
 
 	before_action :ensure_admin, only: %i[create update destroy]
+	before_action :set_movie, only: %i[show update destroy]
 
 	def index
+		render json: Movie.all
 	end
 
 	def create
 		movie = Movie.new(movie_params)
-		if movie.save
-			render json: {success: 'Created successfully'}, status: :ok
-		else 
-			render json: movie.errors
-		end
+		save_if(movie, "Created")
 	end
 
 	def show
+		render json: movie
 	end
 
 	def update
-		movie = Movie.find(params[:id]).update(movie_params)
-		if movie.save
-			render json: {success: 'updated successfully'}, status: :ok
-		else 
-			render json: movie.errors
-		end
-	end
+		if movie.update(movie_params)
+      render json: {success: "Updated successfully"}
+    else
+      render json: self.errors
+    end
+  end
 
 	def destroy
-		Movie.find(params[:id]).delete
+		movie.delete
+		render json: {success: "Deleted successfully"}
 	end
 
 	private
 
 	def movie_params
-		params.require(:title).permit(:length, :description, :director, :genre)
+		params.permit(:title, :length, :description, :director, :genre, :id)
+	end
+
+	def set_movie
+		movie = Movie.find(params[:id])
 	end
 
 	def ensure_admin
 		if current_user.admin?
-		else render json: {}, status: :bad_request
+		else render json: {error: "not found"}, status: :bad_request
 		end
 	end
 

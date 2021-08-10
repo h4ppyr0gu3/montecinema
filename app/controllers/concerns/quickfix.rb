@@ -1,10 +1,10 @@
 module Quickfix
 	extend ActiveSupport::Concern
-	def save_if item, action
+	def save_if item
 		if item.save
-			render json: {success: "#{action} successfully"}, status: :ok
+			render json: item, status: :created
 		else
-			render json: item.errors 
+			render json: item.errors, status: :bad_request
 		end
 	end
 end

@@ -17,13 +17,14 @@ gem 'sidekiq', '~> 6.2.1'
 gem 'sidekiq-cron', '~> 1.2.0'
 
 group :development, :test do
-  gem 'byebug', '>= 11.1.3', platforms: %i[mri mingw x64_mingw]
-  gem 'rspec-rails', '~> 5.0.1'
+  gem 'rspec-rails', '~> 5.0.1', require: false
 end
 
 group :development do
+  gem 'byebug', '>= 11.1.3', platforms: %i[mri mingw x64_mingw]
   gem 'listen', '~> 3.3'
   gem 'rubocop', '~> 1.18.4'
   gem 'rubocop-rails', '~> 2.11.3',require: false
+  gem 'rubocop-rspec', '~> 2.4.0', require: false
   gem 'spring', '>= 2.1.1'
 end

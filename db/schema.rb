@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(version: 2021_08_06_170308) do
 
   create_table "cinemas", force: :cascade do |t|
     t.integer "cinema_number"
+    t.integer "total_seats"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

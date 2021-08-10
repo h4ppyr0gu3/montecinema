@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 def seed_cinema(rows, columns, cinema_number)
   cinema = Cinema.create(cinema_number: cinema_number)
-  cols = ("a".."z").take(columns).to_a
+  cols = ('a'..'z').take(columns).to_a
   rows = (1..rows).to_a
   seats = cols.product(rows).map(&:join)
   seats.each do |seat_number|

@@ -10,13 +10,15 @@ AllCops:
     - 'config/routes.rb'
     - 'spec/**/*'
 Style/Documentation:
-  Enabled: true
+  Enabled: false
 Style/FrozenStringLiteralComment: 
   Enabled: false
 RSpec/MultipleExpectations:
-  Enabled: true
+  Enabled: false
 RSpec/ExampleLength:
-  Enabled: true
+  Enabled: false
 Metrics/BlockLength:
-  Enabled: true
+  Enabled: false
+RSpec/DescribedClass:
+  Enabled: false
   

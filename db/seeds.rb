@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 def seed_cinema(rows, columns, cinema_number)
   cinema = Cinema.create(cinema_number: cinema_number)
   cols = ('a'..'z').take(columns).to_a
@@ -7,10 +5,7 @@ def seed_cinema(rows, columns, cinema_number)
   seats = cols.product(rows).map(&:join)
   seats.each do |seat_number|
     seat = cinema.seats.new(seat_number: seat_number)
-    if seat.save
-      Rails.logger.info "cinema_number: #{cinema_number}, seat_number: #{seat_number}"
-    elsif seat.errors.any?
-      Rails.logger.error seat.errors.messages
+    Rails.logger.error seat.errors.messages unless seat.save
     end
   end
 end

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Screening, type: :model do
-  context 'screening and cinema required' do
+  context 'with screening and cinema' do
     it 'cinema & movie present' do
       create_movie
       create_cinema
@@ -35,7 +35,7 @@ RSpec.describe Screening, type: :model do
     end
   end
 
-  context 'cinema screenings can\'t overlap' do
+  context 'when cinema screenings overlap' do
     it 'valid screening times' do
       create_movie
       create_cinema
@@ -72,7 +72,7 @@ RSpec.describe Screening, type: :model do
 end
 
 def create_movie
-  movie = Movie.create(
+  Movie.create(
     title: 'The Mask',
     director: 'David Rogers',
     description: 'Funniest movie ever',
@@ -82,7 +82,7 @@ def create_movie
 end
 
 def create_cinema
-  screening = Cinema.create(
+  Cinema.create(
     cinema_number: 10
   )
 end

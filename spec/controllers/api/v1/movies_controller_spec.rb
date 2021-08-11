@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::MoviesController do
-  context 'specs with movie creation' do
+  context 'with movie creation' do
     before do
       Movie.create(
         title: 'Nuggets',

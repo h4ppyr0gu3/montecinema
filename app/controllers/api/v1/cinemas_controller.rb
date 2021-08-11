@@ -14,22 +14,20 @@ module Api
       def create
         cinema = Cinema.new(cinema_number: params[:cinema_number])
         begin
-          ActiveRecord::Base.transaction do 
+          ActiveRecord::Base.transaction do
             if cinema.save!
               cols = ('a'..'z').take(params[:columns]).to_a
               rows = (1..(params[:rows])).to_a
               seats = cols.product(rows).map(&:join)
               seats.each do |seat_number|
                 seat = cinema.seats.new(seat_number: seat_number)
-                if !seat.save!
-                  Rails.logger.error seat.errors.messages
-                end
+                Rails.logger.error seat.errors.messages unless seat.save!
               end
             end
           end
           render json: cinema, status: :created
-        rescue ActiveRecord::RecordInvalid => exception
-          render json: exception.messages, status: :bad_request
+        rescue ActiveRecord::RecordInvalid => e
+          render json: e.messages, status: :bad_request
         end
       end
 

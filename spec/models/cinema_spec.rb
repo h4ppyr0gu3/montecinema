@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Cinema, type: :model do
-  context 'no duplicate cinema_number\'s' do
+  context 'when there\'s duplicate cinema_number\'s' do
     before do
       described_class.create(cinema_number: 3)
     end

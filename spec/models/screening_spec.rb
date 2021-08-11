@@ -5,18 +5,18 @@ RSpec.describe Screening, type: :model do
     it 'cinema & movie present' do
       create_movie
       create_cinema
-      screening = Screening.new(
-        airing_time: Time.zone.now, 
-        movie_id: Movie.last.id, 
+      screening = described_class.new(
+        airing_time: Time.zone.now,
+        movie_id: Movie.last.id,
         cinema_id: Cinema.last.id
       )
       screening.validate
-      expect(screening.errors.count).to eql(0)
+      expect(screening.errors.count).to be(0)
     end
 
     it 'only cinema present' do
       create_cinema
-      screening = Screening.new(
+      screening = described_class.new(
         airing_time: Time.zone.now,
         cinema_id: Cinema.last.id
       )
@@ -26,7 +26,7 @@ RSpec.describe Screening, type: :model do
 
     it 'only movie present' do
       create_movie
-      screening = Screening.new(
+      screening = described_class.new(
         airing_time: Time.zone.now,
         movie_id: Movie.last.id
       )
@@ -34,39 +34,39 @@ RSpec.describe Screening, type: :model do
       expect(screening.errors.count).to be > 0
     end
   end
+
   context 'cinema screenings can\'t overlap' do
-    it 'valid screening times' do 
+    it 'valid screening times' do
       create_movie
       create_cinema
-      Screening.create(
-        airing_time: Time.zone.now, 
-        movie_id: Movie.last.id, 
+      described_class.create(
+        airing_time: Time.zone.now,
+        movie_id: Movie.last.id,
         cinema_id: Cinema.last.id
       )
-      screening = Screening.new(
-        airing_time: Time.zone.now + 2.hours, 
-        movie_id: Movie.last.id, 
+      screening = described_class.new(
+        airing_time: Time.zone.now + 2.hours,
+        movie_id: Movie.last.id,
         cinema_id: Cinema.last.id
       )
       screening.validate
       expect(screening.errors.count).to be == 0
     end
 
-    it 'invalid screening times' do 
+    it 'invalid screening times' do
       create_movie
       create_cinema
-      Screening.create(
-        airing_time: Time.zone.now, 
-        movie_id: Movie.last.id, 
+      described_class.create(
+        airing_time: Time.zone.now,
+        movie_id: Movie.last.id,
         cinema_id: Cinema.last.id
       )
-      screening = Screening.new(
-        airing_time: Time.zone.now + 30.minutes, 
-        movie_id: Movie.last.id, 
+      screening = described_class.new(
+        airing_time: Time.zone.now + 30.minutes,
+        movie_id: Movie.last.id,
         cinema_id: Cinema.last.id
       )
-      screening.validate
-      expect(screening.errors.count).to be > 0
+      expect(screening.validate).to raise_error
     end
   end
 end

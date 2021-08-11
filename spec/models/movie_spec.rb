@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Movie, type: :model do
-  context 'presence validations' do 
+  context 'presence validations' do
     it 'title not present' do
-      movie = Movie.new(
+      movie = described_class.new(
         director: 'David Rogers',
         description: 'Funniest movie ever',
         genre: 'Comedy',
@@ -14,7 +14,7 @@ RSpec.describe Movie, type: :model do
     end
 
     it 'director not present' do
-      movie = Movie.new(
+      movie = described_class.new(
         title: 'The Mask',
         description: 'Funniest movie ever',
         genre: 'Comedy',
@@ -25,7 +25,7 @@ RSpec.describe Movie, type: :model do
     end
 
     it 'description not present' do
-      movie = Movie.new(
+      movie = described_class.new(
         title: 'The Mask',
         director: 'David Rogers',
         genre: 'Comedy',
@@ -36,7 +36,7 @@ RSpec.describe Movie, type: :model do
     end
 
     it 'genre not present' do
-      movie = Movie.new(
+      movie = described_class.new(
         title: 'The Mask',
         director: 'David Rogers',
         description: 'Funniest movie ever',
@@ -47,18 +47,18 @@ RSpec.describe Movie, type: :model do
     end
 
     it 'length not present' do
-      movie = Movie.new(
+      movie = described_class.new(
         title: 'The Mask',
         director: 'David Rogers',
         description: 'Funniest movie ever',
-        genre: 'Comedy',
+        genre: 'Comedy'
       )
       movie.validate
       expect(movie.errors.count).to be > 0
     end
 
     it 'valid entry' do
-      movie = Movie.new(
+      movie = described_class.new(
         title: 'The Mask',
         director: 'David Rogers',
         description: 'Funniest movie ever',

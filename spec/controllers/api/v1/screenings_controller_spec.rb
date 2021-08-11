@@ -5,7 +5,7 @@ RSpec.describe Api::V1::ScreeningsController do
     before do
       Movie.create(
         title: 'Nuggets',
-        length: '3:25',
+        length: '1:25',
         description: 'A little bit of gibberish is always good i guess',
         director: 'David Rogers',
         genre: 'The Usual'
@@ -48,7 +48,7 @@ RSpec.describe Api::V1::ScreeningsController do
       count = Screening.count
       post :create, params: {
         movie_id: Movie.last.id,
-        airing_time: 3.minutes.from_now,
+        airing_time: 5.hours.from_now,
         cinema_number: 5
       }, as: :json
       expect(count).to eql(Screening.count - 1)

@@ -5,6 +5,6 @@ class Seat < ApplicationRecord
   before_validation :parse_params
 
   def parse_params
-    self.name = self.cinema_id.to_s + self.seat_number.to_s
+    self.name = cinema_id.to_s + seat_number.to_s
   end
 end

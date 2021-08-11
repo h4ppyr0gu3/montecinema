@@ -13,3 +13,10 @@ Style/Documentation:
   Enabled: false
 Style/FrozenStringLiteralComment: 
   Enabled: false
+RSpec/MultipleExpectations:
+  Enabled: false
+RSpec/ExampleLength:
+  Enabled: false
+Metrics/BlockLength:
+  Enabled: false
+  

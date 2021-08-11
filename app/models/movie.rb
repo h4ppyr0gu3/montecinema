@@ -4,7 +4,7 @@ class Movie < ApplicationRecord
   has_many :screenings, dependent: :destroy
   before_save :parse_params
 
-  validates_presence_of :director, :genre, :description, :length, :title
+  validates :director, :genre, :description, :length, :title, presence: true
 
   private
 
@@ -12,6 +12,6 @@ class Movie < ApplicationRecord
     self.title = title.downcase
     self.director = director.downcase
     self.genre = genre.downcase
-    self.length = DateTime.parse(length.to_s).strftime('%H:%M')
+    self.length = Time.zone.parse(length.to_s).strftime('%H:%M')
   end
 end

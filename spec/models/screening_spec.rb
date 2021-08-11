@@ -66,7 +66,7 @@ RSpec.describe Screening, type: :model do
         movie_id: Movie.last.id,
         cinema_id: Cinema.last.id
       )
-      expect(screening.validate).to raise_error
+      expect { screening.validate }.to raise_error(StandardError)
     end
   end
 end

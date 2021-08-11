@@ -1,7 +1,6 @@
 module Api
   module V1
     class MoviesController < ApplicationController
-      # before_action :ensure_admin, only: %i[create update destroy]
       before_action :set_movie, only: %i[show update destroy]
 
       def index
@@ -10,7 +9,11 @@ module Api
 
       def create
         movie = Movie.new(movie_params)
-        conditional_render movie
+        if movie.save
+          render json: movie, status: :created
+        else
+          render json: movie.errors, status: :bad_request
+        end
       end
 
       def show
@@ -38,12 +41,6 @@ module Api
 
       def set_movie
         @movie = Movie.find(params[:id])
-      end
-
-      def ensure_admin
-        if current_user.admin?
-        else render json: { error: 'not found' }, status: :bad_request
-        end
       end
     end
   end

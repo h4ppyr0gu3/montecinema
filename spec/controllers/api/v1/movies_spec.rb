@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Api::V1::MoviesController do
   context 'specs with movie creation' do
-    before do 
+    before do
       Movie.create(
         title: 'Nuggets',
         length: '3:25',
@@ -31,22 +33,21 @@ RSpec.describe Api::V1::MoviesController do
     it 'DELETE #destroy' do
       Cinema.create(cinema_number: 1)
       screening = Movie.last.screenings.new(
-        cinema_id: Cinema.last.id, 
-        airing_time: Time.now
+        cinema_id: Cinema.last.id,
+        airing_time: Time.zone.now
       )
       screening.save
       movie_count = Movie.count
       screening_count = Screening.count
-      delete :destroy, params: {id: Movie.last.id}
+      delete :destroy, params: { id: Movie.last.id }
       expect(Movie.count).to be < movie_count
       expect(Screening.count).to be < screening_count
     end
-
   end
 
   it 'POST #create' do
     count = Movie.count
-    post :create, params: { 
+    post :create, params: {
       title: 'Nuggets 2',
       length: '2:25',
       description: 'A little bit of gibberish is always good round 2',
@@ -55,7 +56,6 @@ RSpec.describe Api::V1::MoviesController do
     }, as: :json
     expect(count).to eql(Movie.count - 1)
   end
-
 end
 
 def create_additional_movie

@@ -48,9 +48,11 @@ ActiveRecord::Schema.define(version: 2021_08_06_170308) do
     t.string "seat_number", null: false
     t.bigint "cinema_id"
     t.string "seat_price", default: "0"
+    t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["cinema_id"], name: "index_seats_on_cinema_id"
+    t.index ["name"], name: "index_seats_on_name", unique: true
   end
 
   create_table "users", force: :cascade do |t|

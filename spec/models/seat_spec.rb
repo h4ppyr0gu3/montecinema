@@ -1,18 +1,20 @@
-# frozen_string_literal: true
-
 require 'rails_helper'
 
 RSpec.describe Seat, type: :model do
-  it 'ensure stopping incorrect validations' do
-    described_class.create!(cinema_number: 1, seat_number: 'a-1')
-    invalid_seat = described_class.new(cinema_number: 1, seat_number: 'a-1')
-    invalid_seat.validate
-    expect(invalid_seat.errors[:seat_number]).to include('has already been taken')
+  before do
+    Cinema.create(cinema_number: 10)
   end
 
-  it 'ensure passing correct validations' do
-    described_class.create!(cinema_number: 1, seat_number: 'a-1')
-    valid_seat = described_class.new(cinema_number: 2, seat_number: 'a-1')
+  it 'incorrect validations' do
+    seat = Seat.create(cinema_id: Cinema.last.id, seat_number: 'a1')
+    invalid_seat = Seat.new(cinema_id: Cinema.last.id, seat_number: 'a1')
+    expect { invalid_seat.save! }.to raise_error ActiveRecord::RecordNotUnique
+  end
+
+  it 'correct validations' do
+    Cinema.create(cinema_number: 8)
+    Seat.create!(cinema_id: Cinema.last.id, seat_number: 'a1')
+    valid_seat = Seat.new(cinema_id: Cinema.first.id, seat_number: 'a1')
     valid_seat.validate
     expect(valid_seat.errors.count).to be(0)
   end

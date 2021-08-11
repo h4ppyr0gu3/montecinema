@@ -1,6 +1,10 @@
+# frozen_string_literal: true
+
 class Movie < ApplicationRecord
   has_many :screenings, dependent: :destroy
-  before_validation :parse_params
+  before_save :parse_params
+
+  validates_presence_of :director, :genre, :description, :length, :title
 
   private
 

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::ScreeningsController do
   context 'specs with movie creation' do
-    before do 
+    before do
       Movie.create(
         title: 'Nuggets',
         length: '3:25',
@@ -16,7 +16,7 @@ RSpec.describe Api::V1::ScreeningsController do
       Screening.create(
         cinema_id: Cinema.last.id,
         movie_id: Movie.last.id,
-        airing_time: Time.now
+        airing_time: Time.zone.now
       )
     end
 
@@ -39,22 +39,21 @@ RSpec.describe Api::V1::ScreeningsController do
     it 'DELETE #destroy' do
       screening_count = Screening.count
       movie_count = Movie.count
-      delete :destroy, params: {id: Screening.last.id}
+      delete :destroy, params: { id: Screening.last.id }
       expect(Movie.count).to be == movie_count
       expect(Screening.count).to be < screening_count
     end
-    
+
     it 'POST #create' do
       count = Screening.count
-      post :create, params: { 
+      post :create, params: {
         movie_id: Movie.last.id,
         airing_time: 3.minutes.from_now,
-        cinema_number: 5,
+        cinema_number: 5
       }, as: :json
       expect(count).to eql(Screening.count - 1)
     end
   end
-
 end
 
 def create_additional_screening

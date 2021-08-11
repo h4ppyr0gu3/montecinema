@@ -18,7 +18,7 @@ module Api
           cinema_id: Cinema.find_by(cinema_number: params[:cinema_number]).id,
           additional_cost: params[:additional_cost]
         )
-        save_if screening
+        conditional_render screening
       end
 
       def update

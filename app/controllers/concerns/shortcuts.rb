@@ -1,6 +1,6 @@
-module Quickfix
+module Shortcuts
 	extend ActiveSupport::Concern
-	def save_if item
+	def conditional_render item
 		if item.save
 			render json: item, status: :created
 		else

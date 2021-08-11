@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Api
   module V1
     class MoviesController < ApplicationController
@@ -12,7 +10,7 @@ module Api
 
       def create
         movie = Movie.new(movie_params)
-        save_if movie
+        conditional_render movie
       end
 
       def show

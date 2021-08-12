@@ -36,7 +36,7 @@ module Api
       private
 
       def movie_params
-        params.permit(:title, :length_mins, :description, :director, :genre)
+        params.permit(:title, :length, :description, :director, :genre)
       end
 
       def set_movie

@@ -77,7 +77,7 @@ def create_movie
     director: 'David Rogers',
     description: 'Funniest movie ever',
     genre: 'Comedy',
-    length_mins: '120'
+    length: '120'
   )
 end
 

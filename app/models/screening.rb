@@ -10,7 +10,7 @@ class Screening < ApplicationRecord
     screenings = Screening.where(cinema_id: cinema_id)
     screenings.each do |screening|
       movie = Movie.find(screening.movie_id)
-      minutes = movie.length_mins
+      minutes = movie.length
       earliest_possible_time = screening.airing_time + minutes.minutes
       raise StandardError, 'Time slot already taken' if airing_time < earliest_possible_time
     end

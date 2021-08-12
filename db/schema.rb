@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(version: 2021_08_06_170308) do
 
   create_table "movies", force: :cascade do |t|
     t.string "title"
-    t.integer "length_mins"
+    t.integer "length"
     t.text "description"
     t.string "director"
     t.string "genre"

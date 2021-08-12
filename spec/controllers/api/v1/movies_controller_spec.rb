@@ -5,7 +5,7 @@ RSpec.describe Api::V1::MoviesController do
     let(:movie) do
       Movie.create(
         title: 'Nuggets',
-        length_mins: '325',
+        length: '325',
         description: 'A little bit of gibberish is always good i guess',
         director: 'David Rogers',
         genre: 'The Usual'
@@ -66,7 +66,7 @@ RSpec.describe Api::V1::MoviesController do
   it 'POST #create' do
     expect { post :create, params: {
       title: 'Nuggets 2',
-      length_mins: '225',
+      length: '225',
       description: 'A little bit of gibberish is always good round 2',
       director: 'David Rogers',
       genre: 'The Usual'
@@ -78,7 +78,7 @@ end
 def create_additional_movie
   Movie.create(
     title: 'Nuggets 2',
-    length_mins: '225',
+    length: '225',
     description: 'A little bit of gibberish is always good round 2',
     director: 'David Rogers',
     genre: 'The Usual'

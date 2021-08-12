@@ -5,7 +5,7 @@ RSpec.describe Api::V1::ScreeningsController do
     before do
       Movie.create(
         title: 'Nuggets',
-        length_mins: '1:25',
+        length: '1:25',
         description: 'A little bit of gibberish is always good i guess',
         director: 'David Rogers',
         genre: 'The Usual'

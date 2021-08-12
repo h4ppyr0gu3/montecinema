@@ -57,4 +57,3 @@ def create_cinemas(number)
     Cinema.create(cinema_number: cinema_number)
   end
 end
-# end

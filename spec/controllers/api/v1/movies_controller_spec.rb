@@ -1,10 +1,8 @@
-# frozen_string_literal: true
-
 require 'rails_helper'
 
 RSpec.describe Api::V1::MoviesController do
   context 'with movie creation' do
-    before do
+    let(:movie) do
       Movie.create(
         title: 'Nuggets',
         length: '3:25',
@@ -14,13 +12,23 @@ RSpec.describe Api::V1::MoviesController do
       )
     end
 
-    it 'GET #index' do
-      get :index
-      expect(response).to have_http_status(:ok)
-      expect(JSON.parse(response.body).count).to eq(1)
-      create_additional_movie
-      get :index
-      expect(JSON.parse(response.body).count).to eq(2)
+    before do
+      movie
+    end
+
+    context 'when GET #index' do
+      subject { get :index }
+
+      it 'return one item' do
+        subject
+        expect(JSON.parse(response.body).count).to eq(1)
+      end
+
+      it 'return multiple items' do
+        create_additional_movie
+        subject
+        expect(JSON.parse(response.body).count).to eq(2)
+      end
     end
 
     it 'GET #show' do
@@ -30,18 +38,32 @@ RSpec.describe Api::V1::MoviesController do
       expect(JSON.parse(response.body).class).to eq(Hash)
     end
 
-    it 'DELETE #destroy' do
-      Cinema.create(cinema_number: 1)
-      screening = Movie.last.screenings.new(
-        cinema_id: Cinema.last.id,
-        airing_time: Time.zone.now
-      )
-      screening.save
-      movie_count = Movie.count
-      screening_count = Screening.count
-      delete :destroy, params: { id: Movie.last.id }
-      expect(Movie.count).to be < movie_count
-      expect(Screening.count).to be < screening_count
+    context 'when DELETE #destroy' do
+      before do
+        Cinema.create(cinema_number: 1)
+      end
+
+      it 'deletes movies' do
+        screening = Movie.last.screenings.new(
+          cinema_id: Cinema.last.id,
+          airing_time: Time.zone.now
+        )
+        screening.save
+        movie_count = Movie.count
+        delete :destroy, params: { id: Movie.last.id }
+        expect(Movie.count).to be < movie_count
+      end
+
+      it 'delete screenings' do
+        screening = Movie.last.screenings.new(
+          cinema_id: Cinema.last.id,
+          airing_time: Time.zone.now
+        )
+        screening.save
+        screening_count = Screening.count
+        delete :destroy, params: { id: Movie.last.id }
+        expect(Screening.count).to be < screening_count
+      end
     end
   end
 

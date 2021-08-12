@@ -14,7 +14,7 @@ Style/Documentation:
 Style/FrozenStringLiteralComment: 
   Enabled: false
 RSpec/MultipleExpectations:
-  Enabled: false
+  Enabled: true
 RSpec/ExampleLength:
   Enabled: false
 Metrics/BlockLength:

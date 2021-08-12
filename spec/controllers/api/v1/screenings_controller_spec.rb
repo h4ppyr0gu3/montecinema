@@ -20,13 +20,17 @@ RSpec.describe Api::V1::ScreeningsController do
       )
     end
 
-    it 'GET #index' do
-      get :index
-      expect(response).to have_http_status(:ok)
-      expect(JSON.parse(response.body).count).to eq(1)
-      create_additional_screening
-      get :index
-      expect(JSON.parse(response.body).count).to eq(2)
+    context 'when GET #index' do
+      it 'get one entry' do
+        get :index
+        expect(JSON.parse(response.body).count).to eq(1)
+      end
+
+      it 'get multiple entry' do
+        create_additional_screening
+        get :index
+        expect(JSON.parse(response.body).count).to eq(2)
+      end
     end
 
     it 'GET #show' do
@@ -36,12 +40,18 @@ RSpec.describe Api::V1::ScreeningsController do
       expect(JSON.parse(response.body).class).to eq(Hash)
     end
 
-    it 'DELETE #destroy' do
-      screening_count = Screening.count
-      movie_count = Movie.count
-      delete :destroy, params: { id: Screening.last.id }
-      expect(Movie.count).to be == movie_count
-      expect(Screening.count).to be < screening_count
+    context 'when DELETE #destroy' do
+      it 'destroy screening' do
+        screening_count = Screening.count
+        delete :destroy, params: { id: Screening.last.id }
+        expect(Screening.count).to be < screening_count
+      end
+
+      it 'doesn\'t delete movie' do
+        movie_count = Movie.count
+        delete :destroy, params: { id: Screening.last.id }
+        expect(Movie.count).to be == movie_count
+      end
     end
 
     it 'POST #create' do

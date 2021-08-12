@@ -33,7 +33,7 @@ module Api
 
       def destroy
         @cinema.destroy
-        render body: nil, status: :no_content
+        render head: :no_content
       end
 
       private

@@ -35,7 +35,7 @@ module Api
 
       def destroy
         @screening.delete
-        render body: nil, status: :no_content
+        render head: :no_content
       end
 
       private

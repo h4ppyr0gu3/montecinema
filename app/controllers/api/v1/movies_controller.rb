@@ -30,7 +30,7 @@ module Api
 
       def destroy
         @movie.destroy
-        render body: nil, status: :no_content
+        render head: :no_content
       end
 
       private

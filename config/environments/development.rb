@@ -3,6 +3,18 @@
 require 'active_support/core_ext/integer/time'
 
 Rails.application.configure do
+  config.after_initialize do
+    Bullet.enable        = true
+    Bullet.alert         = false
+    Bullet.bullet_logger = false
+    Bullet.console       = false
+    Bullet.rails_logger  = true
+    Bullet.add_footer    = true
+    Bullet.sentry = true
+    # Bullet.slack = { webhook_url: 'http://some.slack.url', channel: '#default', username: 'notifier' }
+    Bullet.raise = true
+  end
+
   config.cache_classes = false
   config.eager_load = false
   config.consider_all_requests_local = true

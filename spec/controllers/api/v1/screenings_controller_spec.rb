@@ -20,7 +20,7 @@ RSpec.describe Api::V1::ScreeningsController do
       )
     end
 
-    context 'when GET #index' do
+    describe 'GET #index' do
       it 'get one entry' do
         get :index
         expect(JSON.parse(response.body).count).to eq(1)
@@ -40,25 +40,27 @@ RSpec.describe Api::V1::ScreeningsController do
       expect(JSON.parse(response.body).class).to eq(Hash)
     end
 
-    context 'when DELETE #destroy' do
+    describe 'DELETE #destroy' do
       it 'destroy screening' do
         expect { delete :destroy, params: { id: Screening.last.id } }
-        .to change{ Screening.count }.by(-1)
+          .to change(Screening, :count).by(-1)
       end
 
       it 'doesn\'t delete movie' do
         expect { delete :destroy, params: { id: Screening.last.id } }
-        .to change{ Movie.count }.by(0)
+          .to change(Movie, :count).by(0)
       end
     end
 
     it 'POST #create' do
-      expect { post :create, params: {
-        movie_id: Movie.last.id,
-        airing_time: 5.hours.from_now,
-        cinema_number: 5
-      }, as: :json }
-      .to change{ Screening.count }.by(1)
+      expect do
+        post :create, params: {
+          movie_id: Movie.last.id,
+          airing_time: 5.hours.from_now,
+          cinema_number: 5
+        }, as: :json
+      end
+        .to change(Screening, :count).by(1)
     end
   end
 end

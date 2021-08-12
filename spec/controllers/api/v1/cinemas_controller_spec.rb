@@ -1,18 +1,18 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::CinemasController do
-  context 'when GET #index' do
-    subject { get :index }
+  describe 'GET #index' do
+    subject(:request) { get :index }
 
     it 'return one object' do
       Cinema.create(cinema_number: 5)
-      subject
+      request
       expect(JSON.parse(response.body).count).to eq(1)
     end
 
     it 'return multiple objects' do
       create_cinemas 2
-      subject
+      request
       expect(JSON.parse(response.body).count).to eq(2)
     end
   end
@@ -26,11 +26,11 @@ RSpec.describe Api::V1::CinemasController do
 
   it 'POST #create' do
     expect { post :create, params: { rows: 10, columns: 10, cinema_number: 5 }, as: :json }
-    .to change { Cinema.count }.by(1)
+      .to change(Cinema, :count).by(1)
   end
 
-  context 'when DELETE #destroy' do
-    subject { delete :destroy, params: { id: Cinema.last.id } }
+  describe 'DELETE #destroy' do
+    subject(:request) { delete :destroy, params: { id: Cinema.last.id } }
 
     let(:creation) do
       post :create, params: { rows: 10, columns: 10, cinema_number: 5 }, as: :json
@@ -41,11 +41,11 @@ RSpec.describe Api::V1::CinemasController do
     end
 
     it 'delete seats' do
-      expect { subject }.to change{ Seat.count }.by(-100)
+      expect { request }.to change(Seat, :count).by(-100)
     end
 
     it 'delete cinema' do
-      expect { subject }.to change{ Cinema.count }.by(-1)
+      expect { request }.to change(Cinema, :count).by(-1)
     end
   end
 end
@@ -57,3 +57,4 @@ def create_cinemas(number)
     Cinema.create(cinema_number: cinema_number)
   end
 end
+# end

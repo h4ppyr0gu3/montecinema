@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::MoviesController do
-  context 'with movie creation' do
+  describe 'with movie creation' do
     let(:movie) do
       Movie.create(
         title: 'Nuggets',
@@ -16,17 +16,17 @@ RSpec.describe Api::V1::MoviesController do
       movie
     end
 
-    context 'when GET #index' do
-      subject { get :index }
+    describe 'GET #index' do
+      subject(:request) { get :index }
 
       it 'return one item' do
-        subject
+        request
         expect(JSON.parse(response.body).count).to eq(1)
       end
 
       it 'return multiple items' do
         create_additional_movie
-        subject
+        request
         expect(JSON.parse(response.body).count).to eq(2)
       end
     end
@@ -38,7 +38,7 @@ RSpec.describe Api::V1::MoviesController do
       expect(JSON.parse(response.body).class).to eq(Hash)
     end
 
-    context 'when DELETE #destroy' do
+    describe 'DELETE #destroy' do
       before do
         Cinema.create(cinema_number: 1)
       end
@@ -49,7 +49,7 @@ RSpec.describe Api::V1::MoviesController do
           airing_time: Time.zone.now
         )
         expect { delete :destroy, params: { id: Movie.last.id } }
-        .to change{ Movie.count }.by(-1)
+          .to change(Movie, :count).by(-1)
       end
 
       it 'delete screenings' do
@@ -58,20 +58,22 @@ RSpec.describe Api::V1::MoviesController do
           airing_time: Time.zone.now
         )
         expect { delete :destroy, params: { id: Movie.last.id } }
-        .to change{ Screening.count }.by(-1)
+          .to change(Screening, :count).by(-1)
       end
     end
   end
 
   it 'POST #create' do
-    expect { post :create, params: {
-      title: 'Nuggets 2',
-      length: '225',
-      description: 'A little bit of gibberish is always good round 2',
-      director: 'David Rogers',
-      genre: 'The Usual'
-    }, as: :json }
-    .to change{ Movie.count }.by(1)
+    expect do
+      post :create, params: {
+        title: 'Nuggets 2',
+        length: '225',
+        description: 'A little bit of gibberish is always good round 2',
+        director: 'David Rogers',
+        genre: 'The Usual'
+      }, as: :json
+    end
+      .to change(Movie, :count).by(1)
   end
 end
 

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Seat < ApplicationRecord
   belongs_to :cinema
   before_validation :parse_params

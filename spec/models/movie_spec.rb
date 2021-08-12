@@ -6,7 +6,7 @@ RSpec.describe Movie, type: :model do
       director: 'David Rogers',
       description: 'Funniest movie ever',
       genre: 'Comedy',
-      length: '1:20'
+      length_mins: '120'
     )
     movie.validate
     expect(movie.errors.count).to be > 0
@@ -17,7 +17,7 @@ RSpec.describe Movie, type: :model do
       title: 'The Mask',
       description: 'Funniest movie ever',
       genre: 'Comedy',
-      length: '1:20'
+      length_mins: '120'
     )
     movie.validate
     expect(movie.errors.count).to be > 0
@@ -28,7 +28,7 @@ RSpec.describe Movie, type: :model do
       title: 'The Mask',
       director: 'David Rogers',
       genre: 'Comedy',
-      length: '1:20'
+      length_mins: '120'
     )
     movie.validate
     expect(movie.errors.count).to be > 0
@@ -39,7 +39,7 @@ RSpec.describe Movie, type: :model do
       title: 'The Mask',
       director: 'David Rogers',
       description: 'Funniest movie ever',
-      length: '1:20'
+      length_mins: '120'
     )
     movie.validate
     expect(movie.errors.count).to be > 0
@@ -62,7 +62,7 @@ RSpec.describe Movie, type: :model do
       director: 'David Rogers',
       description: 'Funniest movie ever',
       genre: 'Comedy',
-      length: '1:20'
+      length_mins: '120'
     )
     movie.validate
     expect(movie.errors.count).to be == 0

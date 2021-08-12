@@ -21,10 +21,10 @@ module Api
       end
 
       def update
-        if movie.update(movie_params)
-          render json: { success: 'Updated successfully' }
+        if @movie.update(movie_params)
+          render json: @movie, status: :accepted
         else
-          render json: errors
+          render json: @movie.errors
         end
       end
 
@@ -36,7 +36,7 @@ module Api
       private
 
       def movie_params
-        params.permit(:title, :length, :description, :director, :genre, :id)
+        params.permit(:title, :length_mins, :description, :director, :genre)
       end
 
       def set_movie

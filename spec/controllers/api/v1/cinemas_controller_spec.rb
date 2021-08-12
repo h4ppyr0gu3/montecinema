@@ -25,9 +25,8 @@ RSpec.describe Api::V1::CinemasController do
   end
 
   it 'POST #create' do
-    count = Cinema.count
-    post :create, params: { rows: 10, columns: 10, cinema_number: 5 }, as: :json
-    expect(count).to eql(Cinema.count - 1)
+    expect { post :create, params: { rows: 10, columns: 10, cinema_number: 5 }, as: :json }
+    .to change { Cinema.count }.by(1)
   end
 
   context 'when DELETE #destroy' do
@@ -42,15 +41,11 @@ RSpec.describe Api::V1::CinemasController do
     end
 
     it 'delete seats' do
-      seat_count = Seat.count
-      subject
-      expect(Seat.count).to be < seat_count
+      expect { subject }.to change{ Seat.count }.by(-100)
     end
 
     it 'delete cinema' do
-      cinema_count = Cinema.count
-      subject
-      expect(Cinema.count).to be < cinema_count
+      expect { subject }.to change{ Cinema.count }.by(-1)
     end
   end
 end

@@ -5,7 +5,7 @@ RSpec.describe Api::V1::ScreeningsController do
     before do
       Movie.create(
         title: 'Nuggets',
-        length: '1:25',
+        length_mins: '1:25',
         description: 'A little bit of gibberish is always good i guess',
         director: 'David Rogers',
         genre: 'The Usual'
@@ -42,26 +42,23 @@ RSpec.describe Api::V1::ScreeningsController do
 
     context 'when DELETE #destroy' do
       it 'destroy screening' do
-        screening_count = Screening.count
-        delete :destroy, params: { id: Screening.last.id }
-        expect(Screening.count).to be < screening_count
+        expect { delete :destroy, params: { id: Screening.last.id } }
+        .to change{ Screening.count }.by(-1)
       end
 
       it 'doesn\'t delete movie' do
-        movie_count = Movie.count
-        delete :destroy, params: { id: Screening.last.id }
-        expect(Movie.count).to be == movie_count
+        expect { delete :destroy, params: { id: Screening.last.id } }
+        .to change{ Movie.count }.by(0)
       end
     end
 
     it 'POST #create' do
-      count = Screening.count
-      post :create, params: {
+      expect { post :create, params: {
         movie_id: Movie.last.id,
         airing_time: 5.hours.from_now,
         cinema_number: 5
-      }, as: :json
-      expect(count).to eql(Screening.count - 1)
+      }, as: :json }
+      .to change{ Screening.count }.by(1)
     end
   end
 end

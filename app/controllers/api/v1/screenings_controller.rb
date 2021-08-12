@@ -26,10 +26,10 @@ module Api
       end
 
       def update
-        if screening.update(screening_params)
-          render json: { success: 'Updated successfully' }
+        if @screening.update(screening_params)
+          render json: @screening, status: :accepted
         else
-          render json: screening.errors
+          render json: @screening.errors
         end
       end
 

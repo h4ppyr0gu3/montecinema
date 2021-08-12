@@ -5,7 +5,7 @@ RSpec.describe Api::V1::MoviesController do
     let(:movie) do
       Movie.create(
         title: 'Nuggets',
-        length: '3:25',
+        length_mins: '325',
         description: 'A little bit of gibberish is always good i guess',
         director: 'David Rogers',
         genre: 'The Usual'
@@ -44,46 +44,41 @@ RSpec.describe Api::V1::MoviesController do
       end
 
       it 'deletes movies' do
-        screening = Movie.last.screenings.new(
+        Movie.last.screenings.create(
           cinema_id: Cinema.last.id,
           airing_time: Time.zone.now
         )
-        screening.save
-        movie_count = Movie.count
-        delete :destroy, params: { id: Movie.last.id }
-        expect(Movie.count).to be < movie_count
+        expect { delete :destroy, params: { id: Movie.last.id } }
+        .to change{ Movie.count }.by(-1)
       end
 
       it 'delete screenings' do
-        screening = Movie.last.screenings.new(
+        Movie.last.screenings.create(
           cinema_id: Cinema.last.id,
           airing_time: Time.zone.now
         )
-        screening.save
-        screening_count = Screening.count
-        delete :destroy, params: { id: Movie.last.id }
-        expect(Screening.count).to be < screening_count
+        expect { delete :destroy, params: { id: Movie.last.id } }
+        .to change{ Screening.count }.by(-1)
       end
     end
   end
 
   it 'POST #create' do
-    count = Movie.count
-    post :create, params: {
+    expect { post :create, params: {
       title: 'Nuggets 2',
-      length: '2:25',
+      length_mins: '225',
       description: 'A little bit of gibberish is always good round 2',
       director: 'David Rogers',
       genre: 'The Usual'
-    }, as: :json
-    expect(count).to eql(Movie.count - 1)
+    }, as: :json }
+    .to change{ Movie.count }.by(1)
   end
 end
 
 def create_additional_movie
   Movie.create(
     title: 'Nuggets 2',
-    length: '2:25',
+    length_mins: '225',
     description: 'A little bit of gibberish is always good round 2',
     director: 'David Rogers',
     genre: 'The Usual'

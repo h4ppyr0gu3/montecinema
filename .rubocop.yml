@@ -1,4 +1,6 @@
-require: rubocop-rails
+require: 
+  - rubocop-rails
+  - rubocop-rspec
 AllCops:
   NewCops: enable
   Include:
@@ -9,3 +11,14 @@ AllCops:
     - 'spec/**/*'
 Style/Documentation:
   Enabled: false
+Style/FrozenStringLiteralComment: 
+  Enabled: false
+RSpec/MultipleExpectations:
+  Enabled: true
+RSpec/ExampleLength:
+  Enabled: false
+Metrics/BlockLength:
+  Enabled: false
+RSpec/DescribedClass:
+  Enabled: false
+  

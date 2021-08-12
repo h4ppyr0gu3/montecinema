@@ -1,5 +1,8 @@
-# frozen_string_literal: true
-
 class Seat < ApplicationRecord
-  validates :seat_number, uniqueness: { scope: :cinema_number }
+  belongs_to :cinema
+  before_validation :parse_params
+
+  def parse_params
+    self.name = cinema_id.to_s + seat_number.to_s
+  end
 end

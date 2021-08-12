@@ -10,18 +10,49 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_05_115054) do
+ActiveRecord::Schema.define(version: 2021_08_06_170308) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "seats", force: :cascade do |t|
-    t.string "seat_number"
+  create_table "cinemas", force: :cascade do |t|
     t.integer "cinema_number"
-    t.string "seat_price"
+    t.integer "total_seats"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["seat_number", "cinema_number"], name: "index_seats_on_seat_number_and_cinema_number", unique: true
+  end
+
+  create_table "movies", force: :cascade do |t|
+    t.string "title"
+    t.integer "length"
+    t.text "description"
+    t.string "director"
+    t.string "genre"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "screenings", force: :cascade do |t|
+    t.bigint "cinema_id"
+    t.bigint "movie_id", null: false
+    t.integer "additional_cost", default: 0
+    t.datetime "airing_time", null: false
+    t.integer "seats_available"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["cinema_id"], name: "index_screenings_on_cinema_id"
+    t.index ["movie_id"], name: "index_screenings_on_movie_id"
+  end
+
+  create_table "seats", force: :cascade do |t|
+    t.string "seat_number", null: false
+    t.bigint "cinema_id"
+    t.string "seat_price", default: "0"
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["cinema_id"], name: "index_seats_on_cinema_id"
+    t.index ["name"], name: "index_seats_on_name", unique: true
   end
 
   create_table "users", force: :cascade do |t|
@@ -33,9 +64,13 @@ ActiveRecord::Schema.define(version: 2021_08_05_115054) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "jti", null: false
+    t.integer "role", default: 0
+    t.integer "points_earned"
+    t.integer "points_redeemed"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "screenings", "movies"
 end

@@ -6,7 +6,6 @@ def seed_cinema(rows, columns, cinema_number)
   seats.each do |seat_number|
     seat = cinema.seats.new(seat_number: seat_number)
     Rails.logger.error seat.errors.messages unless seat.save
-    end
   end
 end
 

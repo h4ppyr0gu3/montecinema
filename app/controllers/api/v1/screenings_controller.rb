@@ -12,12 +12,7 @@ module Api
       end
 
       def create
-        screening = Screening.new(
-          movie_id: params[:movie_id],
-          airing_time: params[:airing_time],
-          cinema_id: Cinema.find_by(cinema_number: params[:cinema_number]).id,
-          additional_cost: params[:additional_cost]
-        )
+        screening = Screening.new(screening_params)
         if screening.save
           render json: screening, status: :created
         else
@@ -41,11 +36,11 @@ module Api
       private
 
       def set_screening
-        @screening = Screening.find(params[:id])
+        @screening = Screening.find(screening_params[:id])
       end
 
       def screening_params
-        params.permit(:movie_id, :airing_time, :cinema_number, :additional_cost)
+        params.require(:screening).permit(:id, :movie_id, :airing_time, :cinema_id, :additional_cost)
       end
     end
   end

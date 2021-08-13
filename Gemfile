@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
@@ -17,9 +15,10 @@ gem 'sidekiq', '~> 6.2.1'
 gem 'sidekiq-cron', '~> 1.2.0'
 gem 'sentry-ruby', '~> 4.6.4'
 gem 'sentry-rails', '~> 4.6.4'
+gem 'stronger_parameters', '~> 2.13.0'
 
 group :development, :test do
-  gem 'rspec-rails', '~> 5.0.1', require: false
+  gem "letter_opener"
 end
 
 group :development do
@@ -30,4 +29,9 @@ group :development do
   gem 'rubocop-rspec', '~> 2.4.0', require: false
   gem 'spring', '>= 2.1.1'
   gem 'bullet', '~> 6.1.4'
+end
+
+group :test do
+  gem 'simplecov', require: false
+  gem 'rspec-rails', '~> 5.0.1', require: false
 end

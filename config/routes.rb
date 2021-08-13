@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 Rails.application.routes.draw do
   scope :api, defaults: { format: :json } do
     scope :v1 do
@@ -12,6 +10,7 @@ Rails.application.routes.draw do
       resources :movies, only: %i[index show create destroy show]
       resources :screenings, only: %i[index show create destroy show]
       resources :cinemas, only: %i[index show create destroy show]
+      resources :reservations, only: %i[index show create destroy show]
     end
   end
 end

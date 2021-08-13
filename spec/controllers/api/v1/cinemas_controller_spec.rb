@@ -25,8 +25,16 @@ RSpec.describe Api::V1::CinemasController do
   end
 
   it 'POST #create' do
-    expect { post :create, params: { rows: 10, columns: 10, cinema_number: 5 }, as: :json }
-      .to change(Cinema, :count).by(1)
+    expect do
+      post :create,
+           params: {
+             cinema: {
+               rows: 10,
+               columns: 10,
+               cinema_number: 5
+             }
+           }, as: :json
+    end.to change(Cinema, :count).by(1)
   end
 
   describe 'DELETE #destroy' do

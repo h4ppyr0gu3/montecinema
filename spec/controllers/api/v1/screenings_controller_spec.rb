@@ -54,11 +54,11 @@ RSpec.describe Api::V1::ScreeningsController do
 
     it 'POST #create' do
       expect do
-        post :create, params: {
-          movie_id: Movie.last.id,
-          airing_time: 5.hours.from_now,
-          cinema_number: 5
-        }, as: :json
+        post :create, params:
+        { screening:
+          { movie_id: Movie.last.id,
+            airing_time: 5.hours.from_now,
+            cinema_id: Cinema.last.id } }, as: :json
       end
         .to change(Screening, :count).by(1)
     end

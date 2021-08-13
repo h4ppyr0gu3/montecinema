@@ -12,10 +12,10 @@ module Api
       end
 
       def create
-        cinema = Cinema.new(cinema_number: params[:cinema_number])
+        cinema = Cinema.new(cinema_number: cinema_params[:cinema_number])
         begin
           ActiveRecord::Base.transaction do
-            generate_seats(params, cinema) if cinema.save!
+            generate_seats(cinema_params, cinema) if cinema.save!
           end
           render json: cinema, status: :created
         rescue ActiveRecord::RecordInvalid => e
@@ -35,10 +35,10 @@ module Api
       end
 
       def cinema_params
-        params.permit(:rows, :columns, :cinema_number)
+        params.require(:cinema).permit(:rows, :columns, :cinema_number)
       end
 
-      def generate_seats params, cinema
+      def generate_seats(params, cinema)
         cols = ('a'..'z').take(params[:columns]).to_a
         rows = (1..(params[:rows])).to_a
         seats = cols.product(rows).map(&:join)

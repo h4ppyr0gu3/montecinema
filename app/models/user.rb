@@ -1,21 +1,8 @@
-# frozen_string_literal: true
-
 class User < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable,
-         :jwt_authenticatable, jwt_revocation_strategy: Devise::JWT::RevocationStrategies::Null
-
-  before_validation :append_jti_attribute
-
-  enum role: { client: 0, support: 1, admin: 2 }
-
-  private
-
-  def append_jti_attribute
-    self.jti = SecureRandom.uuid
-  end
+	before_save { email.downcase! }
+	# validates :name, presence: true, length: {maximum: 50}
+	VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
+	validates :email, presence: true, length: {maximum: 255}, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false}
+  has_secure_password
+  validates :password, length: { minimum: 6 }
 end
-# May need additional validation after adding jti incase of large DB

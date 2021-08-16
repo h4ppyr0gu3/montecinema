@@ -16,6 +16,7 @@ gem 'sidekiq-cron', '~> 1.2.0'
 gem 'sentry-ruby', '~> 4.6.4'
 gem 'sentry-rails', '~> 4.6.4'
 gem 'stronger_parameters', '~> 2.13.0'
+gem 'jsonapi.rb'
 
 group :development, :test do
   gem "letter_opener"

@@ -1,11 +1,14 @@
 module Api
   module V1
     class ReservationsController < ApplicationController
+
+      before_action :set_reservation, only: %i[show destroy update]
       def index
         render json: current_user.reservations.all, status: :ok
       end
 
       def show
+        render json: @reservation
       end
 
       def create
@@ -17,14 +20,17 @@ module Api
       end
 
       def update
-        if (reservation = current_user.reservations.update(reservation_params))
+        if (@reservation = current_user.reservations.update(reservation_params))
           render json: reservation, status: :created
         else
           render json: reservation.errors
         end
       end
 
-      def destroy; end
+      def destroy 
+        @reservation.delete 
+        render head: :no_content
+      end
 
       private
 
@@ -36,6 +42,10 @@ module Api
             :seat_id
           ]
         )
+      end
+
+      def set_reservation
+        @reservation = Reservation.find(params[:id])
       end
     end
   end

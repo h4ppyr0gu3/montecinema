@@ -129,6 +129,12 @@ GEM
       activesupport (>= 5.0)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
+    jsonapi-serializer (2.2.0)
+      activesupport (>= 4.2)
+    jsonapi.rb (1.7.0)
+      jsonapi-serializer
+      rack
+      ransack
     jwt (2.2.3)
     launchy (2.5.0)
       addressable (~> 2.7)
@@ -194,6 +200,10 @@ GEM
       thor (~> 1.0)
     rainbow (3.0.0)
     rake (13.0.6)
+    ransack (2.4.2)
+      activerecord (>= 5.2.4)
+      activesupport (>= 5.2.4)
+      i18n
     rb-fsevent (0.11.0)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
@@ -300,6 +310,7 @@ DEPENDENCIES
   devise (~> 4.8.0)
   devise-jwt (~> 0.8.1)
   dotenv-rails (~> 2.7.6)
+  jsonapi.rb
   letter_opener
   listen (~> 3.3)
   pg (~> 1.1)

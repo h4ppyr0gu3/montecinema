@@ -2,18 +2,9 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::MoviesController do
   describe 'with movie creation' do
-    let(:movie) do
-      Movie.create(
-        title: 'Nuggets',
-        length: '325',
-        description: 'A little bit of gibberish is always good i guess',
-        director: 'David Rogers',
-        genre: 'The Usual'
-      )
-    end
 
     before do
-      movie
+      create_movie
     end
 
     describe 'GET #index' do
@@ -32,7 +23,7 @@ RSpec.describe Api::V1::MoviesController do
     end
 
     it 'GET #show' do
-      create_additional_movie
+      create_another_movie
       movie_id = Movie.last.id
       get :show, params: { id: movie_id }
       expect(JSON.parse(response.body).class).to eq(Hash)
@@ -75,14 +66,4 @@ RSpec.describe Api::V1::MoviesController do
     end
       .to change(Movie, :count).by(1)
   end
-end
-
-def create_additional_movie
-  Movie.create(
-    title: 'Nuggets 2',
-    length: '225',
-    description: 'A little bit of gibberish is always good round 2',
-    director: 'David Rogers',
-    genre: 'The Usual'
-  )
 end

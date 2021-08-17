@@ -37,7 +37,7 @@ RSpec.configure do |config|
 
   # config.silence_filter_announcements = true
   # config.warnings = false
-  config.filter_run :focus
+  # config.filter_run :focus
   # config.disable_monkey_patching!
   # config.infer_spec_type_from_file_location!
   # config.shared_context_metadata_behavior = :apply_to_host_groups

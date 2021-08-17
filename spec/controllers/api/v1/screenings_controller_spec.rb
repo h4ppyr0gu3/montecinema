@@ -23,13 +23,13 @@ RSpec.describe Api::V1::ScreeningsController do
     describe 'GET #index' do
       it 'get one entry' do
         get :index
-        expect(JSON.parse(response.body).count).to eq(1)
+        expect(JSON.parse(response.body).count)['data'].to eq(1)
       end
 
       it 'get multiple entry' do
         create_additional_screening
         get :index
-        expect(JSON.parse(response.body).count).to eq(2)
+        expect(JSON.parse(response.body).count)['data'].to eq(2)
       end
     end
 

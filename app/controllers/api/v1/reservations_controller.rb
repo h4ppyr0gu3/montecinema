@@ -4,23 +4,25 @@ module Api
 
       before_action :set_reservation, only: %i[show destroy update]
       def index
-        render json: current_user.reservations.all, status: :ok
+        jsonapi_paginate(current_user.reservations.all) do |paginated|
+          render jsonapi: paginated, status: :ok
+        end
       end
 
       def show
-        render json: @reservation
+        render jsonapi: @reservation
       end
 
       def create
-        if (reservation = current_user.reservations.create(reservation_params))
-          render json: reservation, status: :created
+        if (reservation = current_user.reservations.create(reservation_deserializer))
+          render jsonapi: reservation, status: :created
         else
-          render json: reservation.errors
+          render jsonapi_errors: reservation.errors
         end
       end
 
       def update
-        if (@reservation = current_user.reservations.update(reservation_params))
+        if (@reservation = current_user.reservations.update(reservation_deserializer))
           render json: reservation, status: :created
         else
           render json: reservation.errors
@@ -34,14 +36,12 @@ module Api
 
       private
 
-      def reservation_params
-        params.require(:reservation).permit(
-          :screening_id,
-          :cinema_id,
-          positions_attributes: [
-            :seat_id
-          ]
-        )
+      def reservation_deserializer
+        {
+          screening_id: params['data']['attributes']['screening_id'],
+          cinema_id: params['data']['attributes']['cinema_id'],
+          seat_id: params['data']['attributes']['seat_id']
+        }
       end
 
       def set_reservation

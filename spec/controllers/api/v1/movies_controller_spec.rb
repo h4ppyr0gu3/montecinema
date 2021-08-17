@@ -4,7 +4,7 @@ RSpec.describe Api::V1::MoviesController do
   describe 'with movie creation' do
 
     before do
-      create_movie
+      create(:movie)
     end
 
     describe 'GET #index' do
@@ -12,13 +12,13 @@ RSpec.describe Api::V1::MoviesController do
 
       it 'return one item' do
         request
-        expect(JSON.parse(response.body).count).to eq(1)
+        expect(JSON.parse(response.body)['data'].count).to eq(1)
       end
 
       it 'return multiple items' do
-        create_additional_movie
+        create(:movie, title: 'something Else', length: 134)
         request
-        expect(JSON.parse(response.body).count).to eq(2)
+        expect(JSON.parse(response.body)['data'].count).to eq(2)
       end
     end
 
@@ -54,14 +54,19 @@ RSpec.describe Api::V1::MoviesController do
     end
   end
 
-  it 'POST #create' do
+  it 'POST #create' do 
     expect do
       post :create, params: {
-        title: 'Nuggets 2',
-        length: '225',
-        description: 'A little bit of gibberish is always good round 2',
-        director: 'David Rogers',
-        genre: 'The Usual'
+        data: {
+          type: 'movie',
+          attributes: {
+            'title': 'Nuggets 2',
+            length: '225',
+            description: 'A little bit of gibberish is always good round 2',
+            director: 'David Rogers',
+            genre: 'The Usual'
+          }
+        }
       }, as: :json
     end
       .to change(Movie, :count).by(1)

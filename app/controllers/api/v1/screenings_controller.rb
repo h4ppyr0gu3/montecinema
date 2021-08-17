@@ -4,27 +4,29 @@ module Api
       before_action :set_screening, only: %i[show update destroy]
 
       def index
-        render json: Screening.all
+        jsonapi_paginate(Screening.all) do |paginated|
+          render jsonapi: paginated, status: :ok
+        end
       end
 
       def show
-        render json: @screening
+        render jsonapi: @screening
       end
 
       def create
-        screening = Screening.new(screening_params)
+        screening = Screening.new(screening_deserializer)
         if screening.save
-          render json: screening, status: :created
+          render jsonapi: screening, status: :created
         else
-          render json: screening.errors, status: :bad_request
+          render jsonapi_errors: screening.errors, status: :bad_request
         end
       end
 
       def update
-        if @screening.update(screening_params)
-          render json: @screening, status: :accepted
+        if @screening.update(screening_deserializer)
+          render jsonapi: @screening, status: :accepted
         else
-          render json: @screening.errors
+          render jsonapi_errors: @screening.errors
         end
       end
 
@@ -36,11 +38,16 @@ module Api
       private
 
       def set_screening
-        @screening = Screening.find(screening_params[:id])
+        @screening = Screening.find(params[:id])
       end
 
-      def screening_params
-        params.require(:screening).permit(:id, :movie_id, :airing_time, :cinema_id, :additional_cost)
+      def screening_deserializer
+        {
+          movie_id: params['data']['attributes']['movie_id'],
+          airing_time: params['data']['attributes']['airing_time'],
+          additional_cost: params['data']['attributes']['additional_cost'],
+          cinema_id: params['data']['attributes']['cinema_id'],
+        }
       end
     end
   end

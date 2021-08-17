@@ -1,5 +1,4 @@
-module Support
-module Helpers
+module SpecHelpers
 	module Creator
 		def create_movie
 			Movie.create(
@@ -30,5 +29,4 @@ module Helpers
 		def create_something_else
 		end
 	end
-end
 end

@@ -1,7 +1,6 @@
 module Api
   module V1
     class ReservationsController < ApplicationController
-
       before_action :set_reservation, only: %i[show destroy update]
       def index
         jsonapi_paginate(current_user.reservations.all) do |paginated|
@@ -29,8 +28,8 @@ module Api
         end
       end
 
-      def destroy 
-        @reservation.delete 
+      def destroy
+        @reservation.delete
         render head: :no_content
       end
 

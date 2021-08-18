@@ -11,16 +11,14 @@ RSpec.describe Api::V1::CinemasController do
     end
 
     it 'return multiple objects' do
-      create(:cinema)
-      create(:cinema, cinema_number: 3)
+      create_list(:cinema, 2)
       request
       expect(JSON.parse(response.body)['data'].count).to eq(2)
     end
   end
 
   it 'GET #show' do
-    create(:cinema)
-    create(:cinema, cinema_number: 3)
+    create_list(:cinema, 2)
     cinema_id = Cinema.last.id
     get :show, params: { id: cinema_id }
     expect(JSON.parse(response.body).class).to eq(Hash)
@@ -30,14 +28,14 @@ RSpec.describe Api::V1::CinemasController do
     expect do
       post :create,
            params: {
-            data: {
-              type: "cinema",
-              attributes: {
-                rows: 10,
-                columns: 10,
-                cinema_number: 5
-              }
-            }
+             data: {
+               type: 'cinema',
+               attributes: {
+                 rows: 10,
+                 columns: 10,
+                 cinema_number: 5
+               }
+             }
            }, as: :json
     end.to change(Cinema, :count).by(1)
   end

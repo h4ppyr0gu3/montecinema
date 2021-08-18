@@ -46,7 +46,7 @@ module Api
           movie_id: params['data']['attributes']['movie_id'],
           airing_time: params['data']['attributes']['airing_time'],
           additional_cost: params['data']['attributes']['additional_cost'],
-          cinema_id: params['data']['attributes']['cinema_id'],
+          cinema_id: params['data']['attributes']['cinema_id']
         }
       end
     end

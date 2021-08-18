@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :movie, class: 'Movie' do
-    title { 'Autobiogra' }
+    title { 'Autobiography' }
     description { 'Best description' }
     director { 'Me, Mario' }
     length { 125 }

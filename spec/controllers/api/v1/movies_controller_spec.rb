@@ -2,7 +2,6 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::MoviesController do
   describe 'with movie creation' do
-
     before do
       create(:movie)
     end
@@ -31,7 +30,7 @@ RSpec.describe Api::V1::MoviesController do
 
     describe 'DELETE #destroy' do
       before do
-        Cinema.create(cinema_number: 1)
+        create(:cinema)
       end
 
       it 'deletes movies' do
@@ -54,13 +53,13 @@ RSpec.describe Api::V1::MoviesController do
     end
   end
 
-  it 'POST #create' do 
+  it 'POST #create' do
     expect do
       post :create, params: {
         data: {
           type: 'movie',
           attributes: {
-            'title': 'Nuggets 2',
+            title: 'Nuggets 2',
             length: '225',
             description: 'A little bit of gibberish is always good round 2',
             director: 'David Rogers',

@@ -1,10 +1,7 @@
 FactoryBot.define do
   factory :cinema, class: 'Cinema' do
-    sequence(:cinema_number)
-    total_seats { 25 }
-
-    # after(:create) do |cinema|
-    #   create(:seat, cinema: cinema)
-    # end
+    sequence(:cinema_number) { |n| n }
+    rows { 5 }
+    columns { 5 }
   end
 end

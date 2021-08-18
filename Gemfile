@@ -16,6 +16,9 @@ gem 'sidekiq-cron', '~> 1.2.0'
 gem 'sentry-ruby', '~> 4.6.4'
 gem 'sentry-rails', '~> 4.6.4'
 gem 'bcrypt'
+gem 'jsonapi.rb'
+gem 'jwt'
+
 
 group :development, :test do
   gem 'rspec-rails', '~> 5.0.1', require: false

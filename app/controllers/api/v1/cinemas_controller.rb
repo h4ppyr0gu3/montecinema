@@ -38,7 +38,7 @@ module Api
         params.permit(:rows, :columns, :cinema_number)
       end
 
-      def generate_seats params, cinema
+      def generate_seats(params, cinema)
         cols = ('a'..'z').take(params[:columns]).to_a
         rows = (1..(params[:rows])).to_a
         seats = cols.product(rows).map(&:join)

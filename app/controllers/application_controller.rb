@@ -3,9 +3,8 @@ class ApplicationController < ActionController::API
   before_action :authenticate_user
   attr_reader :current_user
 
-
   def authenticate_user
-    @current_user ||= User.find(decoded_auth_token[:user_id]) if decoded_auth_token
+    @current_user ||= Jti.find_by(jti: decoded_auth_token[:jti]).user if decoded_auth_token
     @current_user #|| puts 'Invalid token'
   end
 

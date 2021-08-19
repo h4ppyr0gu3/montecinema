@@ -7,20 +7,23 @@ module Api
         def create
           user = User.new(registration_deserializer)
           if user.save
-            response.set_header('Authorization', "Bearer #{JsonWebToken.encode(user_id: user.id)}")
+            response.set_header('Authorization', "Bearer #{JsonWebToken.encode(jti: user.jti.jti)}")
             render jsonapi: user, status: :created
           else
             render jsonapi_errors: user.errors, status: :bad_request
           end
         end
 
-        def show 
+        def show
           render jsonapi: current_user
         end
 
         def update
-          user = User.find(params[:id])
-          if user.update(registration_deserializer)
+          user = current_user
+          if current_user.update_columns(
+            first_name: registration_deserializer[:first_name],
+            last_name: registration_deserializer[:last_name]
+          )
             render jsonapi: user, status: :accepted
           else
             render jsonapi_errors: user.errors, status: :bad_request
@@ -41,7 +44,6 @@ module Api
             email: params['data']['attributes']['email'],
             password: params['data']['attributes']['password']
           }
-          
         end
       end
     end

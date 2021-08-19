@@ -22,10 +22,11 @@ gem 'jwt'
 
 group :development, :test do
   gem 'rspec-rails', '~> 5.0.1', require: false
+  gem 'factory_bot_rails'
+  gem 'byebug', '>= 11.1.3', platforms: %i[mri mingw x64_mingw]
 end
 
 group :development do
-  gem 'byebug', '>= 11.1.3', platforms: %i[mri mingw x64_mingw]
   gem 'listen', '~> 3.3'
   gem 'rubocop', '~> 1.18.4'
   gem 'rubocop-rails', '~> 2.11.3',require: false

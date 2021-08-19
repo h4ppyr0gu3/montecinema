@@ -5,9 +5,9 @@ Rails.application.routes.draw do
       resources :screenings, only: %i[index show create destroy show]
       resources :cinemas, only: %i[index show create destroy show]
       namespace :users do
-        resources :passwords 
-        resources :registrations
-        resources :sessions
+        # resources :passwords
+        resources :registrations, only: %i[create update show destroy]
+        resources :sessions, only: %i[create destroy]
       end
     end
   end

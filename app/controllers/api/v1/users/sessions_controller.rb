@@ -5,8 +5,8 @@ module Api
         skip_before_action :authenticate_user, only: %i[create]
 
         def create
-          user = find_user
-          if user&.authenticate(session_deserializer[:password])
+          user = User.find_by(email: session_deserializer[:email])
+          if user.present? && user.authenticate(session_deserializer[:password])
             response.set_header('Authorization',
                                 "Bearer #{JsonWebToken.encode(jti: user.jti.jti)}")
             render jsonapi: user
@@ -29,15 +29,6 @@ module Api
             last_name: params['data']['attributes']['last_name'],
             password: params['data']['attributes']['password']
           }
-        end
-
-        def find_user
-          possible_user = User.where(email: session_deserializer[:email])
-          if possible_user.count < 1
-            nil
-          else
-            possible_user.first
-          end
         end
       end
     end

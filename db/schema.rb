@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_20_052836) do
+ActiveRecord::Schema.define(version: 2021_08_18_131842) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,8 +18,18 @@ ActiveRecord::Schema.define(version: 2021_08_20_052836) do
   create_table "cinemas", force: :cascade do |t|
     t.integer "cinema_number"
     t.integer "total_seats"
+    t.integer "columns"
+    t.integer "rows"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "jtis", force: :cascade do |t|
+    t.string "jti", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_jtis_on_user_id"
   end
 
   create_table "movies", force: :cascade do |t|
@@ -30,6 +40,26 @@ ActiveRecord::Schema.define(version: 2021_08_20_052836) do
     t.string "genre", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "positions", force: :cascade do |t|
+    t.bigint "seat_id", null: false
+    t.bigint "reservation_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["reservation_id"], name: "index_positions_on_reservation_id"
+    t.index ["seat_id"], name: "index_positions_on_seat_id"
+  end
+
+  create_table "reservations", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "screening_id"
+    t.bigint "cinema_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["cinema_id"], name: "index_reservations_on_cinema_id"
+    t.index ["screening_id"], name: "index_reservations_on_screening_id"
+    t.index ["user_id"], name: "index_reservations_on_user_id"
   end
 
   create_table "screenings", force: :cascade do |t|
@@ -56,20 +86,14 @@ ActiveRecord::Schema.define(version: 2021_08_20_052836) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "email", default: "", null: false
-    t.string "encrypted_password", default: "", null: false
-    t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
+    t.string "email"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "jti"
+    t.string "password_digest"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "jti", null: false
-    t.integer "role", default: 0
-    t.integer "points_earned"
-    t.integer "points_redeemed"
     t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["jti"], name: "index_users_on_jti", unique: true
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   create_table "vouchers", force: :cascade do |t|

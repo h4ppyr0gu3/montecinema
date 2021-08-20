@@ -2,18 +2,8 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::MoviesController do
   describe 'with movie creation' do
-    let(:movie) do
-      Movie.create(
-        title: 'Nuggets',
-        length: '325',
-        description: 'A little bit of gibberish is always good i guess',
-        director: 'David Rogers',
-        genre: 'The Usual'
-      )
-    end
-
     before do
-      movie
+      create(:movie)
     end
 
     describe 'GET #index' do
@@ -21,18 +11,18 @@ RSpec.describe Api::V1::MoviesController do
 
       it 'return one item' do
         request
-        expect(JSON.parse(response.body).count).to eq(1)
+        expect(JSON.parse(response.body)['data'].count).to eq(1)
       end
 
       it 'return multiple items' do
-        create_additional_movie
+        create(:movie, title: 'something Else', length: 134)
         request
-        expect(JSON.parse(response.body).count).to eq(2)
+        expect(JSON.parse(response.body)['data'].count).to eq(2)
       end
     end
 
     it 'GET #show' do
-      create_additional_movie
+      create_another_movie
       movie_id = Movie.last.id
       get :show, params: { id: movie_id }
       expect(JSON.parse(response.body).class).to eq(Hash)
@@ -40,7 +30,7 @@ RSpec.describe Api::V1::MoviesController do
 
     describe 'DELETE #destroy' do
       before do
-        Cinema.create(cinema_number: 1)
+        create(:cinema)
       end
 
       it 'deletes movies' do
@@ -66,23 +56,18 @@ RSpec.describe Api::V1::MoviesController do
   it 'POST #create' do
     expect do
       post :create, params: {
-        title: 'Nuggets 2',
-        length: '225',
-        description: 'A little bit of gibberish is always good round 2',
-        director: 'David Rogers',
-        genre: 'The Usual'
+        data: {
+          type: 'movie',
+          attributes: {
+            title: 'Nuggets 2',
+            length: '225',
+            description: 'A little bit of gibberish is always good round 2',
+            director: 'David Rogers',
+            genre: 'The Usual'
+          }
+        }
       }, as: :json
     end
       .to change(Movie, :count).by(1)
   end
-end
-
-def create_additional_movie
-  Movie.create(
-    title: 'Nuggets 2',
-    length: '225',
-    description: 'A little bit of gibberish is always good round 2',
-    director: 'David Rogers',
-    genre: 'The Usual'
-  )
 end

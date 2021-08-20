@@ -4,27 +4,29 @@ module Api
       before_action :set_movie, only: %i[show update destroy]
 
       def index
-        render json: Movie.all
+        jsonapi_paginate(Movie.all) do |paginated|
+          render jsonapi: paginated, status: :ok
+        end
       end
 
       def create
-        movie = Movie.new(movie_params)
+        movie = Movie.new(movie_deserializer)
         if movie.save
-          render json: movie, status: :created
+          render jsonapi: movie, status: :created
         else
-          render json: movie.errors, status: :bad_request
+          render jsonapi_errors: movie.errors, status: :bad_request
         end
       end
 
       def show
-        render json: @movie
+        render jsonapi: @movie
       end
 
       def update
-        if @movie.update(movie_params)
-          render json: @movie, status: :accepted
+        if @movie.update(movie_deserializer)
+          render jsonapi: @movie, status: :accepted
         else
-          render json: @movie.errors
+          render jsonapi_errors: @movie.errors
         end
       end
 
@@ -35,8 +37,14 @@ module Api
 
       private
 
-      def movie_params
-        params.permit(:title, :length, :description, :director, :genre)
+      def movie_deserializer
+        {
+          title: params['data']['attributes']['title'],
+          length: params['data']['attributes']['length'],
+          description: params['data']['attributes']['description'],
+          director: params['data']['attributes']['director'],
+          genre: params['data']['attributes']['genre']
+        }
       end
 
       def set_movie

@@ -4,22 +4,21 @@ module Api
       before_action :set_cinema, only: %i[show destroy]
 
       def index
-        render json: Cinema.all, status: :ok
+        jsonapi_paginate(Cinema.all) do |paginated|
+          render jsonapi: paginated, status: :ok
+        end
       end
 
       def show
-        render json: @cinema, status: :ok
+        render jsonapi: @cinema, status: :ok
       end
 
       def create
-        cinema = Cinema.new(cinema_number: params[:cinema_number])
-        begin
-          ActiveRecord::Base.transaction do
-            generate_seats(params, cinema) if cinema.save!
-          end
-          render json: cinema, status: :created
-        rescue ActiveRecord::RecordInvalid => e
-          render json: e.messages, status: :bad_request
+        cinema = Cinema.new(cinema_deserializer)
+        if cinema.save
+          render jsonapi: cinema, status: :created
+        else
+          render jsonapi_errors: cinema.errors, status: :bad_request
         end
       end
 
@@ -34,18 +33,12 @@ module Api
         @cinema = Cinema.find(params[:id])
       end
 
-      def cinema_params
-        params.permit(:rows, :columns, :cinema_number)
-      end
-
-      def generate_seats params, cinema
-        cols = ('a'..'z').take(params[:columns]).to_a
-        rows = (1..(params[:rows])).to_a
-        seats = cols.product(rows).map(&:join)
-        seats.each do |seat_number|
-          seat = cinema.seats.new(seat_number: seat_number)
-          Rails.logger.error seat.errors.messages unless seat.save!
-        end
+      def cinema_deserializer
+        {
+          rows: params['data']['attributes']['rows'],
+          columns: params['data']['attributes']['columns'],
+          cinema_number: params['data']['attributes']['cinema_number']
+        }
       end
     end
   end

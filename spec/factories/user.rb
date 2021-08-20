@@ -5,13 +5,12 @@ FactoryBot.define do
     email { 'test@test.com' }
     password { 'test123' }
 
-    trait :client do
-    end
-
     trait :admin do
+      role { 2 }
     end
 
     trait :teller do
+      role { 1 }
     end
   end
 end

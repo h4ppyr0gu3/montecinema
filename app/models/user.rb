@@ -9,6 +9,9 @@ class User < ApplicationRecord
   has_secure_password
   validates :password, length: { minimum: 6 }
   after_create :create_jti
+  has_many :reservations, dependent: :destroy
+
+  enum role: { client: 0, support: 1, admin: 2 }
 
   private
 

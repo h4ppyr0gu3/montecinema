@@ -4,8 +4,10 @@ class CreateUsers < ActiveRecord::Migration[6.1]
       t.string :email
       t.string :first_name
       t.string :last_name
-      t.string :jti
       t.string :password_digest
+      t.integer :role, default: 0
+      t.integer :points_earned
+      t.integer :points_redeemed
       t.index :email, unique: true
 
       t.timestamps

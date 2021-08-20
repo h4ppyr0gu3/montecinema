@@ -2,7 +2,7 @@ module Api
   module V1
     module Users
       class RegistrationsController < ApplicationController
-        skip_before_action :authenticate_user, only: %i[create]
+        before_action :authenticate_user, only: %i[show update destroy]
 
         def create
           user = User.new(registration_deserializer)

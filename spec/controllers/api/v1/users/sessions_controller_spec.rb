@@ -42,9 +42,9 @@ RSpec.describe Api::V1::Users::SessionsController do
 
   describe 'DELETE #destroy' do
     subject(:destroy_request) { delete :destroy, params: { id: user.id } }
-    
+
     let(:user) { create(:user) }
-    
+
     before do
       request.headers['Authorization'] =
         "Bearer #{JsonWebToken.encode(jti: user.jti.jti)}"

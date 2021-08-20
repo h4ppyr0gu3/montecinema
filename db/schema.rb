@@ -18,6 +18,8 @@ ActiveRecord::Schema.define(version: 2021_08_18_131842) do
   create_table "cinemas", force: :cascade do |t|
     t.integer "cinema_number"
     t.integer "total_seats"
+    t.integer "columns"
+    t.integer "rows"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -38,6 +40,26 @@ ActiveRecord::Schema.define(version: 2021_08_18_131842) do
     t.string "genre", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "positions", force: :cascade do |t|
+    t.bigint "seat_id", null: false
+    t.bigint "reservation_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["reservation_id"], name: "index_positions_on_reservation_id"
+    t.index ["seat_id"], name: "index_positions_on_seat_id"
+  end
+
+  create_table "reservations", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "screening_id"
+    t.bigint "cinema_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["cinema_id"], name: "index_reservations_on_cinema_id"
+    t.index ["screening_id"], name: "index_reservations_on_screening_id"
+    t.index ["user_id"], name: "index_reservations_on_user_id"
   end
 
   create_table "screenings", force: :cascade do |t|

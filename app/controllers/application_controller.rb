@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::API
   include ActionController::MimeResponds
-  before_action :authenticate_user
+  include JSONAPI::Pagination
+  include JSONAPI::Deserialization
   attr_reader :current_user
 
   def authenticate_user

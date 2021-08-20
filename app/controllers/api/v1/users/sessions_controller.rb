@@ -2,7 +2,7 @@ module Api
   module V1
     module Users
       class SessionsController < ApplicationController
-        skip_before_action :authenticate_user, only: %i[create]
+        before_action :authenticate_user, only: %i[destroy]
 
         def create
           user = User.find_by(email: session_deserializer[:email])

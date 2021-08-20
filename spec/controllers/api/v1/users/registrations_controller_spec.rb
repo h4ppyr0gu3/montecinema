@@ -15,9 +15,8 @@ RSpec.describe Api::V1::Users::RegistrationsController do
       }, as: :json
     end
 
-
     context 'when user already created' do
-      before do 
+      before do
         create(:user)
         request
       end
@@ -45,12 +44,11 @@ RSpec.describe Api::V1::Users::RegistrationsController do
   end
 
   describe 'DELETE #destroy' do
-
-    before do 
+    before do
       create(:user)
       request.headers['Authorization'] =
         "Bearer #{JsonWebToken.encode(jti: User.last.jti.jti)}"
-      end
+    end
 
     it 'delete user' do
       expect do
@@ -69,10 +67,9 @@ RSpec.describe Api::V1::Users::RegistrationsController do
     let(:show) { get :show, params: { id: User.last.id } }
 
     context 'logged in' do
-      before do 
+      before do
         create(:user)
       end
-
 
       it 'correct user' do
         request.headers['Authorization'] =
@@ -127,7 +124,7 @@ RSpec.describe Api::V1::Users::RegistrationsController do
     end
 
     context 'all params' do
-      before do 
+      before do
         create(:user)
         request.headers['Authorization'] =
           "Bearer #{JsonWebToken.encode(jti: User.last.jti.jti)}"

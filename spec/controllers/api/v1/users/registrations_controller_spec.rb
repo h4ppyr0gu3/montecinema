@@ -15,16 +15,18 @@ RSpec.describe Api::V1::Users::RegistrationsController do
       }, as: :json
     end
 
+
     context 'when user already created' do
-      it 'failure user already exists' do
+      before do 
         create(:user)
         request
+      end
+
+      it 'failure user already exists' do
         expect { request }.not_to change(User, :count)
       end
 
       it 'error message user already exists' do
-        create(:user)
-        request
         expect(
           JSON.parse(response.body)['errors'].first['detail']
         ).to eq('Email has already been taken')
@@ -43,23 +45,22 @@ RSpec.describe Api::V1::Users::RegistrationsController do
   end
 
   describe 'DELETE #destroy' do
-    it 'delete user' do
+
+    before do 
       create(:user)
+      request.headers['Authorization'] =
+        "Bearer #{JsonWebToken.encode(jti: User.last.jti.jti)}"
+      end
+
+    it 'delete user' do
       expect do
-        request.headers['Authorization'] =
-          "Bearer #{JsonWebToken.encode(jti: User.last.jti.jti)}"
-        delete :destroy,
-               params: { id: User.last.id }
+        delete :destroy, params: { id: User.last.id }
       end.to change(User, :count).by(-1)
     end
 
     it 'delete jti' do
-      create(:user)
       expect do
-        request.headers['Authorization'] =
-          "Bearer #{JsonWebToken.encode(jti: User.last.jti.jti)}"
-        delete :destroy,
-               params: { id: User.last.id }
+        delete :destroy, params: { id: User.last.id }
       end.to change(Jti, :count).by(-1)
     end
   end
@@ -68,9 +69,12 @@ RSpec.describe Api::V1::Users::RegistrationsController do
     let(:show) { get :show, params: { id: User.last.id } }
 
     context 'logged in' do
-      it 'correct user' do
+      before do 
         create(:user)
+      end
 
+
+      it 'correct user' do
         request.headers['Authorization'] =
           "Bearer #{JsonWebToken.encode(jti: User.last.jti.jti)}"
         show
@@ -84,7 +88,6 @@ RSpec.describe Api::V1::Users::RegistrationsController do
       end
 
       it 'incorrect user' do
-        create(:user)
         create(:user, email: 'test1@test.com')
         request.headers['Authorization'] =
           "Bearer #{JsonWebToken.encode(
@@ -124,24 +127,23 @@ RSpec.describe Api::V1::Users::RegistrationsController do
     end
 
     context 'all params' do
-      it 'doesnt change count' do
+      before do 
         create(:user)
+        request.headers['Authorization'] =
+          "Bearer #{JsonWebToken.encode(jti: User.last.jti.jti)}"
+      end
+
+      it 'doesnt change count' do
         expect { update }.to change(User, :count).by(0)
       end
 
       it 'updates user first_name' do
-        create(:user)
-        request.headers['Authorization'] =
-          "Bearer #{JsonWebToken.encode(jti: User.last.jti.jti)}"
         update
         user = User.last
         expect(user.first_name).to eq('Dave')
       end
 
       it 'updates user last_name' do
-        create(:user)
-        request.headers['Authorization'] =
-          "Bearer #{JsonWebToken.encode(jti: User.last.jti.jti)}"
         update
         user = User.last
         expect(user.last_name).to eq('Rogue')

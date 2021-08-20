@@ -15,14 +15,14 @@ gem 'sidekiq', '~> 6.2.1'
 gem 'sidekiq-cron', '~> 1.2.0'
 gem 'sentry-ruby', '~> 4.6.4'
 gem 'sentry-rails', '~> 4.6.4'
-gem 'bcrypt'
-gem 'jsonapi.rb'
-gem 'jwt'
+gem 'bcrypt', '~> 3.1.16'
+gem 'jsonapi.rb', '~> 1.7.0'
+gem 'jwt', '~> 2.2.3'
 
 
 group :development, :test do
   gem 'rspec-rails', '~> 5.0.1', require: false
-  gem 'factory_bot_rails'
+  gem 'factory_bot_rails', '6.2.0'
   gem 'byebug', '>= 11.1.3', platforms: %i[mri mingw x64_mingw]
 end
 

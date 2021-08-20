@@ -41,26 +41,21 @@ RSpec.describe Api::V1::Users::SessionsController do
   end
 
   describe 'DELETE #destroy' do
-    let(:destroy_request) { delete :destroy, params: { id: User.last.id } }
-    let(:headers) do
+    subject(:destroy_request) { delete :destroy, params: { id: user.id } }
+    
+    let(:user) { create(:user) }
+    
+    before do
       request.headers['Authorization'] =
-        "Bearer #{JsonWebToken.encode(jti: User.last.jti.jti)}"
+        "Bearer #{JsonWebToken.encode(jti: user.jti.jti)}"
     end
 
     it 'ensures jti is destroyed' do
-      create(:user)
-      expect do
-        headers
-        destroy_request
-      end.to change(Jti, :count).by(-1)
+      expect { destroy_request }.to change(Jti, :count).by(-1)
     end
 
     it 'ensure user isnt destroyed' do
-      create(:user)
-      expect do
-        headers
-        destroy_request
-      end.not_to change(User, :count)
+      expect { destroy_request }.not_to change(User, :count)
     end
   end
 end

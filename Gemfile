@@ -4,8 +4,6 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '3.0.0'
 
 gem 'bootsnap', '>= 1.4.4', require: false
-# gem 'devise', '~> 4.8.0'
-# gem 'devise-jwt', '~> 0.8.1'
 gem 'dotenv-rails', '~> 2.7.6'
 gem 'pg', '~> 1.1'
 gem 'puma', '~> 5.0'
@@ -15,10 +13,17 @@ gem 'sidekiq', '~> 6.2.1'
 gem 'sidekiq-cron', '~> 1.2.0'
 gem 'sentry-ruby', '~> 4.6.4'
 gem 'sentry-rails', '~> 4.6.4'
-gem 'jsonapi.rb'
+gem 'bcrypt', '~> 3.1.16'
+gem 'jsonapi.rb', '~> 1.7.0'
+gem 'jwt', '~> 2.2.3'
+
 
 group :development, :test do
-  gem "letter_opener"
+  gem 'rspec-rails', '~> 5.0.1', require: false
+  gem 'factory_bot_rails', '6.2.0'
+end
+
+group :development, :test do
   gem 'byebug', '>= 11.1.3', platforms: %i[mri mingw x64_mingw]
 end
 
@@ -32,9 +37,7 @@ group :development do
 end
 
 group :test do
-  gem 'simplecov', require: false
-  gem 'rspec-rails', '~> 5.0.1', require: false
-  gem 'factory_bot_rails'
-  gem 'database_cleaner'
+  gem 'database_cleaner', '~> 2.0.1'
   gem 'minitest', '~> 5.14.4'
+  gem 'simplecov', '~> 0.21.2', require: false
 end

@@ -11,5 +11,6 @@
 .byebug_history
 /config/master.key
 
-/coverage/*
 .env
+/coverage/*
+.DS_Store

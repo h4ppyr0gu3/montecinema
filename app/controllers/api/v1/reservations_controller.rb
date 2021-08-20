@@ -1,6 +1,7 @@
 module Api
   module V1
     class ReservationsController < ApplicationController
+      before_action :authenticate_user
       before_action :set_reservation, only: %i[show destroy update]
       def index
         jsonapi_paginate(current_user.reservations.all) do |paginated|
@@ -49,7 +50,3 @@ module Api
     end
   end
 end
-
-# Joins to return info:
-#	- seat = Seat.joins("INNER JOIN reservations ON reservations.seat_id = seats.id")
-# => #<ActiveRecord::Relation [#<Seat id: 100, seat_number: "j10", cinema_id: 11, seat_price: "0", name: "11j10", created_at: "2021-08-13 10:03:28.269126000 +0000", updated_at: "2021-08-13 10:03:28.269...

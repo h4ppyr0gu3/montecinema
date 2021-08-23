@@ -1,29 +1,32 @@
 module Api
   module V1
     class CinemasController < ApplicationController
-      before_action :set_cinema, only: %i[show destroy]
-
-      def index
-        jsonapi_paginate(Cinema.all) do |paginated|
-          render jsonapi: paginated, status: :ok
-        end
-      end
+      before_action :set_cinema, only: %i[show destroy update]
 
       def show
-        render jsonapi: @cinema, status: :ok
+        render json: Cinemas::Representers::Single.new(@cinema).call, status: :ok
       end
 
       def create
-        cinema = Cinema.new(cinema_deserializer)
-        if cinema.save
-          render jsonapi: cinema, status: :created
+        cinema = Cinemas::UseCases::Create.new(cinema_deserializer).call
+        if cinema.valid?
+          render json: Cinemas::Representers::Single.new(cinema).call, status: :created
         else
-          render jsonapi_errors: cinema.errors, status: :bad_request
+          render json: cinema.errors, status: :unprocessable_entity
+        end
+      end
+
+      def update
+        cinema = Cinemas::UseCases::Update.new(cinema_deserializer, @cinema).call
+        if cinema.valid?
+          render json: Cinemas::Representers::Single.new(cinema).call, status: :created
+        else
+          render json: cinema.errors, status: :unprocessable_entity
         end
       end
 
       def destroy
-        @cinema.destroy
+        Cinemas::UseCases::Delete.new(@cinema).call
         render head: :no_content
       end
 

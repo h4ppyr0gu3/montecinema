@@ -2,9 +2,8 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :movies, only: %i[index show create destroy show]
-      resources :jsonapi_movies, only: %i[index show create destroy show]
       resources :screenings, only: %i[index show create destroy show]
-      resources :cinemas, only: %i[index show create destroy show]
+      resources :cinemas, only: %i[update create destroy show]
       resources :reservations, only: %i[index show create destroy show]
       namespace :users do
         resources :registrations, only: %i[create update show destroy]

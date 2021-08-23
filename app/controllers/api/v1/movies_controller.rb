@@ -10,7 +10,7 @@ module Api
       end
 
       def create
-        movie = Movie.new(movie_deserializer)
+        movie = Movies::UseCases::Create.new(movie_deserializer).call
         if movie.save
           render jsonapi: movie, status: :created
         else

@@ -6,7 +6,7 @@ module Cinemas
       end
 
       def call
-        cinema.destroy
+        CinemaRepository.destroy_cinema(cinema)
       end
 
       private

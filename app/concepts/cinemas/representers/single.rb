@@ -17,11 +17,13 @@ module Cinemas
 							total_seats: cinema.total_seats
 						},
 						relationships: {
-							seats: [Seats::Representers::MultipleRelationships.new(cinema.seats.all).call],
+							seats: [Seats::Representers::MultipleRelationships.new(
+								Seats::SeatRepository.new.fetch_cinema_seats(cinema.id)
+								).call],
 							screenings: [
-								if cinema.screenings.present?
-									Screenings::Representers::MultipleRelationships.new(cinema.screenings).call
-								end
+								# if cinema.screenings.present?
+								# 	Screenings::Representers::MultipleRelationships.new(cinema.screenings).call
+								# end
 							]
 						}
 					}

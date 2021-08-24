@@ -28,6 +28,10 @@ module Movies
 			repository.limit(limit).offset(offset)
 		end
 
+		def fetch_all
+			repository.all 
+		end
+
 		def number_of_movies
 			repository.all.count 
 		end

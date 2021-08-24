@@ -1,6 +1,7 @@
 module Cinemas
 	class CinemaRepository
 		CinemaNotFound = Class.new(StandardError)
+    CinemaNumberAlreadyTaken = Class.new(StandardError)
 		attr_reader :repository
 
 		def initialize(repository: Cinemas::Model)
@@ -14,6 +15,8 @@ module Cinemas
 		end
 
 		def create_cinema params
+      raise CinemaNumberAlreadyTaken unless repository.find_by(
+      	cinema_number: params[:cinema_number]).nil?
 			total_seats = params[:rows] * params[:columns]
 			params[:total_seats] = total_seats
 			cinema = repository.create!(params)

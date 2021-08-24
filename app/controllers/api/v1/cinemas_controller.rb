@@ -11,7 +11,7 @@ module Api
       def create
         cinema = Cinemas::UseCases::Create.new(cinema_deserializer).call
         render json: Cinemas::Representers::Single.new(cinema).call, status: :created
-      rescue Cinemas::UseCases::Create::CinemaNumberAlreadyTaken
+      rescue Cinemas::CinemaRepository::CinemaNumberAlreadyTaken
         render json: {error: 'Cinema number already taken'}
       end
 

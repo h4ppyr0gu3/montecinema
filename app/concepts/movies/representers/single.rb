@@ -1,6 +1,7 @@
 module Movies
 	module Representers
 		class Single
+			attr_reader :movie
 			def initialize(movie)
 				@movie = movie
 			end
@@ -8,15 +9,13 @@ module Movies
 			def call
 				serializer = 
 				{
-					data: {
-						type: 'movie',
-						id: movie.id,
-						attributes: {
-							title: movie.title,
-							description: movie.description,
-							genre: movie.genre,
-							director: movie.director,
-							
-						}
-					}
+					data:
+						movie.instance_eval do |movie|
+							Movies::Representers::Data.new(movie).call
+						end
 				}
+				return serializer
+			end
+		end
+	end
+end

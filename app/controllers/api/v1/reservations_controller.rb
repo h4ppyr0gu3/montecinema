@@ -14,11 +14,7 @@ module Api
       end
 
       def create
-        if (reservation = current_user.reservations.create(reservation_deserializer))
-          render jsonapi: reservation, status: :created
-        else
-          render jsonapi_errors: reservation.errors
-        end
+        
       end
 
       def update
@@ -26,7 +22,7 @@ module Api
           render json: reservation, status: :created
         else
           render json: reservation.errors
-        end
+        end 
       end
 
       def destroy

@@ -1,37 +1,39 @@
 module Api
   module V1
     class MoviesController < ApplicationController
+      MissingParams = Class.new(StandardError)
       before_action :set_movie, only: %i[show update destroy]
 
       def index
-        jsonapi_paginate(Movie.all) do |paginated|
-          render jsonapi: paginated, status: :ok
-        end
+        movies = Movies::UseCases::Index.new(params).call
+        render json: Movies::Representers::Multiple.new(movies).call
       end
 
       def create
+        parse_params
         movie = Movies::UseCases::Create.new(movie_deserializer).call
-        # if movie.save
-          render json: Movies::Representers::Single(movie), status: :created
-        # else
-          # render jsonapi_errors: movie.errors, status: :bad_request
-        # end
+        render json: Movies::Representers::Single.new(movie).call, status: :created
+      rescue Api::V1::MoviesController::MissingParams
+        render json: {errors: @errors}
+      rescue Movies::MovieRepository::MovieAlreadyExists
+        render json: {errors: 'Movie already exists'}
       end
 
       def show
-        render jsonapi: @movie
+        render json: Movies::Representers::Single.new(@movie).call
       end
 
       def update
-        if @movie.update(movie_deserializer)
-          render jsonapi: @movie, status: :accepted
-        else
-          render jsonapi_errors: @movie.errors
-        end
+        parse_params
+        movie = Movies::UseCases::Update.new(@movie, movie_deserializer).call
+        render json: Movies::Representers::Single.new(
+          Movies::MovieRepository.new.find_by_id(params[:id])).call, status: :created
+      rescue Api::V1::MoviesController::MissingParams
+        render json: {errors: @errors}
       end
 
       def destroy
-        @movie.destroy
+        Movies::UseCases::Delete.new(@movie).call
         render head: :no_content
       end
 
@@ -48,7 +50,17 @@ module Api
       end
 
       def set_movie
-        @movie = Movie.find(params[:id])
+        @movie = Movies::MovieRepository.new.find_by_id(params[:id])
+      rescue Movies::MovieRepository::MovieNotFound
+        render json: {error: 'Movie not found'}
+      end
+
+      def parse_params
+        @errors = Hash.new
+        movie_deserializer.map do |k, v|
+          @errors[k] = 'Missing parameter' unless v.present?
+        end
+        raise MissingParams unless @errors.blank?
       end
     end
   end

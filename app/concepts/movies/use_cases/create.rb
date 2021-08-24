@@ -6,7 +6,7 @@ module Movies
 			end
 
 			def call
-				Movie.create(params)
+				Movies::MovieRepository.new.create_movie(params)
 			end
 
 			private

@@ -10,20 +10,14 @@ module Api
 
       def create
         cinema = Cinemas::UseCases::Create.new(cinema_deserializer).call
-        # if cinema.valid?
-          render json: Cinemas::Representers::Single.new(cinema).call, status: :created
-        # else
-          # render json: cinema.errors, status: :unprocessable_entity
-        # end
+        render json: Cinemas::Representers::Single.new(cinema).call, status: :created
+      rescue Cinemas::UseCases::Create::CinemaNumberAlreadyTaken
+        render json: {error: 'Cinema number already taken'}
       end
 
       def update
         cinema = Cinemas::UseCases::Update.new(cinema_deserializer, @cinema).call
-        # if cinema.valid?
-          render json: Cinemas::Representers::Single.new(cinema).call, status: :created
-        # else
-          # render json: cinema.errors, status: :unprocessable_entity
-        # end
+        render json: Cinemas::Representers::Single.new(cinema).call, status: :created
       end
 
       def destroy
@@ -34,7 +28,9 @@ module Api
       private
 
       def set_cinema
-        @cinema = Cinema.find(params[:id])
+        @cinema = Cinemas::CinemaRepository.new.find_by_id(params[:id])
+      rescue Cinemas::CinemaRepository::CinemaNotFound
+        render json: {error: 'Cinema Not Found'}, status: :not_found
       end
 
       def cinema_deserializer

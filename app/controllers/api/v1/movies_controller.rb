@@ -11,11 +11,11 @@ module Api
 
       def create
         movie = Movies::UseCases::Create.new(movie_deserializer).call
-        if movie.save
-          render jsonapi: movie, status: :created
-        else
-          render jsonapi_errors: movie.errors, status: :bad_request
-        end
+        # if movie.save
+          render json: Movies::Representers::Single(movie), status: :created
+        # else
+          # render jsonapi_errors: movie.errors, status: :bad_request
+        # end
       end
 
       def show

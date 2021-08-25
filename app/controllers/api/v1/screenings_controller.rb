@@ -4,41 +4,37 @@ module Api
       before_action :set_screening, only: %i[show update destroy]
 
       def index
-        jsonapi_paginate(Screening.all) do |paginated|
-          render jsonapi: paginated, status: :ok
-        end
+        screenings = Screenings::UseCases::Index.new(params).call
+        render json: Screenings::Representers::Multiple.new(screenings).call
       end
 
       def show
-        render jsonapi: @screening
+        render json: Screenings::Representers::Single.new(@screening).call
       end
 
       def create
-        screening = Screening.new(screening_deserializer)
-        if screening.save
-          render jsonapi: screening, status: :created
-        else
-          render jsonapi_errors: screening.errors, status: :bad_request
-        end
+        screening = Screenings::UseCases::Create.new(screening_deserializer).call
+        render json: Screenings::Representers::Single.new(screening).call
+      rescue Screenings::UseCases::Create::InvalidScreeningTime
+        render json: {error: 'Invalid Screening time'}
       end
 
       def update
-        if @screening.update(screening_deserializer)
-          render jsonapi: @screening, status: :accepted
-        else
-          render jsonapi_errors: @screening.errors
-        end
+        Screenings::UseCases::Update.new(@screening, screening_deserializer).call
+        render json: Screenings::Representers::Single.new(set_screening).call
       end
 
       def destroy
-        @screening.delete
+        Screenings::UseCases::Delete.new(@screening).call
         render head: :no_content
       end
 
       private
 
       def set_screening
-        @screening = Screening.find(params[:id])
+        @screening = Screenings::ScreeningRepository.new.find_by_id(params[:id])
+      rescue Screenings::ScreeningRepository::ScreeningNotFound
+        render json: {error: 'screening not found'}, status: :not_found
       end
 
       def screening_deserializer

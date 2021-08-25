@@ -3,6 +3,6 @@ module Seats
 		self.table_name = :seats
 		belongs_to :cinema, class_name: "Cinemas::Model" 
 	  has_many :positions, dependent: :destroy, inverse_of: :seat
-	  has_many :reservations, through: :positions
+	  has_many :reservations, through: :positions, class_name: "Reservations::Model"
 	end
 end

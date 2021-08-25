@@ -9,7 +9,6 @@ module Movies
 
 			def call
 				updated_movie = MovieRepository.new.update_movie(movie, params)
-				return updated_movie
 			end
 		end
 	end

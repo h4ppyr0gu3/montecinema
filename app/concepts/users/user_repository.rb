@@ -28,7 +28,7 @@ module Users
 		end
 
 		def update_user
-
+			
 		end
 
 	end

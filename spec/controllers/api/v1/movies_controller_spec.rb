@@ -22,9 +22,8 @@ RSpec.describe Api::V1::MoviesController do
     end
 
     it 'GET #show' do
-      create_another_movie
-      movie_id = Movie.last.id
-      get :show, params: { id: movie_id }
+      create(:movie)
+      get :show, params: { id: Movies::Model.last.id }
       expect(JSON.parse(response.body).class).to eq(Hash)
     end
 
@@ -34,21 +33,21 @@ RSpec.describe Api::V1::MoviesController do
       end
 
       it 'deletes movies' do
-        Movie.last.screenings.create(
-          cinema_id: Cinema.last.id,
+        Movies::Model.last.screenings.create(
+          cinema_id: Cinemas::Model.last.id,
           airing_time: Time.zone.now
         )
-        expect { delete :destroy, params: { id: Movie.last.id } }
-          .to change(Movie, :count).by(-1)
+        expect { delete :destroy, params: { id: Movies::Model.last.id } }
+          .to change(Movies::Model, :count).by(-1)
       end
 
       it 'delete screenings' do
-        Movie.last.screenings.create(
-          cinema_id: Cinema.last.id,
+        Movies::Model.last.screenings.create(
+          cinema_id: Cinemas::Model.last.id,
           airing_time: Time.zone.now
         )
-        expect { delete :destroy, params: { id: Movie.last.id } }
-          .to change(Screening, :count).by(-1)
+        expect { delete :destroy, params: { id: Movies::Model.last.id } }
+          .to change(Screenings::Model, :count).by(-1)
       end
     end
   end
@@ -68,6 +67,6 @@ RSpec.describe Api::V1::MoviesController do
         }
       }, as: :json
     end
-      .to change(Movie, :count).by(1)
+      .to change(Movies::Model, :count).by(1)
   end
 end

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::Users::SessionsController do
+RSpec.describe Api::V1::Override::SessionsController do
   describe 'POST #create' do
     let(:request) do
       post :create,

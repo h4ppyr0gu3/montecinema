@@ -12,22 +12,17 @@ gem 'pg', '~> 1.1'
 gem 'puma', '~> 5.0'
 gem 'rack-cors', '~> 1.1.1'
 gem 'rails', '~> 6.1.4'
+gem 'rswag', '~> 2.4.0'
 gem 'sidekiq', '~> 6.2.1'
 gem 'sidekiq-cron', '~> 1.2.0'
 gem 'sentry-ruby', '~> 4.6.4'
 gem 'sentry-rails', '~> 4.6.4'
-gem 'bcrypt', '~> 3.1.16'
-gem 'jsonapi.rb', '~> 1.7.0'
-gem 'jwt', '~> 2.2.3'
-
+gem 'multi_json'
 
 group :development, :test do
-  gem 'rspec-rails', '~> 5.0.1', require: false
+  gem 'byebug', '>= 11.1.3'
   gem 'factory_bot_rails', '6.2.0'
-end
-
-group :development, :test do
-  gem 'byebug', '>= 11.1.3', platforms: %i[mri mingw x64_mingw]
+  gem 'rspec-rails', '~> 5.0.1', require: false
 end
 
 group :development do

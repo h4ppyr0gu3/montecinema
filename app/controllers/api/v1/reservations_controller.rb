@@ -14,7 +14,7 @@ module Api
 
       def create
         reservation = Reservations::UseCases::Create.new(reservation_deserializer, current_users_model.id).call
-        render json: Reservations::Representers::Single.new(reservation).call
+        render json: Reservations::Representers::Single.new(reservation, current_users_model).call
       rescue Cinemas::CinemaRepository::CinemaNotFound
         render json: {error: 'Cinema not found'}
       rescue Movies::MovieRepository::MovieNotFound
@@ -36,7 +36,7 @@ module Api
       end
 
       def destroy
-        @reservation.delete
+        Reservations::UseCases::Delete.new(@reservation).call
         render head: :no_content
       end
 
@@ -52,7 +52,7 @@ module Api
       end
 
       def set_reservation
-        @reservation = Reservation.find(params[:id])
+        @reservation = Reservations::ReservationRepository.new.find_by_id(params[:id])
       rescue Reservations::ReservationRepository::ReservationNotFound
         render json: {error: 'reservation not found'}
       end

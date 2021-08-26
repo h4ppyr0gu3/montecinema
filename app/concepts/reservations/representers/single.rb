@@ -1,29 +1,30 @@
 module Reservations
 	module Representers
 		class Single
-			attr_reader :reservation
-			def initialize reservation 
+			attr_reader :reservation, :user, :movie
+			def initialize reservation, user
 				@reservation = reservation
+				@user = user 
+				@movie = movie
 			end
 
 			def call 
-				puts reservation.seats
 				{
 					data: {
 						type: 'reservation',
 						attributes: {},
 						relationships: {
 							user: Users::Representers::Relationship.new(
-								Users::UserRepository.new.find_by_id(reservation['user_id'])
+								user
 							),
 							movie: Movies::Representers::Relationship.new(
-								Movies::MovieRepository.new.find_by_id(reservation.movie_id)
+								reservation.movie
 							),
 							screening: Screenings::Representers::Relationship.new(
-								Screenings::ScreeningRepository.new.find_by_id(reservation.screening_id)
+								reservation.screening
 							),
 							cinema: Cinemas::Representers::Relationship.new(
-								Cinemas::CinemaRepository.new.find_by_id(reservation.cinema_id)
+								reservation.cinema
 							),
 							seats: Seats::Representers::MultipleRelationships.new(
 								reservation.seats

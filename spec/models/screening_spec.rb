@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Screening, type: :model do
+RSpec.describe Screenings::Model, type: :model do
   context 'with screening and cinema' do
     it 'cinema & movie present' do
       create(:cinema)

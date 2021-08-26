@@ -2,7 +2,6 @@ module Reservations
 	class Model < ApplicationRecord
 		self.table_name = :reservations
 	  belongs_to :user, 
-	  						dependent: :destroy, 
 	  						class_name: "Users::Model"
 	  has_many :positions, 
 	  						inverse_of: :reservation, 

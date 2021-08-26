@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::Users::RegistrationsController do
+RSpec.describe Api::V1::Override::RegistrationsController do
   describe 'POST #create' do
     let(:request) do
-      post :create, params: {
+      post '/api/v1/', params: {
         data: {
           attributes: {
             first_name: 'David',
@@ -52,13 +52,13 @@ RSpec.describe Api::V1::Users::RegistrationsController do
 
     it 'delete user' do
       expect do
-        delete :destroy, params: { id: User.last.id }
+        delete '/api/v1/', params: { id: User.last.id }
       end.to change(User, :count).by(-1)
     end
 
     it 'delete jti' do
       expect do
-        delete :destroy, params: { id: User.last.id }
+        delete '/api/v1/', params: { id: User.last.id }
       end.to change(Jti, :count).by(-1)
     end
   end

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Seat, type: :model do
+RSpec.describe Seats::Model, type: :model do
   before do
     create(:cinema)
   end

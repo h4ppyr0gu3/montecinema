@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Movie, type: :model do
+RSpec.describe Movies::Model, type: :model do
   it 'title not present' do
     movie = described_class.new(
       director: 'David Rogers',

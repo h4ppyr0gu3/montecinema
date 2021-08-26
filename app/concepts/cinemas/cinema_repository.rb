@@ -15,21 +15,11 @@ module Cinemas
 		end
 
 		def create_cinema params
-      raise CinemaNumberAlreadyTaken unless repository.find_by(
-      	cinema_number: params[:cinema_number]).nil?
-			total_seats = params[:rows] * params[:columns]
-			params[:total_seats] = total_seats
-			cinema = repository.create!(params)
-	    Seats::SeatRepository.new.create_cinema_seats(
-	    	params[:rows],
-	    	params[:columns],
-	    	cinema.id
-			)
-	    return cinema
+      repository.create!(params)
 	  end
 
 		def destroy_cinema(cinema)
-			repository.destroy 
+			cinema.destroy 
 		end
 
 		def cinema_seats(cinema)

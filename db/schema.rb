@@ -24,14 +24,6 @@ ActiveRecord::Schema.define(version: 2021_08_25_100525) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "jtis", force: :cascade do |t|
-    t.string "jti", null: false
-    t.bigint "user_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_jtis_on_user_id"
-  end
-
   create_table "movies", force: :cascade do |t|
     t.string "title", null: false
     t.integer "length", null: false
@@ -55,9 +47,11 @@ ActiveRecord::Schema.define(version: 2021_08_25_100525) do
     t.bigint "user_id"
     t.bigint "screening_id"
     t.bigint "cinema_id"
+    t.bigint "movie_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["cinema_id"], name: "index_reservations_on_cinema_id"
+    t.index ["movie_id"], name: "index_reservations_on_movie_id"
     t.index ["screening_id"], name: "index_reservations_on_screening_id"
     t.index ["user_id"], name: "index_reservations_on_user_id"
   end
@@ -102,8 +96,8 @@ ActiveRecord::Schema.define(version: 2021_08_25_100525) do
     t.string "first_name"
     t.string "last_name"
     t.integer "role", default: 0
-    t.integer "points_earned"
-    t.integer "points_redeemed"
+    t.integer "points_earned", default: 0
+    t.integer "points_redeemed", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true

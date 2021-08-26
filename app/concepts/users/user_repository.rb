@@ -1,6 +1,7 @@
 module Users
 	class UserRepository
 		UserNotFound = Class.new(StandardError)
+		attr_reader :repository
 		def initialize 
 			@repository = Users::Model
 		end 

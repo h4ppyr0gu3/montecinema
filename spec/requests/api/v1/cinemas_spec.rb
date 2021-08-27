@@ -2,31 +2,40 @@ require 'swagger_helper'
 
 RSpec.describe 'api/v1/cinemas', type: :request do
 
-  # path '/api/v1/cinemas' do
+  path '/api/v1/cinemas' do
 
-  #   post 'create cinema' do
-  #     parameter name: :data, in: :body, schema: {
-  #       type: :object,
-  #       properties: {
-  #         attributes: {
-  #           type: :object,
-  #           properties: {
-  #             cinema_number: { type: :integer },
-  #             rows: { type: :integer },
-  #             columns: { type: :integer },
-  #             total_seats: { type: :integer },
-  #           },
-  #         },
-  #       },
-  #       required: %w[cinema_number rows columns]
-  #     } 
+    post 'create cinema' do
+      consumes 'application/json'
+      parameter name: :cinema, in: :body, schema: {
+        properties: {
+          data: {
+            type: :object,
+            properties: {
+              attributes: {
+                type: :object,
+                properties: {
+                  cinema_number: { type: :integer },
+                  rows: { type: :integer },
+                  columns: { type: :integer },
+                  total_seats: { type: :integer },
+                },
+              },
+            },
+          },
+        },
+        required: %w[cinema_number rows columns]
+      } 
 
-  #     response 200, 'successful' do
-  #       let(:data) { { cinema_number: 1, rows: 5, columns: 5 } }
-  #       run_test!
-  #     end
-  #   end
-  # end
+      response 201, :created do
+        examples 'application/json' => {
+             "data"=>{"type"=>"cinema", "id"=>1, "attributes"=>{"cinema_number"=>1, "rows"=>5, "columns"=>5, "total_seats"=>25}, "relationships"=>{"seats"=>[[{"id"=>1, "attributes"=>{"seat_number"=>"a1"}}, {"id"=>2, "attributes"=>{"seat_number"=>"a2"}}, {"id"=>3, "attributes"=>{"seat_number"=>"a3"}}, {"id"=>4, "attributes"=>{"seat_number"=>"a4"}}, {"id"=>5, "attributes"=>{"seat_number"=>"a5"}}, {"id"=>6, "attributes"=>{"seat_number"=>"b1"}}, {"id"=>7, "attributes"=>{"seat_number"=>"b2"}}, {"id"=>8, "attributes"=>{"seat_number"=>"b3"}}, {"id"=>9, "attributes"=>{"seat_number"=>"b4"}}, {"id"=>10, "attributes"=>{"seat_number"=>"b5"}}, {"id"=>11, "attributes"=>{"seat_number"=>"c1"}}, {"id"=>12, "attributes"=>{"seat_number"=>"c2"}}, {"id"=>13, "attributes"=>{"seat_number"=>"c3"}}, {"id"=>14, "attributes"=>{"seat_number"=>"c4"}}, {"id"=>15, "attributes"=>{"seat_number"=>"c5"}}, {"id"=>16, "attributes"=>{"seat_number"=>"d1"}}, {"id"=>17, "attributes"=>{"seat_number"=>"d2"}}, {"id"=>18, "attributes"=>{"seat_number"=>"d3"}}, {"id"=>19, "attributes"=>{"seat_number"=>"d4"}}, {"id"=>20, "attributes"=>{"seat_number"=>"d5"}}, {"id"=>21, "attributes"=>{"seat_number"=>"e1"}}, {"id"=>22, "attributes"=>{"seat_number"=>"e2"}}, {"id"=>23, "attributes"=>{"seat_number"=>"e3"}}, {"id"=>24, "attributes"=>{"seat_number"=>"e4"}}, {"id"=>25, "attributes"=>{"seat_number"=>"e5"}}]], "screenings"=>[]}}}
+        let!(:cinema) { { data: { attributes: { cinema_number: 1, rows: 5, columns: 5 } } } }
+        run_test! do |arg|
+          byebug
+        end
+      end
+    end
+  end
 end
 
   # path '/api/v1/cinemas/{id}' do

@@ -8,14 +8,17 @@ RSpec.describe Api::V1::ReservationsController do
   end
 
   describe 'GET #index' do
-    context 'when there is one record' do
-      subject { get :index }
+    subject(:request) { get :index }
 
-      it 'expects one record'
+    it 'expects one record' do 
+      request
+      expect(JSON.parse(response.body)['data'].count).to eq(1)
     end
 
-    context 'when there is multiple records' do
-      it 'returns all records'
+    it 'returns all records' do 
+      create(:movie, title: 'something Else', length: 134)
+      request
+      expect(JSON.parse(response.body)['data'].count).to eq(2)
     end
   end
 end

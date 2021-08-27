@@ -3,13 +3,12 @@ module Api
     class ReservationsController < ApplicationController
       before_action :set_reservation, only: %i[show destroy update]
       def index
-        jsonapi_paginate(current_user.reservations.all) do |paginated|
-          render jsonapi: paginated, status: :ok
-        end
+        reservation = Reservations::UseCases::Index.new(params).call
+        render json: Reservations::Representers::Multiple.new(reservation, current_users_model)
       end
 
       def show
-        render jsonapi: @reservation
+        render json: Reservations::Representers::Single.new(@reservation, current_users_model).call
       end
 
       def create

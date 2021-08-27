@@ -9,6 +9,7 @@ module Api
       end
 
       def create
+        puts params
         cinema = Cinemas::UseCases::Create.new(cinema_deserializer).call
         render json: Cinemas::Representers::Single.new(cinema).call, status: :created
       rescue Cinemas::CinemaRepository::CinemaNumberAlreadyTaken

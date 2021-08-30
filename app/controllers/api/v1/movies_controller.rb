@@ -14,9 +14,9 @@ module Api
         movie = Movies::UseCases::Create.new(movie_deserializer).call
         render json: Movies::Representers::Single.new(movie).call, status: :created
       rescue Api::V1::MoviesController::MissingParams
-        render json: {errors: @errors}
+        render json: { errors: @errors }
       rescue Movies::MovieRepository::MovieAlreadyExists
-        render json: {errors: 'Movie already exists'}
+        render json: { errors: 'Movie already exists' }
       end
 
       def show
@@ -27,9 +27,10 @@ module Api
         parse_params
         movie = Movies::UseCases::Update.new(@movie, movie_deserializer).call
         render json: Movies::Representers::Single.new(
-          Movies::MovieRepository.new.find_by_id(params[:id])).call, status: :created
+          Movies::MovieRepository.new.find_by(id: params[:id])
+        ).call, status: :created
       rescue Api::V1::MoviesController::MissingParams
-        render json: {errors: @errors}
+        render json: { errors: @errors }
       end
 
       def destroy
@@ -52,15 +53,15 @@ module Api
       def set_movie
         @movie = Movies::MovieRepository.new.find_by_id(params[:id])
       rescue Movies::MovieRepository::MovieNotFound
-        render json: {error: 'Movie not found'}
+        render json: { error: 'Movie not found' }
       end
 
       def parse_params
-        @errors = Hash.new
+        @errors = {}
         movie_deserializer.map do |k, v|
-          @errors[k] = 'Missing parameter' unless v.present?
+          @errors[k] = 'Missing parameter' if v.blank?
         end
-        raise MissingParams unless @errors.blank?
+        raise MissingParams if @errors.present?
       end
     end
   end

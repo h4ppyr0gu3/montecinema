@@ -45,7 +45,7 @@ module Reservations
 
 			def update_available_seats
 				Screenings::ScreeningRepository.new.update_screening(
-					screening, {seats_available: cinema['total_seats'] - seats_taken.count}
+					screening, {seats_available: cinema['total_seats'].to_i - (seats_taken.count).to_i}
 				)
 			end
 		end

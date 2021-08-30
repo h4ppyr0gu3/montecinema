@@ -9,7 +9,7 @@ FactoryBot.define do
       role { 2 }
     end
 
-    trait :teller do
+    trait :support do
       role { 1 }
     end
   end

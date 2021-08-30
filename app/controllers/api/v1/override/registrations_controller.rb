@@ -3,7 +3,7 @@ module Api
     module Override
       class RegistrationsController < DeviseTokenAuth::RegistrationsController
         def sign_up_params
-         {
+          {
             first_name: params['data']['attributes']['first_name'],
             last_name: params['data']['attributes']['last_name'],
             email: params['data']['attributes']['email'],
@@ -14,16 +14,16 @@ module Api
         def account_update_params
           {
             first_name: params['data']['attributes']['first_name'],
-            last_name: params['data']['attributes']['last_name'],
+            last_name: params['data']['attributes']['last_name']
           }
         end
 
         def render_create_success
-          render json: Users::Representers::Single.new(resource_data).call 
+          render json: Users::Representers::Single.new(resource_data).call
         end
 
         def render_update_success
-          render json: Users::Representers::Single.new(resource_data).call 
+          render json: Users::Representers::Single.new(resource_data).call
         end
 
         def render_destroy_success

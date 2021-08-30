@@ -2,8 +2,9 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::CinemasController do
   describe 'POST #create' do
-    subject(:request) { post :create, params: {
-      data: {
+    subject(:request) do
+      post :create, params: {
+        data: {
           type: 'cinema',
           attributes: {
             rows: 5,
@@ -12,7 +13,7 @@ RSpec.describe Api::V1::CinemasController do
           }
         }
       }
-    }
+    end
 
     it 'increase cinema count' do
       expect { request }.to change(Cinemas::Model, :count).by(1)
@@ -23,10 +24,11 @@ RSpec.describe Api::V1::CinemasController do
     end
   end
 
-  describe 'PUT #update' do 
-    subject(:request) { put :update, params: { 
-      id: Cinemas::Model.last.id,  
-      data: {
+  describe 'PUT #update' do
+    subject(:request) do
+      put :update, params: {
+        id: Cinemas::Model.last.id,
+        data: {
           type: 'cinema',
           attributes: {
             rows: 10,
@@ -35,15 +37,15 @@ RSpec.describe Api::V1::CinemasController do
           }
         }
       }
-    }
+    end
 
-    it 'seat count increases' do 
+    it 'seat count increases' do
       create(:cinema)
       create_list(:seat, 25, cinema_id: Cinemas::Model.last.id)
       expect { request }.to change(Seats::Model, :count).by(25)
     end
 
-    it 'seat count decreases' do 
+    it 'seat count decreases' do
       create(:cinema, rows: 10, columns: 10)
       create_list(:seat, 100, cinema_id: Cinemas::Model.last.id)
       expect { request }.to change(Seats::Model, :count).by(-50)
@@ -51,7 +53,7 @@ RSpec.describe Api::V1::CinemasController do
   end
 
   describe 'DELETE #destroy' do
-    subject(:request) { delete :destroy, params: { id: Cinemas::Model.last.id }}
+    subject(:request) { delete :destroy, params: { id: Cinemas::Model.last.id } }
 
     it 'delete seats' do
       create(:cinema)

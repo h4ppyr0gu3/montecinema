@@ -10,7 +10,7 @@ Rails.application.routes.draw do
       resources :movies, only: %i[index show create destroy update]
       resources :screenings, only: %i[index show create destroy update]
       resources :cinemas, only: %i[update create destroy show]
-      resources :reservations, only: %i[index show create destroy show]
+      resources :reservations, only: %i[index show create destroy update]
     end
   end
 end

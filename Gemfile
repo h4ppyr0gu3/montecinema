@@ -26,12 +26,13 @@ group :development, :test do
 end
 
 group :development do
+  gem 'brakeman', '~> 5.1.1'
+  gem 'bullet', '~> 6.1.4'
   gem 'listen', '~> 3.3'
   gem 'rubocop', '~> 1.18.4'
   gem 'rubocop-rails', '~> 2.11.3',require: false
   gem 'rubocop-rspec', '~> 2.4.0', require: false
   gem 'spring', '>= 2.1.1'
-  gem 'bullet', '~> 6.1.4'
 end
 
 group :test do

@@ -1,10 +1,13 @@
 module Api
   module V1
     class ReservationsController < ApplicationController
-      before_action :set_reservation, only: %i[show destroy update]
+      before_action :authenticate_users_model!
+      before_action :set_reservation, only: %i[show destroy]
       def index
-        reservation = Reservations::UseCases::Index.new(params).call
-        render json: Reservations::Representers::Multiple.new(reservation, current_users_model)
+        reservation = Reservations::UseCases::Index.new(params, current_users_model).call
+        render json: Reservations::Representers::Multiple.new(reservation, current_users_model).call
+      rescue Reservations::UseCases::Index::UserNotFound
+        render json: { error: 'user not found' }
       end
 
       def show
@@ -15,23 +18,20 @@ module Api
         reservation = Reservations::UseCases::Create.new(reservation_deserializer, current_users_model.id).call
         render json: Reservations::Representers::Single.new(reservation, current_users_model).call
       rescue Cinemas::CinemaRepository::CinemaNotFound
-        render json: {error: 'Cinema not found'}
+        render json: { error: 'Cinema not found' }
       rescue Movies::MovieRepository::MovieNotFound
-        render json: {error: 'Movie not found'}
+        render json: { error: 'Movie not found' }
       rescue Screenings::ScreeningRepository::ScreeningNotFound
-        render json: {error: 'Screening not found'}
+        render json: { error: 'Screening not found' }
       rescue Seats::SeatRepository::SeatNotFound
-        render json: {error: 'Seats not found'}
+        render json: { error: 'Seats not found' }
       rescue Reservations::UseCases::Create::SeatAlreadyTaken
-        render json: {error: 'Seats Already Taken'}
+        render json: { error: 'Seats Already Taken' }
       end
 
       def update
-        if (@reservation = current_user.reservations.update(reservation_deserializer))
-          render json: reservation, status: :created
-        else
-          render json: reservation.errors 
-        end 
+        reservation = Reservations::UseCases::Update.new(reservation_deserializer, params['id'], current_users_model.id).call
+        render json: {success: "jfjnsnv"}
       end
 
       def destroy
@@ -53,7 +53,7 @@ module Api
       def set_reservation
         @reservation = Reservations::ReservationRepository.new.find_by_id(params[:id])
       rescue Reservations::ReservationRepository::ReservationNotFound
-        render json: {error: 'reservation not found'}
+        render json: { error: 'reservation not found' }
       end
     end
   end

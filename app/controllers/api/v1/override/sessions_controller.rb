@@ -1,7 +1,7 @@
 module Api
   module V1
     module Override
-      class SessionsController < DeviseTokenAuth::SessionsController 
+      class SessionsController < DeviseTokenAuth::SessionsController
         def render_create_success
           render json: Users::Representers::Single.new(resource_data).call
         end

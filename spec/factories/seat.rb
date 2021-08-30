@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :seat, class: 'Seats::Model' do
-    sequence(:seat_number) { |n| "#{n}" }
-    sequence(:name) { |n| "#{n}" }
+    sequence(:seat_number, &:to_s)
+    sequence(:name, &:to_s)
     association :cinema
   end
 end

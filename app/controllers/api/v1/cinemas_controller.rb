@@ -9,11 +9,10 @@ module Api
       end
 
       def create
-        puts params
         cinema = Cinemas::UseCases::Create.new(cinema_deserializer).call
         render json: Cinemas::Representers::Single.new(cinema).call, status: :created
       rescue Cinemas::CinemaRepository::CinemaNumberAlreadyTaken
-        render json: {error: 'Cinema number already taken'}
+        render json: { error: 'Cinema number already taken' }
       end
 
       def update
@@ -31,7 +30,7 @@ module Api
       def set_cinema
         @cinema = Cinemas::CinemaRepository.new.find_by_id(params[:id])
       rescue Cinemas::CinemaRepository::CinemaNotFound
-        render json: {error: 'Cinema Not Found'}, status: :not_found
+        render json: { error: 'Cinema Not Found' }, status: :not_found
       end
 
       def cinema_deserializer

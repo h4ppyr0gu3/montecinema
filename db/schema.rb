@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 2021_08_25_100525) do
     t.integer "rows"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["cinema_number"], name: "index_cinemas_on_cinema_number", unique: true
   end
 
   create_table "movies", force: :cascade do |t|

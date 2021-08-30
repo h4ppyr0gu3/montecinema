@@ -8,8 +8,7 @@ RSpec.describe Cinemas::Model, type: :model do
 
     it 'invalid test' do
       cinema = described_class.new(cinema_number: 3)
-      cinema.save
-      expect { cinema.save! }.to raise_error ActiveRecord::RecordInvalid
+      expect { cinema.save! }.to raise_error ActiveRecord::RecordNotUnique
     end
 
     it 'valid test' do

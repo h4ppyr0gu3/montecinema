@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+
 RSpec.describe Api::V1::ReservationsController, type: :controller do
     let(:reservation) {
       Reservations::UseCases::Create.new({

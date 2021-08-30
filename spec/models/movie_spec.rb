@@ -8,8 +8,7 @@ RSpec.describe Movies::Model, type: :model do
       genre: 'Comedy',
       length: '120'
     )
-    movie.validate
-    expect(movie.errors.count).to be > 0
+    expect { movie.save! }.to raise_error ActiveRecord::NotNullViolation
   end
 
   it 'director not present' do
@@ -19,8 +18,7 @@ RSpec.describe Movies::Model, type: :model do
       genre: 'Comedy',
       length: '120'
     )
-    movie.validate
-    expect(movie.errors.count).to be > 0
+    expect { movie.save! }.to raise_error ActiveRecord::NotNullViolation
   end
 
   it 'description not present' do
@@ -30,8 +28,7 @@ RSpec.describe Movies::Model, type: :model do
       genre: 'Comedy',
       length: '120'
     )
-    movie.validate
-    expect(movie.errors.count).to be > 0
+    expect { movie.save! }.to raise_error ActiveRecord::NotNullViolation
   end
 
   it 'genre not present' do
@@ -41,8 +38,7 @@ RSpec.describe Movies::Model, type: :model do
       description: 'Funniest movie ever',
       length: '120'
     )
-    movie.validate
-    expect(movie.errors.count).to be > 0
+    expect { movie.save! }.to raise_error ActiveRecord::NotNullViolation
   end
 
   it 'length not present' do
@@ -52,8 +48,7 @@ RSpec.describe Movies::Model, type: :model do
       description: 'Funniest movie ever',
       genre: 'Comedy'
     )
-    movie.validate
-    expect(movie.errors.count).to be > 0
+    expect { movie.save! }.to raise_error ActiveRecord::NotNullViolation
   end
 
   it 'valid entry' do
@@ -64,7 +59,6 @@ RSpec.describe Movies::Model, type: :model do
       genre: 'Comedy',
       length: '120'
     )
-    movie.validate
-    expect(movie.errors.count).to be == 0
+    expect { movie.save! }.to change(described_class, :count).by(1)
   end
 end

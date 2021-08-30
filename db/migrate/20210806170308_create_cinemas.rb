@@ -9,5 +9,6 @@ class CreateCinemas < ActiveRecord::Migration[6.1]
       t.integer :rows
       t.timestamps
     end
+    add_index :cinemas, :cinema_number, unique: true
   end
 end

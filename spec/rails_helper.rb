@@ -6,7 +6,7 @@ abort('The Rails environment is running in production mode!') if Rails.env.produ
 require 'rails/all'
 require 'rspec/rails'
 require 'devise'
-include Rack::Test::Methods
+# include Rack::Test::Methods
 include ActionController::RespondWith
 begin
   ActiveRecord::Migration.maintain_test_schema!
@@ -21,6 +21,6 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   config.include FactoryBot::Syntax::Methods
   SimpleCov.start
-  config.include Devise::Test::IntegrationHelpers
-  config.include Devise::Test::ControllerHelpers
+  config.include Devise::Test::IntegrationHelpers, :type => :controller
+  config.include Devise::Test::ControllerHelpers, :type => :controller
 end

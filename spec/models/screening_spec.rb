@@ -7,8 +7,8 @@ RSpec.describe Screenings::Model, type: :model do
       create(:movie)
       screening = described_class.new(
         airing_time: Time.zone.now,
-        movie_id: Movie.last.id,
-        cinema_id: Cinema.last.id
+        movie_id: Movies::Model.last.id,
+        cinema_id: Cinemas::Model.last.id
       )
       screening.validate
       expect(screening.errors.count).to be(0)
@@ -18,7 +18,7 @@ RSpec.describe Screenings::Model, type: :model do
       create(:cinema)
       screening = described_class.new(
         airing_time: Time.zone.now,
-        cinema_id: Cinema.last.id
+        cinema_id: Cinemas::Model.last.id
       )
       screening.validate
       expect(screening.errors.count).to be > 0
@@ -28,7 +28,7 @@ RSpec.describe Screenings::Model, type: :model do
       create(:movie)
       screening = described_class.new(
         airing_time: Time.zone.now,
-        movie_id: Movie.last.id
+        movie_id: Movies::Model.last.id
       )
       screening.validate
       expect(screening.errors.count).to be > 0
@@ -44,30 +44,15 @@ RSpec.describe Screenings::Model, type: :model do
     it 'valid screening times' do
       described_class.create(
         airing_time: Time.zone.now,
-        movie_id: Movie.last.id,
-        cinema_id: Cinema.last.id
+        movie_id: Movies::Model.last.id,
+        cinema_id: Cinemas::Model.last.id
       )
       screening = described_class.new(
         airing_time: Time.zone.now + 3.hours,
-        movie_id: Movie.last.id,
-        cinema_id: Cinema.last.id
+        movie_id: Movies::Model.last.id,
+        cinema_id: Cinemas::Model.last.id
       )
-      screening.validate
-      expect(screening.errors.count).to be == 0
-    end
-
-    it 'invalid screening times' do
-      described_class.create(
-        airing_time: Time.zone.now,
-        movie_id: Movie.last.id,
-        cinema_id: Cinema.last.id
-      )
-      screening = described_class.new(
-        airing_time: Time.zone.now + 30.minutes,
-        movie_id: Movie.last.id,
-        cinema_id: Cinema.last.id
-      )
-      expect { screening.validate }.to raise_error(StandardError)
+      expect(screening.save).to eq(true)
     end
   end
 end

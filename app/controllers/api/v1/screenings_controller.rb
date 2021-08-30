@@ -32,7 +32,7 @@ module Api
       private
 
       def set_screening
-        @screening = Screenings::ScreeningRepository.new.find_by(id: params[:id])
+        @screening = Screenings::ScreeningRepository.new.find_by_id(params[:id])
       rescue Screenings::ScreeningRepository::ScreeningNotFound
         render json: { error: 'screening not found' }, status: :not_found
       end

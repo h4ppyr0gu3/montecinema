@@ -21,4 +21,11 @@ Metrics/BlockLength:
   Enabled: false
 RSpec/DescribedClass:
   Enabled: false
-  
+Layout/IndentationStyle:
+  EnforcedStyle: spaces
+  IndentationWidth: 1
+  Width: 1
+Layout/BlockAlignment:
+  EnforcedStyleAlignWith: start_of_line
+Rails/DynamicFindBy:
+  Enabled: false

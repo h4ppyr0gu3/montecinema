@@ -21,6 +21,6 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   config.include FactoryBot::Syntax::Methods
   SimpleCov.start
-  config.include Devise::Test::IntegrationHelpers, :type => :controller
-  config.include Devise::Test::ControllerHelpers, :type => :controller
+  config.include Devise::Test::IntegrationHelpers, type: :controller
+  config.include Devise::Test::ControllerHelpers, type: :controller
 end

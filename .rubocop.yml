@@ -22,7 +22,7 @@ Metrics/BlockLength:
 RSpec/DescribedClass:
   Enabled: false
 Layout/IndentationStyle:
-  EnforcedStyle: spaces
+  EnforcedStyle: tabs
   IndentationWidth: 1
   Width: 1
 Layout/BlockAlignment:

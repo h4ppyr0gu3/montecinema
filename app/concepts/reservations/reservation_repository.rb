@@ -11,8 +11,11 @@ module Reservations
 			repository.create!(params)
 		end
 
-		def destroy_reservation reservation 
+		def destroy_reservation id 
+			reservation = repository.find(id) 
 			reservation.destroy
+		rescue ActiveRecord::RecordNotFound
+			raise ReservationNotFound
 		end
 
 		def find_by_id id 
@@ -31,10 +34,18 @@ module Reservations
 
 		def update_reservation params, id
 			reservation = repository.find(id.to_i)
-			raise InvalidParams unless reservation.update!(params)
+			raise InvalidParams unless reservation.update(params)
 			reservation
 		rescue ActiveRecord::RecordNotFound
 			raise ReservationNotFound
+		end
+
+		def seats_taken_sql_query screening_id
+			sql = "SELECT * FROM RESERVATIONS 
+							FULL OUTER JOIN POSITIONS 
+							ON POSITIONS.RESERVATION_ID = RESERVATIONS.ID 
+							WHERE SCREENING_ID = #{screening_id}"
+			ActiveRecord::Base.connection.execute(sql)
 		end
 	end
 end

@@ -9,17 +9,23 @@ module Seats
 			end
 
 			def call
-				cols = ('a'..'z').take(columns).to_a
-		    rows = (1..(rows_int)).to_a
-		    seats = cols.product(rows).map(&:join)
-		    seats.each do |seat_number|
+				seats = create_seat_numbers
+		    seats.map do |seat_number|
 		    	params = {
 		    		seat_number: seat_number, 
 		      	cinema_id: id, 
-		      	name: seat_number.to_s + id.to_s
+		      	name: "#{seat_number} - #{id}"
 		    	}
 		      Seats::SeatRepository.new.create_seats(params)
 		    end
+		  end
+
+		  private 
+
+		  def create_seat_numbers
+		  	cols = ('a'..'z').take(columns).to_a
+		    rows = (1..(rows_int)).to_a
+		    cols.product(rows).map(&:join)
 		  end
 		end
 	end

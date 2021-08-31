@@ -8,7 +8,7 @@ module Movies
 			@repository = repository
 		end
 
-		def create_movie(params)
+		def create_movie params
 			raise MovieAlreadyExists unless repository.find_by(
 				title: params[:title]).nil?
 			repository.create(params)
@@ -20,7 +20,8 @@ module Movies
 			raise MovieNotFound
 		end
 
-		def destroy_movie movie 
+		def destroy_movie id 
+			movie = repository.find(id) 
 			movie.destroy
 		end
 
@@ -36,7 +37,8 @@ module Movies
 			repository.all.count 
 		end
 
-		def update_movie movie, params
+		def update_movie id, params
+			movie = repository.find(id) 
 			movie.update!(params)
 		end
 	end

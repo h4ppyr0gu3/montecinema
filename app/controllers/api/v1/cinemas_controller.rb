@@ -15,11 +15,6 @@ module Api
         render json: { error: 'Cinema number already taken' }
       end
 
-      def update
-        cinema = Cinemas::UseCases::Update.new(cinema_deserializer, @cinema).call
-        render json: Cinemas::Representers::Single.new(cinema).call, status: :created
-      end
-
       def destroy
         Cinemas::UseCases::Delete.new(@cinema).call
         render head: :no_content

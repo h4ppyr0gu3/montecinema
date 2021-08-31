@@ -18,7 +18,8 @@ module Cinemas
       repository.create!(params)
 	  end
 
-		def destroy_cinema(cinema)
+		def destroy_cinema id 
+			cinema = repository.find(id)
 			cinema.destroy 
 		end
 

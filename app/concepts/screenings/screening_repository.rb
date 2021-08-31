@@ -10,7 +10,8 @@ module Screenings
 			repository.create(params)
 		end
 
-		def destroy_screening(screening)
+		def destroy_screening id
+			screening = repository.find(id)
 			screening.destroy 
 		end
 
@@ -24,7 +25,8 @@ module Screenings
 			repository.where(cinema_id: cinema_id).pluck(:airing_time)
 		end
 
-		def update_screening(screening, params)
+		def update_screening id, params
+			screening = repository.find(id)
 			screening.update!(params)
 		end
 

@@ -10,9 +10,7 @@ module Movies
 				serializer = 
 				{
 					data:
-						movie.instance_eval do |movie|
-							Movies::Representers::Data.new(movie).call
-						end
+						Movies::Representers::Data.new(movie).call
 				}
 				return serializer
 			end

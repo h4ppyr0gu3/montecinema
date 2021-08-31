@@ -22,6 +22,8 @@ module Reservations
 				return reservation
 			end
 
+			private
+
 			def ensure_valid_parameters
 				@cinema = Cinemas::CinemaRepository.new.find_by_id(params[:cinema_id])
 				Movies::MovieRepository.new.find_by_id(params[:movie_id])
@@ -34,11 +36,7 @@ module Reservations
 			end
 
 			def sql_seats_taken
-				sql = "SELECT * FROM RESERVATIONS 
-							FULL OUTER JOIN POSITIONS 
-							ON POSITIONS.RESERVATION_ID = RESERVATIONS.ID 
-							WHERE SCREENING_ID = #{params[:screening_id]}"
-				sql_result = ActiveRecord::Base.connection.execute(sql)
+				sql_result = Reservations::ReservationRepository.new.seats_taken_sql_query(params[:screening_id])
 				@seats_taken = []
 				sql_result.map { |sql| @seats_taken << sql['seat_id'] }
 			end

@@ -21,9 +21,9 @@ module Cinemas
 								Seats::SeatRepository.new.fetch_cinema_seats(cinema.id)
 								).call],
 							screenings: [
-								# if cinema.screenings.present?
-								# 	Screenings::Representers::MultipleRelationships.new(cinema.screenings).call
-								# end
+								if cinema.screenings.present?
+									Screenings::Representers::MultipleRelationships.new(cinema.screenings).call
+								end
 							]
 						}
 					}

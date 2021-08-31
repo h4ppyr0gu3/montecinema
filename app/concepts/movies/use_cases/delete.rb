@@ -7,7 +7,7 @@ module Movies
 			end 
 
 			def call
-				MovieRepository.new.destroy_movie(movie)
+				MovieRepository.new.destroy_movie(movie.id)
 			end
 		end
 	end

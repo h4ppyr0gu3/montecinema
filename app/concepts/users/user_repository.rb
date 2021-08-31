@@ -10,7 +10,8 @@ module Users
 			repository.create(params)
 		end
 
-		def destroy_user user
+		def destroy_user id 
+			user = repository.find(id)
 			user.destroy
 		end
 

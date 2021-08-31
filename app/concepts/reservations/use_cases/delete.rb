@@ -7,7 +7,7 @@ module Reservations
 			end
 
 			def call
-				ReservationRepository.new.destroy_reservation(reservation)
+				ReservationRepository.new.destroy_reservation(reservation.id)
 			end
 		end
 	end

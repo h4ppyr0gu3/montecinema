@@ -20,9 +20,9 @@ module Movies
 					},
 					relationships: {
 						screenings: [
-							# if cinema.screenings.present?
-							# 	Screenings::Representers::MultipleRelationships.new(cinema.screenings).call
-							# end
+							if movie.screenings.present?
+								Screenings::Representers::MultipleRelationships.new(movie.screenings).call
+							end
 						]
 					}
 				}

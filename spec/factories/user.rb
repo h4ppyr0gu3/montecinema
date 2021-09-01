@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :user do
+  factory :user, class: 'Users::Model' do
     first_name { 'David' }
     last_name  { 'Rogers' }
     email { 'test@test.com' }
@@ -9,7 +9,7 @@ FactoryBot.define do
       role { 2 }
     end
 
-    trait :teller do
+    trait :support do
       role { 1 }
     end
   end

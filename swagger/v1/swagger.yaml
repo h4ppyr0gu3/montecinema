@@ -1,0 +1,263 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/api/v1/cinemas":
+    post:
+      summary: create cinema
+      parameters: []
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              example:
+                data:
+                  type: cinema
+                  id: 1
+                  attributes:
+                    cinema_number: 1
+                    rows: 5
+                    columns: 5
+                    total_seats: 25
+                  relationships:
+                    seats:
+                    - - id: 1
+                        attributes:
+                          seat_number: a1
+                      - id: 2
+                        attributes:
+                          seat_number: a2
+                      - id: 3
+                        attributes:
+                          seat_number: a3
+                      - id: 4
+                        attributes:
+                          seat_number: a4
+                      - id: 5
+                        attributes:
+                          seat_number: a5
+                      - id: 6
+                        attributes:
+                          seat_number: b1
+                      - id: 7
+                        attributes:
+                          seat_number: b2
+                      - id: 8
+                        attributes:
+                          seat_number: b3
+                      - id: 9
+                        attributes:
+                          seat_number: b4
+                      - id: 10
+                        attributes:
+                          seat_number: b5
+                      - id: 11
+                        attributes:
+                          seat_number: c1
+                      - id: 12
+                        attributes:
+                          seat_number: c2
+                      - id: 13
+                        attributes:
+                          seat_number: c3
+                      - id: 14
+                        attributes:
+                          seat_number: c4
+                      - id: 15
+                        attributes:
+                          seat_number: c5
+                      - id: 16
+                        attributes:
+                          seat_number: d1
+                      - id: 17
+                        attributes:
+                          seat_number: d2
+                      - id: 18
+                        attributes:
+                          seat_number: d3
+                      - id: 19
+                        attributes:
+                          seat_number: d4
+                      - id: 20
+                        attributes:
+                          seat_number: d5
+                      - id: 21
+                        attributes:
+                          seat_number: e1
+                      - id: 22
+                        attributes:
+                          seat_number: e2
+                      - id: 23
+                        attributes:
+                          seat_number: e3
+                      - id: 24
+                        attributes:
+                          seat_number: e4
+                      - id: 25
+                        attributes:
+                          seat_number: e5
+                    screenings: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                data:
+                  type: object
+                  properties:
+                    attributes:
+                      type: object
+                      properties:
+                        cinema_number:
+                          type: integer
+                          example: 1
+                        rows:
+                          type: integer
+                          example: 5
+                        columns:
+                          type: integer
+                          example: 5
+                        total_seats:
+                          type: integer
+                          example: 25
+              required:
+              - cinema_number
+              - rows
+              - columns
+  "/api/v1/cinemas/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show cinema
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete cinema
+      responses:
+        '200':
+          description: no_content
+  "/api/v1/movies":
+    post:
+      summary: create movie
+      parameters: []
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              example:
+                data:
+                  type: movie
+                  id: 1
+                  attributes:
+                    title: something
+                    description: something else
+                    genre: comedy
+                    director: wejndan
+                    length: 95
+                  relationships:
+                    screenings: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                data:
+                  type: object
+                  properties:
+                    attributes:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                          example: Nobody
+                        genre:
+                          type: string
+                          example: Action
+                        director:
+                          type: string
+                          example: Bob 2
+                        description:
+                          type: string
+                          example: action movie
+                        length:
+                          type: integer
+                          example: 90
+              required:
+              - title
+              - genre
+              - director
+              - description
+              - length
+    get:
+      summary: index movies
+      parameters:
+      - name: offset
+        in: query
+        description: offset of records in db
+        required: false
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        description: number of records to be returned
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              example:
+                data:
+                - type: movie
+                  id: 2
+                  attributes:
+                    title: Autobiography
+                    description: Best description
+                    genre: comedy
+                    director: Me, Mario
+                    length: 125
+                  relationships:
+                    screenings: []
+                meta:
+                  total_count: 1
+  "/api/v1/movies/{id}":
+    get:
+      summary: show movies
+      parameters:
+      - name: id
+        in: path
+        required: true
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              example:
+                data:
+                  type: movie
+                  id: 3
+                  attributes:
+                    title: Autobiography
+                    description: Best description
+                    genre: comedy
+                    director: Me, Mario
+                    length: 125
+                  relationships:
+                    screenings: []
+servers:
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com

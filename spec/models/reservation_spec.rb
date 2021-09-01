@@ -1,4 +1,4 @@
 require 'rails_helper'
 
-RSpec.describe Reservation, type: :model do
+RSpec.describe Reservations::Model, type: :model do
 end

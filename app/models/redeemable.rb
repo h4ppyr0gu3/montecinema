@@ -1,0 +1,2 @@
+class Redeemable < ApplicationRecord
+end

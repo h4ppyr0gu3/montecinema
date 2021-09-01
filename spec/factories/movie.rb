@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :movie, class: 'Movie' do
+  factory :movie, class: 'Movies::Model' do
     title { 'Autobiography' }
     description { 'Best description' }
     director { 'Me, Mario' }

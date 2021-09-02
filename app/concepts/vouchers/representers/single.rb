@@ -8,17 +8,7 @@ module Vouchers
 
 			def call
 				{
-					data: {
-						type: 'voucher',
-						id: voucher.id,
-						attributes: {
-							code: voucher.code,
-							expiration_date: voucher.expiration_date,
-							value: voucher.value,
-							description: voucher.description,
-							points_required: voucher.points_required
-						}
-					}
+					data: Vouchers::Representers::Data.new(voucher).call
 				}
 			end
 		end

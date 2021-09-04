@@ -2,6 +2,7 @@ module Api
   module V1
     class MoviesController < ApplicationController
       MissingParams = Class.new(StandardError)
+      around_action :skip_bullet, only: %i[index]
       before_action :set_movie, only: %i[show update destroy]
 
       def index
@@ -11,12 +12,8 @@ module Api
 
       def create
         parse_params
-        movie = Movies::UseCases::Create.new(movie_deserializer).call
+        movie = Movies::UseCases::Create.new(params: movie_deserializer).call
         render json: Movies::Representers::Single.new(movie).call, status: :created
-      rescue Api::V1::MoviesController::MissingParams
-        render json: { errors: @errors }
-      rescue Movies::MovieRepository::MovieAlreadyExists
-        render json: { errors: 'Movie already exists' }
       end
 
       def show
@@ -29,8 +26,6 @@ module Api
         render json: Movies::Representers::Single.new(
           Movies::MovieRepository.new.find_by(id: params[:id])
         ).call, status: :created
-      rescue Api::V1::MoviesController::MissingParams
-        render json: { errors: @errors }
       end
 
       def destroy
@@ -52,8 +47,6 @@ module Api
 
       def set_movie
         @movie = Movies::MovieRepository.new.find_by_id(params[:id])
-      rescue Movies::MovieRepository::MovieNotFound
-        render json: { error: 'Movie not found' }
       end
 
       def parse_params

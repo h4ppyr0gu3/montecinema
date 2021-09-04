@@ -16,8 +16,6 @@ module Movies
 
 		def find_by_id id 
 			adapter.find(id)
-		rescue ActiveRecord::RecordNotFound
-			raise MovieNotFound
 		end
 
 		def destroy_movie id 

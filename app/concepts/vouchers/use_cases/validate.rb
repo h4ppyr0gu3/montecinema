@@ -8,7 +8,7 @@ class Vouchers::UseCases::Validate
 	def voucher_deserializer
 		raise InvalidParams unless params[:points_required] > 0
     raise InvalidParams unless params[:expiration_date] > Time.zone.now + 1.day
-    raise InvalidParams unless params[:description].length > 250
+    raise InvalidParams unless params[:description].length < 250
     while Vouchers::VoucherRepository.new.pluck_params(:code).include? params[:code]
     	params[:code] = SecureRandom.alphanumeric(6)
     end
@@ -19,12 +19,10 @@ class Vouchers::UseCases::Validate
 		if params[:user_id].present?
 			Users::UserRepository.new.find_by_id(params[:user_id])
 		end
-		voucher = Vouchers::VoucherRepository.new.find_with(code: params[:voucher_code])
-		raise InvalidParams unless voucher.active
+		params[:voucher_ids].map do |id|
+			voucher = Vouchers::VoucherRepository.new.find_by_id(id)
+			raise InvalidParams unless voucher.active
+		end
 		params
-	rescue Users::UserRepository::UserNotFound
-		raise InvalidParams
-	rescue Vouchers::VoucherRepository::InvalidParams
-		raise InvalidParams
 	end
 end

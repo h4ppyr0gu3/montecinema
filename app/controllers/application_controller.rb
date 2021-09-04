@@ -17,13 +17,10 @@ class ApplicationController < ActionController::API
 
   rescue_from StandardError do |e|
     Rails.logger.error(
-      e.message + "\n" + e.backtrace.join("\n")
+      e.message + "\n" + e.backtrace[0, 10].join("\n\t")
     )
 
-    if e.class == User::Unauthenticated
-      status = 401
-      error = "unauthorized, check credentials"
-    elsif e.class == Pundit::NotAuthorizedError
+    if e.class == Pundit::NotAuthorizedError
       status = 401
       error = e.message
     else

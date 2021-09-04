@@ -5,7 +5,6 @@ class CreateVouchers < ActiveRecord::Migration[6.1]
       t.datetime :expiration_date, null: false
       t.integer :points_required, null: false, default: 0
       t.string :description
-      t.integer :value
       t.boolean :active, null: false, default: true
 
       t.timestamps

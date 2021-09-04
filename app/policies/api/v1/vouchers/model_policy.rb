@@ -4,8 +4,12 @@ class Api::V1::Vouchers::ModelPolicy
     @voucher = voucher
   end
 
+  def show?
+    user.vouchers.include? voucher
+  end
+
   def redeem?
-    user.admin? || user.support?
+    user.present? && ( user.admin? || user.support? )
   end
 
   def create?
@@ -14,6 +18,10 @@ class Api::V1::Vouchers::ModelPolicy
 
   def update?
     user.admin?
+  end
+
+  def purchase?
+    user.present?
   end
 
   attr_reader :user, :voucher

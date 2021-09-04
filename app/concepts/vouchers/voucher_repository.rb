@@ -1,6 +1,5 @@
 module Vouchers
 	class VoucherRepository
-		InvalidParams = Class.new(StandardError)
 		attr_reader :adapter
 		def initialize adapter: Vouchers::Model
 			@adapter = adapter
@@ -8,8 +7,6 @@ module Vouchers
 
 		def create_voucher params
 			adapter.create!(params)
-		rescue ActiveRecord::NotNullViolation 
-			raise InvalidParams
 		end
 
 		def fetch offset, limit
@@ -26,12 +23,15 @@ module Vouchers
 
 		def find_with param 
 			adapter.find_by(param)
-		rescue ActiveRecord::RecordNotFound
-			raise InvalidParams
 		end
 
 		def update_voucher id, params
-			adapter.find(id).update!(params)
+			voucher = adapter.find(id)
+			voucher.update!(params)
+		end
+
+		def find_by_id id
+			adapter.find(id)
 		end
 	end
 end

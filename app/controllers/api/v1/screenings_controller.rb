@@ -15,8 +15,6 @@ module Api
       def create
         screening = Screenings::UseCases::Create.new(screening_deserializer).call
         render json: Screenings::Representers::Single.new(screening).call
-      rescue Screenings::UseCases::Create::InvalidScreeningTime
-        render json: { error: 'Invalid Screening time' }
       end
 
       def update
@@ -33,8 +31,6 @@ module Api
 
       def set_screening
         @screening = Screenings::ScreeningRepository.new.find_by_id(params[:id])
-      rescue Screenings::ScreeningRepository::ScreeningNotFound
-        render json: { error: 'screening not found' }, status: :not_found
       end
 
       def screening_deserializer

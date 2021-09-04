@@ -9,8 +9,6 @@ module Vouchers
 
 			def call
 				Vouchers::VoucherRepository.new.create_voucher(params)
-			rescue Vouchers::VoucherRepository::InvalidParams
-				raise InvalidParams
 			end
 		end
 	end

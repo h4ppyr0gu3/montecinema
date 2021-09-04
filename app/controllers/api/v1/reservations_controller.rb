@@ -17,16 +17,6 @@ module Api
       def create
         reservation = Reservations::UseCases::Create.new(reservation_deserializer, current_users_model.id).call
         render json: Reservations::Representers::Single.new(reservation, current_users_model).call
-      rescue Cinemas::CinemaRepository::CinemaNotFound
-        render json: { error: 'Cinema not found' }
-      rescue Movies::MovieRepository::MovieNotFound
-        render json: { error: 'Movie not found' }
-      rescue Screenings::ScreeningRepository::ScreeningNotFound
-        render json: { error: 'Screening not found' }
-      rescue Seats::SeatRepository::SeatNotFound
-        render json: { error: 'Seats not found' }
-      rescue Reservations::UseCases::Create::SeatAlreadyTaken
-        render json: { error: 'Seats Already Taken' }
       end
 
       def update
@@ -53,8 +43,6 @@ module Api
 
       def set_reservation
         @reservation = Reservations::ReservationRepository.new.find_by_id(params[:id])
-      rescue Reservations::ReservationRepository::ReservationNotFound
-        render json: { error: 'reservation not found' }
       end
     end
   end

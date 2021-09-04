@@ -1,2 +1,0 @@
-class Redeemable < ApplicationRecord
-end

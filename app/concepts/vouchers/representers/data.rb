@@ -11,7 +11,6 @@ class Vouchers::Representers::Data
 			attributes: {
 				code: voucher.code,
 				expiration_date: voucher.expiration_date,
-				value: voucher.value,
 				description: voucher.description,
 				points_required: voucher.points_required
 			}

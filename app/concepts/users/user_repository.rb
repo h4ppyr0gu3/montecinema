@@ -30,7 +30,7 @@ module Users
 		end
 
 		def update_user id, params
-			user = adapter.find_by(id)
+			user = adapter.find(id)
 			user.update!(params)
 		end
 	end

@@ -7,6 +7,7 @@ gem 'bootsnap', '>= 1.4.4', require: false
 gem 'devise', '~> 4.8.0'
 gem 'devise_token_auth', '~> 1.2.0'
 gem 'dotenv-rails', '~> 2.7.6'
+gem 'minitest', '~> 5.14.4'
 gem 'omniauth', '~> 2.0.4'
 gem 'pg', '~> 1.1'
 gem 'puma', '~> 5.0'
@@ -38,6 +39,5 @@ end
 
 group :test do
   gem 'database_cleaner', '~> 2.0.1'
-  gem 'minitest', '~> 5.14.4'
   gem 'simplecov', '~> 0.21.2', require: false
 end

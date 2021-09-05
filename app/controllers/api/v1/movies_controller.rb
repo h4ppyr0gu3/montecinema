@@ -22,7 +22,7 @@ module Api
 
       def update
         parse_params
-        movie = Movies::UseCases::Update.new(@movie, movie_deserializer).call
+        Movies::UseCases::Update.new(@movie, movie_deserializer).call
         render json: Movies::Representers::Single.new(
           Movies::MovieRepository.new.find_by(id: params[:id])
         ).call, status: :created

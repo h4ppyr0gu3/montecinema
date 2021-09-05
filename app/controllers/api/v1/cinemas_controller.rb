@@ -1,7 +1,7 @@
 module Api
   module V1
     class CinemasController < ApplicationController
-      before_action :set_cinema, only: %i[show destroy update]
+      before_action :set_cinema, only: %i[show destroy]
       around_action :skip_bullet, only: %i[destroy]
 
       def show

@@ -20,9 +20,10 @@ module Api
       end
 
       def update
-        reservation = Reservations::UseCases::Update.new(reservation_deserializer, params['id'],
-                                                         current_users_model.id).call
-        render json: { success: 'jfjnsnv' }
+        Reservations::UseCases::Update.new(reservation_deserializer, params['id'],
+                                           current_users_model.id).call
+        reservation = Reservations::ReservationRepository, new.find_by_id(params['id'])
+        render json: Reservations::Representers::Single.new(reservation, current_users_model).call
       end
 
       def destroy

@@ -32,8 +32,7 @@ RSpec.describe 'api/v1/movies', type: :request do
           { data: { attributes: { title: 'something', description: 'something else', length: 95, director: 'wejndan',
                                   genre: 'comedy' } } }
         end
-        run_test! do |_arg|
-        end
+        run_test!
       end
 
       get 'index movies' do
@@ -48,8 +47,7 @@ RSpec.describe 'api/v1/movies', type: :request do
             'data' => [{ 'type' => 'movie', 'id' => 2,
                          'attributes' => { 'title' => 'Autobiography', 'description' => 'Best description', 'genre' => 'comedy', 'director' => 'Me, Mario', 'length' => 125 }, 'relationships' => { 'screenings' => [] } }], 'meta' => { 'total_count' => 1 }
           }
-          run_test! do |_arg|
-          end
+          run_test!
         end
       end
     end
@@ -60,10 +58,9 @@ RSpec.describe 'api/v1/movies', type: :request do
         response 200, 'success' do
           examples 'application/json' => { 'data' => { 'type' => 'movie', 'id' => 3,
                                                        'attributes' => { 'title' => 'Autobiography', 'description' => 'Best description', 'genre' => 'comedy', 'director' => 'Me, Mario', 'length' => 125 }, 'relationships' => { 'screenings' => [] } } }
-          let!(:create_movie) { create(:movie) }
+          let(:create_movie) { create(:movie) }
           let(:id) { Movies::Model.last.id }
-          run_test! do |_arg|
-          end
+          run_test!
         end
       end
     end

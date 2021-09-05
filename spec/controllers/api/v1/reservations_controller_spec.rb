@@ -19,7 +19,7 @@ RSpec.describe Api::V1::ReservationsController, type: :controller do
   end
 
   describe 'GET #index' do
-    context 'no user logged in' do
+    context 'when no user logged in' do
       it 'expects one record' do
         get :index
         expect(JSON.parse(response.body)).to include(match(/errors/) => Array)

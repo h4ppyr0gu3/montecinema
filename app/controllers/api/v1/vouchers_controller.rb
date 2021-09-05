@@ -29,7 +29,7 @@ module Api
       def purchase
         voucher = Vouchers::Model.new
         authorize([:api, :v1, voucher])
-        voucher = Vouchers::UseCases::Purchase.new(purchase_params).call
+        Vouchers::UseCases::Purchase.new(purchase_params).call
         render json: { purchased: 'success' }
       end
 

@@ -7,7 +7,6 @@ require 'rails/all'
 require 'rspec/rails'
 require 'devise'
 # include Rack::Test::Methods
-include ActionController::RespondWith
 begin
   ActiveRecord::Migration.maintain_test_schema!
 rescue ActiveRecord::PendingMigrationError => e
@@ -15,6 +14,7 @@ rescue ActiveRecord::PendingMigrationError => e
   exit 1
 end
 RSpec.configure do |config|
+  config.include ActionController::RespondWith, type: :controller
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.use_transactional_fixtures = true
   config.infer_spec_type_from_file_location!

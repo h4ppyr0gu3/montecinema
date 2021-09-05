@@ -18,6 +18,7 @@ gem 'sidekiq-cron', '~> 1.2.0'
 gem 'sentry-ruby', '~> 4.6.4'
 gem 'sentry-rails', '~> 4.6.4'
 gem 'multi_json'
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
 
 group :development, :test do
   gem 'byebug', '>= 11.1.3'

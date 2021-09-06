@@ -19,6 +19,8 @@ module Reservations
 				reservation = Reservations::ReservationRepository.new.create_reservation(reservation_params)
 				Positions::UseCases::Create.new(reservation.id, params[:seat_ids]).call
 				update_available_seats
+				user = Users::UserRepository.new.find_by_id(user_id)
+				ReservationMailer.with(user: user, reservation: reservation).reservation_created.deliver_later
 				return reservation
 			end
 

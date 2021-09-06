@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 2021_09_02_160826) do
     t.bigint "screening_id"
     t.bigint "cinema_id"
     t.bigint "movie_id"
+    t.boolean "confirmed", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["cinema_id"], name: "index_reservations_on_cinema_id"

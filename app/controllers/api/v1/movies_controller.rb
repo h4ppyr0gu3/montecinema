@@ -11,16 +11,19 @@ module Api
       end
 
       def create
+        authorize([:api, :v1, Movies::Model])
         parse_params
         movie = Movies::UseCases::Create.new(params: movie_deserializer).call
         render json: Movies::Representers::Single.new(movie).call, status: :created
       end
 
       def show
+        authorize([:api, :v1, @movie])
         render json: Movies::Representers::Single.new(@movie).call
       end
 
       def update
+        authorize([:api, :v1, @movie])
         parse_params
         Movies::UseCases::Update.new(@movie, movie_deserializer).call
         render json: Movies::Representers::Single.new(
@@ -29,6 +32,7 @@ module Api
       end
 
       def destroy
+        authorize([:api, :v1, @movie])
         Movies::UseCases::Delete.new(@movie).call
         render head: :no_content
       end

@@ -67,22 +67,22 @@ def seed_screenings
   @screening = Screenings::Model.create(
     movie_id: @movie.id,
     cinema_id: @cinema.id,
-    airing_time: Time.now + 5.days
+    airing_time: Time.zone.now + 5.days
   )
   Screenings::Model.create(
     movie_id: @movie.id,
     cinema_id: @cinema.id,
-    airing_time: Time.now + 5.days + 3.hours
+    airing_time: Time.zone.now + 5.days + 3.hours
   )
   Screenings::Model.create(
     movie_id: @movie.id,
     cinema_id: @cinema.id,
-    airing_time: Time.now + 5.days + 6.hours
+    airing_time: Time.zone.now + 5.days + 6.hours
   )
 end
 
 def seed_reservations
-  seats = ['a1', 'a2', 'a3']
+  seats = %w[a1 a2 a3]
   reservation = Reservations::Model.create(
     cinema_id: @cinema.id,
     movie_id: @movie.id,
@@ -105,5 +105,3 @@ seed_users
 seed_movies
 seed_screenings
 seed_reservations
-
-

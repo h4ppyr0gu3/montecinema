@@ -3,6 +3,7 @@ module Api
     class ReservationsController < ApplicationController
       before_action :authenticate_users_model!
       before_action :set_reservation, only: %i[show destroy]
+
       def index
         reservation = Reservations::UseCases::Index.new(params, current_users_model).call
         render json: Reservations::Representers::Multiple.new(reservation, current_users_model).call
@@ -11,15 +12,19 @@ module Api
       end
 
       def show
+        authorize([:api, :v1, @reservation])
         render json: Reservations::Representers::Single.new(@reservation, current_users_model).call
       end
 
       def create
+        reservation = Reservations::Model.new
+        authorize([:api, :v1, reservation])
         reservation = Reservations::UseCases::Create.new(reservation_deserializer, current_users_model.id).call
         render json: Reservations::Representers::Single.new(reservation, current_users_model).call
       end
 
       def update
+        authorize([:api, :v1, @reservation])
         Reservations::UseCases::Update.new(reservation_deserializer, params['id'],
                                            current_users_model.id).call
         reservation = Reservations::ReservationRepository, new.find_by_id(params['id'])
@@ -27,6 +32,7 @@ module Api
       end
 
       def destroy
+        authorize([:api, :v1, @reservation])
         Reservations::UseCases::Delete.new(@reservation).call
         render head: :no_content
       end

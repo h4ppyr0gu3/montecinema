@@ -2,12 +2,11 @@ module Cinemas
 	module Representers
 		class Relationship
 			attr_reader :cinema
-			def initialize cinema
+			def initialize cinema:
 				@cinema = cinema
 			end
 
 			def call
-				serializer = 
 				{
 					type: 'cinema',
 					id: cinema.id,

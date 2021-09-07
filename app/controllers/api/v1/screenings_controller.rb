@@ -13,16 +13,19 @@ module Api
       end
 
       def create
+        authorize([:api, :v1, Screenings::Model])
         screening = Screenings::UseCases::Create.new(screening_deserializer).call
         render json: Screenings::Representers::Single.new(screening).call
       end
 
       def update
+        authorize([:api, :v1, Screenings::Model])
         Screenings::UseCases::Update.new(@screening, screening_deserializer).call
         render json: Screenings::Representers::Single.new(set_screening).call
       end
 
       def destroy
+        authorize([:api, :v1, Screenings::Model])
         Screenings::UseCases::Delete.new(@screening).call
         render head: :no_content
       end

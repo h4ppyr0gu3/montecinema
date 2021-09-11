@@ -32,6 +32,14 @@ module Reservations
 			repository.where(user_id: user.id) 
 		end
 
+		def fetch_admin offset, limit
+			repository.limit(limit).offset(offset)
+		end
+
+		def fetch_all_admin
+			repository.all
+		end
+
 		def update_reservation params, id
 			reservation = repository.find(id.to_i)
 			raise InvalidParams unless reservation.update(params)

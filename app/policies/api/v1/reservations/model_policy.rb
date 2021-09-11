@@ -4,20 +4,24 @@ class Api::V1::Reservations::ModelPolicy
     @reservation = reservation
   end
 
-  def show?
-    user.reservations.include? reservation
-  end
-
-  def create?
+  def index?
     user.present?
   end
 
+  def show?
+    user.reservations.include?(reservation) || user.admin? || user.support?
+  end
+
+  def create?
+    index?
+  end
+
   def update?
-    user.reservations.include? reservation
+    show?
   end
 
   def destroy?
-    user.reservations.include? reservation 
+    show?
   end
 
   attr_reader :user, :reservation

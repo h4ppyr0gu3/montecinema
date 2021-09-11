@@ -7,7 +7,6 @@ module Movies
 			end
 
 			def call
-				serializer = 
 				{
 					type: 'movie',
 					id: movie.id,
@@ -19,14 +18,12 @@ module Movies
 						length: movie.length
 					},
 					relationships: {
-						screenings: [
+						screenings: 
 							if movie.screenings.present?
 								Screenings::Representers::MultipleRelationships.new(movie.screenings).call
 							end
-						]
 					}
 				}
-				return serializer
 			end
 		end
 	end

@@ -6,20 +6,20 @@ module Api
       before_action :set_movie, only: %i[show update destroy]
 
       def index
-        movies = Movies::UseCases::Index.new(params).call
-        render json: Movies::Representers::Multiple.new(movies).call
+        movies = ::Movies::UseCases::Index.new(params: params).call
+        render json: ::Movies::Representers::Multiple.new(movies).call
       end
 
       def create
-        authorize([:api, :v1, Movies::Model])
+        authorize([:api, :v1, ::Movies::Model])
         parse_params
-        movie = Movies::UseCases::Create.new(params: movie_deserializer).call
-        render json: Movies::Representers::Single.new(movie).call, status: :created
+        movie = ::Movies::UseCases::Create.new(params: movie_deserializer).call
+        render json: ::Movies::Representers::Single.new(movie).call, status: :created
       end
 
       def show
         authorize([:api, :v1, @movie])
-        render json: Movies::Representers::Single.new(@movie).call
+        render json: ::Movies::Representers::Single.new(@movie).call
       end
 
       def update
@@ -33,7 +33,7 @@ module Api
 
       def destroy
         authorize([:api, :v1, @movie])
-        Movies::UseCases::Delete.new(@movie).call
+        ::Movies::UseCases::Delete.new(@movie).call
         render head: :no_content
       end
 
@@ -50,7 +50,7 @@ module Api
       end
 
       def set_movie
-        @movie = Movies::MovieRepository.new.find_by_id(params[:id])
+        @movie = ::Movies::MovieRepository.new.find_by_id(params[:id])
       end
 
       def parse_params

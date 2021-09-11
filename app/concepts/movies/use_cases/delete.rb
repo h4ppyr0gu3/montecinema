@@ -1,13 +1,8 @@
 module Movies
 	module UseCases
-		class Delete
-			attr_reader :movie
-			def initialize movie 
-				@movie = movie 
-			end 
-
-			def call
-				MovieRepository.new.destroy_movie(movie.id)
+		class Delete < UseCase::Base
+			def persist
+				MovieRepository.new.destroy_movie(params[:id])
 			end
 		end
 	end

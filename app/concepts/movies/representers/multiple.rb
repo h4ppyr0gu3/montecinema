@@ -7,7 +7,6 @@ module Movies
 			end
 
 			def call
-				serializer = 
 				{
 					data: 
 						movies.map do |movie|
@@ -17,7 +16,6 @@ module Movies
 						total_count: Movies::MovieRepository.new.number_of_movies
 					}
 				}
-				return serializer
 			end
 		end
 	end

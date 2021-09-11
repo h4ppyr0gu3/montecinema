@@ -7,7 +7,6 @@ module Movies
 			end
 
 			def call
-				serialize = 
 				{
 					id: movie.id,
 					type: 'movie',

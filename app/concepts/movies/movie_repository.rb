@@ -2,43 +2,41 @@ module Movies
 	class MovieRepository
 		MovieAlreadyExists = Class.new(StandardError)
 		MovieNotFound = Class.new(StandardError)
-		attr_reader :repository
+		attr_reader :adapter
 
-		def initialize(repository: Movies::Model)
-			@repository = repository
+		def initialize adapter: Movies::Model
+			@adapter = adapter
 		end
 
 		def create_movie params
-			raise MovieAlreadyExists unless repository.find_by(
+			raise MovieAlreadyExists unless adapter.find_by(
 				title: params[:title]).nil?
-			repository.create(params)
+			adapter.create(params)
 		end
 
 		def find_by_id id 
-			repository.find(id)
-		rescue ActiveRecord::RecordNotFound
-			raise MovieNotFound
+			adapter.find(id)
 		end
 
 		def destroy_movie id 
-			movie = repository.find(id) 
+			movie = adapter.find(id) 
 			movie.destroy
 		end
 
 		def fetch offset, limit
-			repository.limit(limit).offset(offset)
+			adapter.limit(limit).offset(offset)
 		end
 
 		def fetch_all
-			repository.all 
+			adapter.all 
 		end
 
 		def number_of_movies
-			repository.all.count 
+			adapter.all.count 
 		end
 
 		def update_movie id, params
-			movie = repository.find(id) 
+			movie = adapter.find(id) 
 			movie.update!(params)
 		end
 	end

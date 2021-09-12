@@ -1,0 +1,4 @@
+voucher_expiry:
+  cron: "0 0 * * *"
+  class: "VoucherExpiryWorker"
+  queue: default

@@ -1,7 +1,7 @@
 module Api
   module V1
     class CinemasController < ApplicationController
-      before_action :set_cinema, only: %i[show destroy update]
+      before_action :set_cinema, only: %i[show destroy]
       around_action :skip_bullet, only: %i[destroy]
 
       def show
@@ -11,8 +11,6 @@ module Api
       def create
         cinema = Cinemas::UseCases::Create.new(cinema_deserializer).call
         render json: Cinemas::Representers::Single.new(cinema).call, status: :created
-      rescue Cinemas::CinemaRepository::CinemaNumberAlreadyTaken
-        render json: { error: 'Cinema number already taken' }
       end
 
       def destroy
@@ -24,8 +22,6 @@ module Api
 
       def set_cinema
         @cinema = Cinemas::CinemaRepository.new.find_by_id(params[:id])
-      rescue Cinemas::CinemaRepository::CinemaNotFound
-        render json: { error: 'Cinema Not Found' }, status: :not_found
       end
 
       def cinema_deserializer

@@ -21,6 +21,7 @@ gem 'sentry-rails', '~> 4.6.4'
 gem 'multi_json'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
 gem 'rspec-rails', '~> 5.0.1'
+gem "pundit", '~> 2.1.1'
 
 group :development, :test do
   gem 'byebug', '>= 11.1.3'

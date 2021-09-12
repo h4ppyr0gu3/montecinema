@@ -1,6 +1,6 @@
 require 'swagger_helper'
 
-RSpec.describe 'api/v1/cinemas', type: :request do
+RSpec.describe 'api/v1/movies', type: :request do
   path '/api/v1/movies' do
     post 'create movie' do
       consumes 'application/json'
@@ -26,13 +26,13 @@ RSpec.describe 'api/v1/cinemas', type: :request do
       }
 
       response 201, :created do
-        examples 'application/json' => { 'data' => { 'type' => 'movie', 'id' => 1, 'attributes' => { 'title' => 'something', 'description' => 'something else', 'genre' => 'comedy', 'director' => 'wejndan', 'length' => 95 }, 'relationships' => { 'screenings' => [] } } }
+        examples 'application/json' => { 'data' => { 'type' => 'movie', 'id' => 1,
+                                                     'attributes' => { 'title' => 'something', 'description' => 'something else', 'genre' => 'comedy', 'director' => 'wejndan', 'length' => 95 }, 'relationships' => { 'screenings' => [] } } }
         let(:movie) do
           { data: { attributes: { title: 'something', description: 'something else', length: 95, director: 'wejndan',
                                   genre: 'comedy' } } }
         end
-        run_test! do |_arg|
-        end
+        run_test!
       end
 
       get 'index movies' do
@@ -43,9 +43,11 @@ RSpec.describe 'api/v1/cinemas', type: :request do
 
         response 200, 'success' do
           let(:create_movie) { create(:movie) }
-          examples 'application/json' => {'data' => [{ 'type' => 'movie', 'id' => 2, 'attributes' => { 'title' => 'Autobiography', 'description' => 'Best description', 'genre' => 'comedy', 'director' => 'Me, Mario', 'length' => 125 }, 'relationships' => { 'screenings' => [] } }], 'meta' => { 'total_count' => 1 }}
-          run_test! do |_arg|
-          end
+          examples 'application/json' => {
+            'data' => [{ 'type' => 'movie', 'id' => 2,
+                         'attributes' => { 'title' => 'Autobiography', 'description' => 'Best description', 'genre' => 'comedy', 'director' => 'Me, Mario', 'length' => 125 }, 'relationships' => { 'screenings' => [] } }], 'meta' => { 'total_count' => 1 }
+          }
+          run_test!
         end
       end
     end
@@ -54,11 +56,11 @@ RSpec.describe 'api/v1/cinemas', type: :request do
       get 'show movies' do
         parameter name: :id, in: :path
         response 200, 'success' do
-          examples 'application/json' => { 'data' => { 'type' => 'movie', 'id' => 3, 'attributes' => { 'title' => 'Autobiography', 'description' => 'Best description', 'genre' => 'comedy', 'director' => 'Me, Mario', 'length' => 125 }, 'relationships' => { 'screenings' => [] } } }
-          let!(:create_movie) { create(:movie) }
+          examples 'application/json' => { 'data' => { 'type' => 'movie', 'id' => 3,
+                                                       'attributes' => { 'title' => 'Autobiography', 'description' => 'Best description', 'genre' => 'comedy', 'director' => 'Me, Mario', 'length' => 125 }, 'relationships' => { 'screenings' => [] } } }
+          let(:create_movie) { create(:movie) }
           let(:id) { Movies::Model.last.id }
-          run_test! do |_arg|
-          end
+          run_test!
         end
       end
     end

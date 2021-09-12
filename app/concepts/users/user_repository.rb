@@ -1,37 +1,37 @@
 module Users
 	class UserRepository
 		UserNotFound = Class.new(StandardError)
-		attr_reader :repository
-		def initialize 
-			@repository = Users::Model
+		attr_reader :adapter
+		def initialize adapter: Users::Model
+			@adapter = adapter
 		end 
 
 		def create_user params
-			repository.create(params)
+			adapter.create(params)
 		end
 
 		def destroy_user id 
-			user = repository.find(id)
+			user = adapter.find(id)
 			user.destroy
 		end
 
 		def fetch offset, limit
-			repository.limit(limit).offset(offset)
+			adapter.limit(limit).offset(offset)
 		end
 
 		def fetch_all
-			repository.all 
+			adapter.all 
 		end
 
 		def find_by_id id 
-			repository.find(id)
+			adapter.find(id)
 		rescue ActiveRecord::RecordNotFound
 			raise UserNotFound
 		end
 
-		def update_user
-			
+		def update_user id, params
+			user = adapter.find(id)
+			user.update!(params)
 		end
-
 	end
 end

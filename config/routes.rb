@@ -11,6 +11,9 @@ Rails.application.routes.draw do
       resources :screenings, only: %i[index show create destroy update]
       resources :cinemas, only: %i[update create destroy show]
       resources :reservations, only: %i[index show create destroy update]
+      resources :vouchers, only: %i[index show create update]
+      post 'vouchers/purchase', to: 'vouchers#purchase'
+      post 'vouchers/redeem', to: 'vouchers#redeem'
     end
   end
 end

@@ -19,6 +19,8 @@ gem 'sentry-ruby', '~> 4.6.4'
 gem 'sentry-rails', '~> 4.6.4'
 gem 'multi_json', '~>  1.15.0'
 gem "pundit", '~> 2.1.1'
+gem 'graphql'
+
 
 group :development, :test do
   gem 'byebug', '>= 11.1.3'

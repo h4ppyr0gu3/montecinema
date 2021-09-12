@@ -6,8 +6,9 @@ module Api
 
       def index
         reservation = ::Reservations::UseCases::Index.new(params: {
-          query: params, 
-          user: current_users_model}).call
+                                                            query: params,
+                                                            user: current_users_model
+                                                          }).call
         render json: ::Reservations::Representers::Multiple.new(reservation, current_users_model).call
       rescue ::Reservations::UseCases::Index::UserNotFound
         render json: { error: 'user not found' }
@@ -22,23 +23,26 @@ module Api
         reservation = ::Reservations::Model.new
         authorize([:api, :v1, reservation])
         reservation = ::Reservations::UseCases::Create.new(params: {
-          reservation: reservation_deserializer, 
-          user_id: current_users_model.id
-        }).call
-        render json: ::Reservations::Representers::Single.new(reservation, current_users_model).call
+                                                             reservation: reservation_deserializer,
+                                                             user_id: current_users_model.id
+                                                           }).call
+        render json: ::Reservations::Representers::Single.new(reservation, current_users_model).call, status: :created
       end
 
       def update
         authorize([:api, :v1, @reservation])
-        ::Reservations::UseCases::Update.new(reservation_deserializer, params['id'],
-                                           current_users_model.id).call
+        ::Reservations::UseCases::Update.new(params: {
+                                               args: reservation_deserializer,
+                                               id: params['id'],
+                                               user_id: current_users_model.id
+                                             }).call
         reservation = ::Reservations::ReservationRepository.new.find_by_id(params['id'])
         render json: ::Reservations::Representers::Single.new(reservation, current_users_model).call
       end
 
       def destroy
         authorize([:api, :v1, @reservation])
-        ::Reservations::UseCases::Delete.new(@reservation).call
+        ::Reservations::UseCases::Delete.new(params: { reservation: @reservation }).call
         render head: :no_content
       end
 

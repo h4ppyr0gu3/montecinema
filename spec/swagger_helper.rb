@@ -24,14 +24,47 @@ RSpec.configure do |config|
       paths: {},
       servers: [
         {
-          url: 'https://{defaultHost}',
+          url: 'https://montecinema-david-rogers.herokuapp.com/',
           variables: {
             defaultHost: {
-              default: 'www.example.com'
+              default: 'https://montecinema-david-rogers.herokuapp.com/'
             }
           }
         }
-      ]
+      ],
+      components: {
+        securitySchemes: {
+          client: {
+            description: 'Client is a string recieved from backend to keep session alive',
+            type: :apiKey,
+            name: 'client',
+            in: :header
+          },
+          access_token: {
+            description: 'an access token is provided by backend on authentication',
+            type: :apiKey,
+            name: 'access-token',
+            in: :header
+          },
+          uid: {
+            description: 'uid is provided by backend',
+            type: :apiKey,
+            name: 'uid',
+            in: :header
+          },
+          token_type: {
+            description: 'default is Bearer',
+            type: :apiKey,
+            name: 'token-type',
+            in: :header
+          },
+          auth_type: {
+            description: 'default is Bearer',
+            type: :http,
+            in: :header
+          }
+        }
+      }
     }
   }
 

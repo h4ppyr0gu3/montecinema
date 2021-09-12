@@ -30,6 +30,5 @@ module Cinemas
 		def find_by_params(params)
 			repository.find_by(params)
 		end
-
 	end
 end

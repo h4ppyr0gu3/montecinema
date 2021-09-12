@@ -7,6 +7,14 @@ paths:
   "/api/v1/cinemas":
     post:
       summary: create cinema
+      security:
+      - access_token: []
+        client: []
+        uid: []
+        token_type: []
+        auth_type: []
+      tags:
+      - Cinemas
       parameters: []
       responses:
         '201':
@@ -24,82 +32,82 @@ paths:
                     total_seats: 25
                   relationships:
                     seats:
-                    - - id: 1
-                        attributes:
-                          seat_number: a1
-                      - id: 2
-                        attributes:
-                          seat_number: a2
-                      - id: 3
-                        attributes:
-                          seat_number: a3
-                      - id: 4
-                        attributes:
-                          seat_number: a4
-                      - id: 5
-                        attributes:
-                          seat_number: a5
-                      - id: 6
-                        attributes:
-                          seat_number: b1
-                      - id: 7
-                        attributes:
-                          seat_number: b2
-                      - id: 8
-                        attributes:
-                          seat_number: b3
-                      - id: 9
-                        attributes:
-                          seat_number: b4
-                      - id: 10
-                        attributes:
-                          seat_number: b5
-                      - id: 11
-                        attributes:
-                          seat_number: c1
-                      - id: 12
-                        attributes:
-                          seat_number: c2
-                      - id: 13
-                        attributes:
-                          seat_number: c3
-                      - id: 14
-                        attributes:
-                          seat_number: c4
-                      - id: 15
-                        attributes:
-                          seat_number: c5
-                      - id: 16
-                        attributes:
-                          seat_number: d1
-                      - id: 17
-                        attributes:
-                          seat_number: d2
-                      - id: 18
-                        attributes:
-                          seat_number: d3
-                      - id: 19
-                        attributes:
-                          seat_number: d4
-                      - id: 20
-                        attributes:
-                          seat_number: d5
-                      - id: 21
-                        attributes:
-                          seat_number: e1
-                      - id: 22
-                        attributes:
-                          seat_number: e2
-                      - id: 23
-                        attributes:
-                          seat_number: e3
-                      - id: 24
-                        attributes:
-                          seat_number: e4
-                      - id: 25
-                        attributes:
-                          seat_number: e5
-                    screenings: []
+                    - id: 1
+                      attributes:
+                        seat_number: a1
+                    - id: 2
+                      attributes:
+                        seat_number: a2
+                    - id: 3
+                      attributes:
+                        seat_number: a3
+                    - id: 4
+                      attributes:
+                        seat_number: a4
+                    - id: 5
+                      attributes:
+                        seat_number: a5
+                    - id: 6
+                      attributes:
+                        seat_number: b1
+                    - id: 7
+                      attributes:
+                        seat_number: b2
+                    - id: 8
+                      attributes:
+                        seat_number: b3
+                    - id: 9
+                      attributes:
+                        seat_number: b4
+                    - id: 10
+                      attributes:
+                        seat_number: b5
+                    - id: 11
+                      attributes:
+                        seat_number: c1
+                    - id: 12
+                      attributes:
+                        seat_number: c2
+                    - id: 13
+                      attributes:
+                        seat_number: c3
+                    - id: 14
+                      attributes:
+                        seat_number: c4
+                    - id: 15
+                      attributes:
+                        seat_number: c5
+                    - id: 16
+                      attributes:
+                        seat_number: d1
+                    - id: 17
+                      attributes:
+                        seat_number: d2
+                    - id: 18
+                      attributes:
+                        seat_number: d3
+                    - id: 19
+                      attributes:
+                        seat_number: d4
+                    - id: 20
+                      attributes:
+                        seat_number: d5
+                    - id: 21
+                      attributes:
+                        seat_number: e1
+                    - id: 22
+                      attributes:
+                        seat_number: e2
+                    - id: 23
+                      attributes:
+                        seat_number: e3
+                    - id: 24
+                      attributes:
+                        seat_number: e4
+                    - id: 25
+                      attributes:
+                        seat_number: e5
+                    screenings:
       requestBody:
         content:
           application/json:
@@ -131,23 +139,138 @@ paths:
     parameters:
     - name: id
       in: path
-      description: id
       required: true
       schema:
-        type: string
+        type: integer
     get:
       summary: show cinema
+      security:
+      - access_token: []
+        client: []
+        uid: []
+        token_type: []
+        auth_type: []
+      tags:
+      - Cinemas
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              example:
+                data:
+                  type: cinema
+                  id: 1
+                  attributes:
+                    cinema_number: 1
+                    rows: 5
+                    columns: 5
+                    total_seats: 25
+                  relationships:
+                    seats:
+                    - id: 1
+                      attributes:
+                        seat_number: a1
+                    - id: 2
+                      attributes:
+                        seat_number: a2
+                    - id: 3
+                      attributes:
+                        seat_number: a3
+                    - id: 4
+                      attributes:
+                        seat_number: a4
+                    - id: 5
+                      attributes:
+                        seat_number: a5
+                    - id: 6
+                      attributes:
+                        seat_number: b1
+                    - id: 7
+                      attributes:
+                        seat_number: b2
+                    - id: 8
+                      attributes:
+                        seat_number: b3
+                    - id: 9
+                      attributes:
+                        seat_number: b4
+                    - id: 10
+                      attributes:
+                        seat_number: b5
+                    - id: 11
+                      attributes:
+                        seat_number: c1
+                    - id: 12
+                      attributes:
+                        seat_number: c2
+                    - id: 13
+                      attributes:
+                        seat_number: c3
+                    - id: 14
+                      attributes:
+                        seat_number: c4
+                    - id: 15
+                      attributes:
+                        seat_number: c5
+                    - id: 16
+                      attributes:
+                        seat_number: d1
+                    - id: 17
+                      attributes:
+                        seat_number: d2
+                    - id: 18
+                      attributes:
+                        seat_number: d3
+                    - id: 19
+                      attributes:
+                        seat_number: d4
+                    - id: 20
+                      attributes:
+                        seat_number: d5
+                    - id: 21
+                      attributes:
+                        seat_number: e1
+                    - id: 22
+                      attributes:
+                        seat_number: e2
+                    - id: 23
+                      attributes:
+                        seat_number: e3
+                    - id: 24
+                      attributes:
+                        seat_number: e4
+                    - id: 25
+                      attributes:
+                        seat_number: e5
+                    screenings:
     delete:
       summary: delete cinema
+      security:
+      - access_token: []
+        client: []
+        uid: []
+        token_type: []
+        auth_type: []
+      tags:
+      - Cinemas
       responses:
         '200':
-          description: no_content
+          description: ok
+          content:
+            application/json:
+              example: {}
   "/api/v1/movies":
     post:
       summary: create movie
+      security:
+      - access_token: []
+        client: []
+        uid: []
+        token_type: []
+        auth_type: []
+      tags:
+      - Movies
       parameters: []
       responses:
         '201':
@@ -165,7 +288,7 @@ paths:
                     director: wejndan
                     length: 95
                   relationships:
-                    screenings: []
+                    screenings:
       requestBody:
         content:
           application/json:
@@ -199,18 +322,24 @@ paths:
               - description
               - length
     get:
-      summary: index movies
+      summary: index movies without params
+      security:
+      - access_token: []
+        client: []
+        uid: []
+        token_type: []
+        auth_type: []
+      tags:
+      - Movies
       parameters:
       - name: offset
         in: query
         description: offset of records in db
-        required: false
         schema:
           type: integer
       - name: limit
         in: query
         description: number of records to be returned
-        required: false
         schema:
           type: integer
       responses:
@@ -221,7 +350,7 @@ paths:
               example:
                 data:
                 - type: movie
-                  id: 2
+                  id: 4
                   attributes:
                     title: Autobiography
                     description: Best description
@@ -229,12 +358,30 @@ paths:
                     director: Me, Mario
                     length: 125
                   relationships:
-                    screenings: []
+                    screenings:
+                - type: movie
+                  id: 5
+                  attributes:
+                    title: Autobiography
+                    description: Best description
+                    genre: comedy
+                    director: Me, Mario
+                    length: 125
+                  relationships:
+                    screenings:
                 meta:
-                  total_count: 1
+                  total_count: 2
   "/api/v1/movies/{id}":
     get:
       summary: show movies
+      security:
+      - access_token: []
+        client: []
+        uid: []
+        token_type: []
+        auth_type: []
+      tags:
+      - Movies
       parameters:
       - name: id
         in: path
@@ -247,7 +394,7 @@ paths:
               example:
                 data:
                   type: movie
-                  id: 3
+                  id: 2
                   attributes:
                     title: Autobiography
                     description: Best description
@@ -255,9 +402,379 @@ paths:
                     director: Me, Mario
                     length: 125
                   relationships:
-                    screenings: []
+                    screenings:
+  "/api/v1/reservations":
+    post:
+      summary: create reservation
+      tags:
+      - Reservations
+      security:
+      - access_token: []
+        client: []
+        uid: []
+        token_type: []
+        auth_type: []
+      parameters: []
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              example:
+                data:
+                  type: reservation
+                  id: 1
+                  attributes: {}
+                  relationships:
+                    user:
+                      id: 1
+                      attributes:
+                        first_name:
+                        last_name:
+                        email: test@test.com
+                        points_earned: 0
+                        points_redeemed: 0
+                    movie:
+                      id: 1
+                      type: movie
+                      attributes:
+                        title: Autobiography
+                        description: Best description
+                        director: Me, Mario
+                        genre: comedy
+                        length: 125
+                    screening:
+                      id: 1
+                      attributes:
+                        airing_time: '2021-09-12T14:46:39.447Z'
+                        additional_cost: 0
+                        seats_available:
+                        movie_id: 1
+                    cinema:
+                      type: cinema
+                      id: 1
+                      attributes:
+                        cinema_number: 1
+                        total_seats:
+                        rows: 5
+                        columns: 5
+                    seats:
+                    - id: 10
+                      attributes:
+                        seat_number: '10'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                data:
+                  type: object
+                  properties:
+                    attributes:
+                      type: object
+                      properties:
+                        user_id:
+                          type: integer
+                        screening_id:
+                          type: integer
+                        cinema_id:
+                          type: integer
+                        movie_id:
+                          type: integer
+                        seat_ids:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              seat_id:
+                                type: integer
+    get:
+      summary: index without params
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+      - name: offset
+        in: query
+        schema:
+          type: integer
+      security:
+      - access_token: []
+        client: []
+        uid: []
+        token_type: []
+        auth_type: []
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              example:
+                data:
+                - type: reservation
+                  id: 7
+                  attributes: {}
+                  relationships:
+                    user:
+                      id: 11
+                      attributes:
+                        first_name: David
+                        last_name: Rogers
+                        email: test10@test.com
+                        points_earned: 0
+                        points_redeemed: 0
+                    movie:
+                      id: 6
+                      type: movie
+                      attributes:
+                        title: Autobiography
+                        description: Best description
+                        director: Me, Mario
+                        genre: comedy
+                        length: 125
+                    screening:
+                      id: 7
+                      attributes:
+                        airing_time: '2021-09-12T15:45:50.552Z'
+                        additional_cost: 0
+                        seats_available:
+                        movie_id: 6
+                    cinema:
+                      type: cinema
+                      id: 7
+                      attributes:
+                        cinema_number: 7
+                        total_seats:
+                        rows: 5
+                        columns: 5
+                    seats: []
+                - type: reservation
+                  id: 8
+                  attributes: {}
+                  relationships:
+                    user:
+                      id: 11
+                      attributes:
+                        first_name: David
+                        last_name: Rogers
+                        email: test10@test.com
+                        points_earned: 0
+                        points_redeemed: 0
+                    movie:
+                      id: 6
+                      type: movie
+                      attributes:
+                        title: Autobiography
+                        description: Best description
+                        director: Me, Mario
+                        genre: comedy
+                        length: 125
+                    screening:
+                      id: 8
+                      attributes:
+                        airing_time: '2021-09-12T15:45:50.563Z'
+                        additional_cost: 0
+                        seats_available:
+                        movie_id: 6
+                    cinema:
+                      type: cinema
+                      id: 8
+                      attributes:
+                        cinema_number: 8
+                        total_seats:
+                        rows: 5
+                        columns: 5
+                    seats: []
+      tags:
+      - Reservations
+  "/api/v1/reservations/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show reservation
+      security:
+      - access_token: []
+        client: []
+        uid: []
+        token_type: []
+        auth_type: []
+      tags:
+      - Reservations
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              example:
+                data:
+                  type: reservation
+                  id: 2
+                  attributes: {}
+                  relationships:
+                    user:
+                      id: 2
+                      attributes:
+                        first_name: David
+                        last_name: Rogers
+                        email: test1@test.com
+                        points_earned: 0
+                        points_redeemed: 0
+                    movie:
+                      id: 2
+                      type: movie
+                      attributes:
+                        title: Autobiography
+                        description: Best description
+                        director: Me, Mario
+                        genre: comedy
+                        length: 125
+                    screening:
+                      id: 2
+                      attributes:
+                        airing_time: '2021-09-12T15:27:51.232Z'
+                        additional_cost: 0
+                        seats_available:
+                        movie_id: 2
+                    cinema:
+                      type: cinema
+                      id: 2
+                      attributes:
+                        cinema_number: 2
+                        total_seats:
+                        rows: 5
+                        columns: 5
+                    seats: []
+    delete:
+      summary: delete reservation
+      tags:
+      - Reservations
+      security:
+      - access_token: []
+        client: []
+        uid: []
+        token_type: []
+        auth_type: []
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update reservation
+      tags:
+      - Reservations
+      security:
+      - access_token: []
+        client: []
+        uid: []
+        token_type: []
+        auth_type: []
+      parameters: []
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              example:
+                data:
+                  type: reservation
+                  id: 4
+                  attributes: {}
+                  relationships:
+                    user:
+                      id: 5
+                      attributes:
+                        first_name: David
+                        last_name: Rogers
+                        email: test4@test.com
+                        points_earned: 0
+                        points_redeemed: 0
+                    movie:
+                      id: 4
+                      type: movie
+                      attributes:
+                        title: Autobiography
+                        description: Best description
+                        director: Me, Mario
+                        genre: comedy
+                        length: 125
+                    screening:
+                      id: 4
+                      attributes:
+                        airing_time: '2021-09-12T15:27:51.309Z'
+                        additional_cost: 0
+                        seats_available:
+                        movie_id: 4
+                    cinema:
+                      type: cinema
+                      id: 4
+                      attributes:
+                        cinema_number: 4
+                        total_seats:
+                        rows: 5
+                        columns: 5
+                    seats:
+                    - id: 20
+                      attributes:
+                        seat_number: '20'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                data:
+                  type: object
+                  properties:
+                    attributes:
+                      type: object
+                      properties:
+                        user_id:
+                          type: integer
+                        screening_id:
+                          type: integer
+                        cinema_id:
+                          type: integer
+                        movie_id:
+                          type: integer
+                        seat_ids:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              seat_id:
+                                type: integer
 servers:
-- url: https://{defaultHost}
+- url: https://montecinema-david-rogers.herokuapp.com/
   variables:
     defaultHost:
-      default: www.example.com
+      default: https://montecinema-david-rogers.herokuapp.com/
+components:
+  securitySchemes:
+    client:
+      description: Client is a string recieved from backend to keep session alive
+      type: apiKey
+      name: client
+      in: header
+    access_token:
+      description: an access token is provided by backend on authentication
+      type: apiKey
+      name: access-token
+      in: header
+    uid:
+      description: uid is provided by backend
+      type: apiKey
+      name: uid
+      in: header
+    token_type:
+      description: default is Bearer
+      type: apiKey
+      name: token-type
+      in: header
+    auth_type:
+      description: default is Bearer
+      type: http
+      in: header

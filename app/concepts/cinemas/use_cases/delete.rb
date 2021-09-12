@@ -3,7 +3,7 @@ module Cinemas
     class Delete < ::UseCase::Base
 
       def persist
-        CinemaRepository.new.destroy_cinema(params[:cinema_id])
+        CinemaRepository.new.destroy_cinema(params[:cinema][:id])
       end
     end
   end

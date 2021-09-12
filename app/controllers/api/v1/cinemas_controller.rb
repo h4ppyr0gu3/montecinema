@@ -3,6 +3,7 @@ module Api
     class CinemasController < ApplicationController
       before_action :set_cinema, only: %i[show destroy]
       around_action :skip_bullet, only: %i[destroy]
+      before_action :authenticate_users_model!
 
       def show
         authorize([:api, :v1, @cinema])
@@ -16,13 +17,17 @@ module Api
       def create
         authorize([:api, :v1, ::Cinemas::Model])
         cinema = ::Cinemas::UseCases::Create.new(params: cinema_deserializer).call
-        render json: ::Cinemas::Representers::Single.new(cinema).call, status: :created
+        render json: ::Cinemas::Representers::Single.new(
+          cinema: cinema,
+          screenings: cinema.screenings,
+          seats: cinema.seats
+        ).call, status: :created
       end
 
       def destroy
         authorize([:api, :v1, @cinema])
-        ::Cinemas::UseCases::Delete.new(params: {cinema: @cinema}).call
-        render head: :no_content
+        ::Cinemas::UseCases::Delete.new(params: { cinema: @cinema }).call
+        render head: :no_content, status: :ok
       end
 
       private

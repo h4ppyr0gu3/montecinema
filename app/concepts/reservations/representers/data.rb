@@ -10,6 +10,7 @@ module Reservations
 			def call
 				{
 					type: 'reservation',
+					id: reservation.id,
 					attributes: {},
 					relationships: {
 						user: Users::Representers::Relationship.new(

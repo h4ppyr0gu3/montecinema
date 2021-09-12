@@ -1,18 +1,10 @@
 class ApplicationController < ActionController::API
-  include DeviseTokenAuth::Concerns::SetUserByToken unless Rails.env = 'test'
+  include DeviseTokenAuth::Concerns::SetUserByToken
   include ActionController::MimeResponds
   include Pundit
 
   def pundit_user
     current_users_model
-  end
-
-  def authenticate_users_model!
-    unless Rails.env = 'test'
-      authenticate_users_model!
-    else
-      @current_users_model = Users::Model.last
-    end
   end
 
   def skip_bullet

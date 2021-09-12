@@ -4,7 +4,6 @@ module Api
       MissingParams = Class.new(StandardError)
       around_action :skip_bullet, only: %i[index]
       before_action :set_movie, only: %i[show update destroy]
-      before_action :authenticate_users_model!
 
       def index
         movies = ::Movies::UseCases::Index.new(params: params).call

@@ -60,15 +60,17 @@ RSpec.describe Api::V1::MoviesController do
 
   describe 'DELETE #destroy' do
     let(:delete_use_case) { instance_double(Movies::UseCases::Delete, call: {}) }
-    let(:delete_request) { delete :destroy, params: { id: Movies::Model.last.id } }
+    let(:find_repo) { instance_double(Movies::MovieRepository, find_by_id: {id: 3}) }
+    let(:delete_request) { delete :destroy, params: { id: 3 } }
 
     before do
       allow(Movies::UseCases::Delete).to receive(:new)
-        .and_return(delete_use_case)
-      create(:movie)
+        .with(params: {id: 3}).and_return(delete_use_case)
+      allow(Movies::MovieRepository).to receive(:new)
+      .and_return(find_repo)
     end
 
-    context 'when admin logged in ' do
+    context 'when admin logged in' do
       it 'deletes movie' do
         create(:user, :admin)
         request.headers.merge! Users::Model.last.create_new_auth_token

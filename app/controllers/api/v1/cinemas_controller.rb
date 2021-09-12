@@ -3,7 +3,6 @@ module Api
     class CinemasController < ApplicationController
       before_action :set_cinema, only: %i[show destroy]
       around_action :skip_bullet, only: %i[destroy]
-      before_action :authenticate_users_model!
 
       def show
         authorize([:api, :v1, @cinema])

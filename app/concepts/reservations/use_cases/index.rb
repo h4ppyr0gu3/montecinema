@@ -1,18 +1,21 @@
 module Reservations
 	module UseCases
-		class Index
+		class Index < UseCase::Base
 			UserNotFound = Class.new(StandardError)
-			attr_reader :params, :user
-			def initialize params, user 
-				@params = params
-				@user = user 
-			end
+			attr_reader :query, :user
 
-			def call
-				raise UserNotFound unless user.present?
-				params.present? ? ReservationRepository.new.fetch(
-					params[:offset], params[:limit], user
-					) : ReservationRepository.new.(user).fetch_all
+			def persist
+				@query = self.params[:query]
+				@user = self.params[:user] 
+				if user.admin? || user.support? 
+					query.present? ? ReservationRepository.new.fetch_admin(
+						query[:offset], query[:limit]
+						) : ReservationRepository.new.fetch_all_admin
+				else
+					query.present? ? ReservationRepository.new.fetch(
+						query[:offset], query[:limit], user
+						) : ReservationRepository.new.fetch_all(user)
+				end
 			end
 		end
 	end

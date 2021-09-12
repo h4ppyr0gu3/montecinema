@@ -1,60 +1,100 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::MoviesController do
-  describe 'with movie creation' do
+  describe 'GET #index' do
+    subject(:index_request) { get :index }
+
+    let(:index_use_case) { instance_double(Movies::UseCases::Index, call: { movies: 'index' }) }
+    let(:index_representer) { instance_double(Movies::Representers::Multiple, call: { movies: 'index' }) }
+
     before do
-      create(:movie)
+      allow(Movies::UseCases::Index).to receive(:new)
+        .and_return(index_use_case)
+      allow(Movies::Representers::Multiple).to receive(:new)
+        .and_return(index_representer)
     end
 
-    describe 'GET #index' do
-      subject(:request) { get :index }
-
-      it 'return one item' do
-        request
-        expect(JSON.parse(response.body)['data'].count).to eq(1)
-      end
-
-      it 'return multiple items' do
-        create(:movie, title: 'something Else', length: 134)
-        request
-        expect(JSON.parse(response.body)['data'].count).to eq(2)
+    context 'when user not logged in' do
+      it 'returns index' do
+        index_request
+        expect(JSON.parse(response.body)).to eq('movies' => 'index')
       end
     end
 
-    it 'GET #show' do
-      create(:movie)
-      get :show, params: { id: Movies::Model.last.id }
-      expect(JSON.parse(response.body).class).to eq(Hash)
-    end
-
-    describe 'DELETE #destroy' do
-      before do
-        create(:cinema)
-      end
-
-      it 'deletes movies' do
-        Movies::Model.last.screenings.create(
-          cinema_id: Cinemas::Model.last.id,
-          airing_time: Time.zone.now
-        )
-        expect { delete :destroy, params: { id: Movies::Model.last.id } }
-          .to change(Movies::Model, :count).by(-1)
-      end
-
-      it 'delete screenings' do
-        Movies::Model.last.screenings.create(
-          cinema_id: Cinemas::Model.last.id,
-          airing_time: Time.zone.now
-        )
-        expect { delete :destroy, params: { id: Movies::Model.last.id } }
-          .to change(Screenings::Model, :count).by(-1)
+    context 'when user logged in' do
+      it 'returns index' do
+        create(:user)
+        request.headers.merge! Users::Model.last.create_new_auth_token
+        index_request
+        expect(JSON.parse(response.body)).to eq('movies' => 'index')
       end
     end
   end
 
-  it 'POST #create' do
-    expect do
-      post :create, params: {
+  describe 'GET #show' do
+    let(:show_representer) { instance_double(Movies::Representers::Single, call: { movie: 'movie' }) }
+    let(:show_request) { get :show, params: { id: Movies::Model.last.id } }
+
+    before do
+      create(:movie)
+      allow(Movies::Representers::Single).to receive(:new)
+        .and_return(show_representer)
+    end
+
+    context 'when user logged in' do
+      it 'returns movie' do
+        create(:user)
+        request.headers.merge! Users::Model.last.create_new_auth_token
+        show_request
+        expect(JSON.parse(response.body)).to eq('movie' => 'movie')
+      end
+    end
+
+    context 'when user not logged in' do
+      it "doesn't returns movie" do
+        show_request
+        expect(JSON.parse(response.body).keys).to include('error')
+      end
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    let(:delete_use_case) { instance_double(Movies::UseCases::Delete, call: {}) }
+    let(:find_repo) { instance_double(Movies::MovieRepository, find_by_id: {id: 3}) }
+    let(:delete_request) { delete :destroy, params: { id: 3 } }
+
+    before do
+      allow(Movies::UseCases::Delete).to receive(:new)
+        .with(params: {id: 3}).and_return(delete_use_case)
+      allow(Movies::MovieRepository).to receive(:new)
+      .and_return(find_repo)
+    end
+
+    context 'when admin logged in' do
+      it 'deletes movie' do
+        create(:user, :admin)
+        request.headers.merge! Users::Model.last.create_new_auth_token
+        delete_request
+        expect(response.status).to eq(200)
+      end
+    end
+
+    context 'when regular user logged in' do
+      it 'returns an error' do
+        create(:user, :client)
+        request.headers.merge! Users::Model.last.create_new_auth_token
+        delete_request
+        expect(JSON.parse(response.body).keys).to include('error')
+      end
+    end
+  end
+
+  describe 'POST #create' do
+    let(:create_use_case) { instance_double(Movies::UseCases::Create, call: { movie: 'a' }) }
+    let(:single_representer) { instance_double(Movies::Representers::Single, call: { movie: 'created' }) }
+    let(:create_request) do
+      post :create, params:
+      {
         data: {
           type: 'movie',
           attributes: {
@@ -67,6 +107,36 @@ RSpec.describe Api::V1::MoviesController do
         }
       }, as: :json
     end
-      .to change(Movies::Model, :count).by(1)
+
+    before do
+      allow(Movies::UseCases::Create).to receive(:new)
+        .and_return(create_use_case)
+      allow(Movies::Representers::Single).to receive(:new)
+        .with(movie: 'a').and_return(single_representer)
+    end
+
+    context 'user logged in' do
+      before do
+        create(:user)
+        request.headers.merge! Users::Model.last.create_new_auth_token
+      end
+
+      it 'returns error' do
+        create_request
+        expect(JSON.parse(response.body).keys).to include('error')
+      end
+    end
+
+    context 'admin logged in' do
+      before do
+        create(:user, :admin)
+        request.headers.merge! Users::Model.last.create_new_auth_token
+      end
+
+      it 'allows admin' do
+        create_request
+        expect(JSON.parse(response.body)).to eq('movie' => 'created')
+      end
+    end
   end
 end

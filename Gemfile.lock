@@ -130,12 +130,21 @@ GEM
       raabro (~> 1.4)
     globalid (0.5.2)
       activesupport (>= 5.0)
+    graphql (1.12.16)
     hashie (4.1.0)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
     json-schema (2.8.1)
       addressable (>= 2.4)
+<<<<<<< HEAD
     listen (3.7.0)
+=======
+    launchy (2.5.0)
+      addressable (~> 2.7)
+    letter_opener (1.7.0)
+      launchy (~> 2.2)
+    listen (3.6.0)
+>>>>>>> touch_ups_and_testing
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     loofah (2.12.0)
@@ -320,6 +329,8 @@ DEPENDENCIES
   devise_token_auth (~> 1.2.0)
   dotenv-rails (~> 2.7.6)
   factory_bot_rails (= 6.2.0)
+  graphql
+  letter_opener
   listen (~> 3.3)
   minitest (~> 5.14.4)
   multi_json

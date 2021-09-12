@@ -5,23 +5,34 @@ module Api
       around_action :skip_bullet, only: %i[destroy]
 
       def show
-        render json: Cinemas::Representers::Single.new(@cinema).call, status: :ok
+        authorize([:api, :v1, @cinema])
+        render json: ::Cinemas::Representers::Single.new(
+          cinema: @cinema,
+          screenings: @cinema.screenings,
+          seats: @cinema.seats
+        ).call, status: :ok
       end
 
       def create
-        cinema = Cinemas::UseCases::Create.new(cinema_deserializer).call
-        render json: Cinemas::Representers::Single.new(cinema).call, status: :created
+        authorize([:api, :v1, ::Cinemas::Model])
+        cinema = ::Cinemas::UseCases::Create.new(params: cinema_deserializer).call
+        render json: ::Cinemas::Representers::Single.new(
+          cinema: cinema,
+          screenings: cinema.screenings,
+          seats: cinema.seats
+        ).call, status: :created
       end
 
       def destroy
-        Cinemas::UseCases::Delete.new(@cinema).call
-        render head: :no_content
+        authorize([:api, :v1, @cinema])
+        ::Cinemas::UseCases::Delete.new(params: { cinema: @cinema }).call
+        render head: :no_content, status: :ok
       end
 
       private
 
       def set_cinema
-        @cinema = Cinemas::CinemaRepository.new.find_by_id(params[:id])
+        @cinema = ::Cinemas::CinemaRepository.new.find_by_id(params[:id])
       end
 
       def cinema_deserializer

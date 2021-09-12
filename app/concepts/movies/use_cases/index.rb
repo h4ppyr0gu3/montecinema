@@ -1,12 +1,8 @@
 module Movies
 	module UseCases
-		class Index
-			attr_reader :params
-			def initialize params
-				@params = params
-			end
+		class Index < UseCase::Base
 
-			def call
+			def persist
 				params.present? ? MovieRepository.new.fetch(
 					params[:offset], params[:limit]
 					) : MovieRepository.new.fetch_all

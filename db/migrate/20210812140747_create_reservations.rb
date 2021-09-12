@@ -5,6 +5,7 @@ class CreateReservations < ActiveRecord::Migration[6.1]
       t.references :screening
       t.references :cinema
       t.references :movie
+      t.boolean :confirmed, default: false
 
       t.timestamps
     end

@@ -1,11 +1,9 @@
 module Cinemas
   module UseCases
-    class Create
-      def initialize(params)
-        @params = params
-      end
+    class Create < ::UseCase::Base
+      CinemaNumberAlreadyTaken = Class.new(StandardError)
 
-      def call
+      def persist
         raise CinemaNumberAlreadyTaken unless CinemaRepository.new.
         find_by_params(cinema_number: params[:cinema_number]).nil?
         params[:total_seats] = total_seats

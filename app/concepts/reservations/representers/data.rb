@@ -10,23 +10,24 @@ module Reservations
 			def call
 				{
 					type: 'reservation',
+					id: reservation.id,
 					attributes: {},
 					relationships: {
 						user: Users::Representers::Relationship.new(
 							user
-						),
+						).call,
 						movie: Movies::Representers::Relationship.new(
 							reservation.movie
-						),
+						).call,
 						screening: Screenings::Representers::Relationship.new(
 							reservation.screening
-						),
-						cinema: Cinemas::Representers::Relationship.new(
-							reservation.cinema
-						),
+						).call,
+						cinema: ::Cinemas::Representers::Relationship.new(
+							cinema: reservation.cinema
+						).call,
 						seats: Seats::Representers::MultipleRelationships.new(
 							reservation.seats
-						)
+						).call
 					}
 				}
 			end

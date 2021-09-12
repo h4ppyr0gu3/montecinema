@@ -1,8 +1,10 @@
 module Cinemas
 	module Representers
 		class Single
-			def initialize(cinema)
+			def initialize cinema:, screenings:, seats:
 				@cinema = cinema
+				@screenings = screenings 
+				@seats = seats
 			end
 
 			def call
@@ -17,14 +19,13 @@ module Cinemas
 							total_seats: cinema.total_seats
 						},
 						relationships: {
-							seats: [Seats::Representers::MultipleRelationships.new(
-								Seats::SeatRepository.new.fetch_cinema_seats(cinema.id)
-								).call],
-							screenings: [
-								if cinema.screenings.present?
-									Screenings::Representers::MultipleRelationships.new(cinema.screenings).call
+							seats: Seats::Representers::MultipleRelationships.new(
+								seats
+								).call,
+							screenings:
+								if screenings.present?
+									Screenings::Representers::MultipleRelationships.new(screenings).call
 								end
-							]
 						}
 					}
 				}
@@ -32,7 +33,7 @@ module Cinemas
 
 			private
 
-			attr_reader :cinema
+			attr_reader :cinema, :screenings, :seats
 		end
 	end
 end

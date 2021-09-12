@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Welcome to example.com, <%= @user.first_name %></h1>
+    <p>
+      Thank you for creating a reservation
+      <br>
+      <br>
+      Your reservation for:
+      <br>
+      Movie: <%= @reservation.movie.title %>
+      <br>
+      Seats: <%= res = @reservation.seats.map(&:seat_number).join(', ') %>
+      <br>
+      Cinema Number: <%= @reservation.cinema.cinema_number %>
+      <br>
+      Screening Time: <%= @reservation.screening.airing_time %>
+      <br>
+      has been reserved, Please pay 30 minutes before the screening time otherwise the booking will be cancelled
+    </p>
+    <p>Thanks for your reservation and have a great day!</p>
+  </body>
+</html>

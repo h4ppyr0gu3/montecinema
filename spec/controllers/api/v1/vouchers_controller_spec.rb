@@ -156,7 +156,7 @@ RSpec.describe Api::V1::VouchersController do
       post :redeem, params: {
         data: {
           attributes: {
-            user_id: Users::Model.find_by(email: 'test@test.com').id,
+            user_id: Users::Model.first.id,
             voucher_ids: [Vouchers::Model.last.id]
           }
         }

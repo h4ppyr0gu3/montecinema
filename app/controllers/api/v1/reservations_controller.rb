@@ -2,32 +2,47 @@ module Api
   module V1
     class ReservationsController < ApplicationController
       before_action :authenticate_users_model!
-      before_action :set_reservation, only: %i[show destroy]
+      before_action :set_reservation, only: %i[show destroy update]
+
       def index
-        reservation = Reservations::UseCases::Index.new(params, current_users_model).call
-        render json: Reservations::Representers::Multiple.new(reservation, current_users_model).call
-      rescue Reservations::UseCases::Index::UserNotFound
+        reservation = ::Reservations::UseCases::Index.new(params: {
+                                                            query: params,
+                                                            user: current_users_model
+                                                          }).call
+        render json: ::Reservations::Representers::Multiple.new(reservation, current_users_model).call
+      rescue ::Reservations::UseCases::Index::UserNotFound
         render json: { error: 'user not found' }
       end
 
       def show
-        render json: Reservations::Representers::Single.new(@reservation, current_users_model).call
+        authorize([:api, :v1, @reservation])
+        render json: ::Reservations::Representers::Single.new(@reservation, current_users_model).call
       end
 
       def create
-        reservation = Reservations::UseCases::Create.new(reservation_deserializer, current_users_model.id).call
-        render json: Reservations::Representers::Single.new(reservation, current_users_model).call
+        reservation = ::Reservations::Model.new
+        authorize([:api, :v1, reservation])
+        reservation = ::Reservations::UseCases::Create.new(params: {
+                                                             reservation: reservation_deserializer,
+                                                             user_id: current_users_model.id
+                                                           }).call
+        render json: ::Reservations::Representers::Single.new(reservation, current_users_model).call, status: :created
       end
 
       def update
-        Reservations::UseCases::Update.new(reservation_deserializer, params['id'],
-                                           current_users_model.id).call
-        reservation = Reservations::ReservationRepository, new.find_by_id(params['id'])
-        render json: Reservations::Representers::Single.new(reservation, current_users_model).call
+        authorize([:api, :v1, @reservation])
+        ::Reservations::UseCases::Update.new(params: {
+                                               args: reservation_deserializer,
+                                               id: params['id'],
+                                               user_id: current_users_model.id
+                                             }).call
+        reservation = ::Reservations::ReservationRepository.new.find_by_id(params['id'])
+        render json: ::Reservations::Representers::Single.new(reservation, current_users_model).call
       end
 
       def destroy
-        Reservations::UseCases::Delete.new(@reservation).call
+        authorize([:api, :v1, @reservation])
+        ::Reservations::UseCases::Delete.new(params: { reservation: @reservation }).call
         render head: :no_content
       end
 
@@ -43,7 +58,7 @@ module Api
       end
 
       def set_reservation
-        @reservation = Reservations::ReservationRepository.new.find_by_id(params[:id])
+        @reservation = ::Reservations::ReservationRepository.new.find_by_id(params[:id])
       end
     end
   end
